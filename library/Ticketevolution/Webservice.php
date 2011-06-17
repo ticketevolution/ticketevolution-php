@@ -964,11 +964,11 @@ class Ticketevolution_Webservice
         $client->setUri($this->_baseUri);
 
         $defaultOptions = array('per_page' => '500');
-        $options = self::_prepareOptions('GET', 'ticket-groups', $options, $defaultOptions);
+        $options = self::_prepareOptions('GET', 'ticket_groups', $options, $defaultOptions);
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
-        $response = $client->restGet('/ticket-groups', $options);
+        $response = $client->restGet('/ticket_groups', $options);
         if ($response->isError()) {
             /**
              * @see Ticketevolution_Webservice_Exception
@@ -999,7 +999,7 @@ class Ticketevolution_Webservice
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
 
-        $endPoint = 'ticket-groups/' . $id;
+        $endPoint = 'ticket_groups/' . $id;
         $options = array();
         $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
         $client->getHttpClient()->resetParameters();
