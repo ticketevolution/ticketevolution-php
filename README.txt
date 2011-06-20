@@ -6,7 +6,15 @@ Ticket Evolution Framework for PHP.
 
 May 20, 2011
 Added data-loaders which is a handy app for caching the data locally in MySQL.
-To use it you will need to run teh create_tables.mysql script in scripts folder.
+To use it you will need to run the create_tables.mysql script in scripts folder.
+
+Added sortResults() method to ResultSet to allow for sorting of results.
+
+Added exclusiveResults() and excludeResults() methods to resultSet which allow 
+you to easily show only TicketGroups from a specified array of brokers OR to
+exclude TicketGroups from a specified array of brokers. Handy if you prefer to 
+only show your own inventory for certain events or if you wish to exclude 
+someone's inventory.
 
 Added "search" endpoint which searches venues and performers
 
