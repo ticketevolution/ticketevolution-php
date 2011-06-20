@@ -6,7 +6,7 @@ Ticket Evolution Framework for PHP.
 
 May 20, 2011
 Added data-loaders which is a handy app for caching the data locally in MySQL.
-To use it you will need to run teh create_tables.mysql script in scripts folder.
+To use it you will need to run the create_tables.mysql script in scripts folder.
 
 Added "search" endpoint which searches venues and performers
 
