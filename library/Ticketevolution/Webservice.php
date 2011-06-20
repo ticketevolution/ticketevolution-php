@@ -7,7 +7,7 @@
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt
+ * https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
@@ -17,7 +17,7 @@
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  * @version     $Id: Webservice.php 30 2011-05-09 23:41:55Z jcobb $
  */
 
@@ -26,7 +26,7 @@
  * @category    Ticketevolution
  * @package     Ticketevolution_Webservice
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 class Ticketevolution_Webservice
 {
@@ -53,7 +53,7 @@ class Ticketevolution_Webservice
      *
      * @var string
      */
-    protected $_apiVersion = '2';
+    protected $_apiVersion = '5';
 
 
     /**
@@ -964,11 +964,11 @@ class Ticketevolution_Webservice
         $client->setUri($this->_baseUri);
 
         $defaultOptions = array('per_page' => '500');
-        $options = self::_prepareOptions('GET', 'ticket-groups', $options, $defaultOptions);
+        $options = self::_prepareOptions('GET', 'ticket_groups', $options, $defaultOptions);
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
-        $response = $client->restGet('/ticket-groups', $options);
+        $response = $client->restGet('/ticket_groups', $options);
         if ($response->isError()) {
             /**
              * @see Ticketevolution_Webservice_Exception
@@ -999,7 +999,7 @@ class Ticketevolution_Webservice
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
 
-        $endPoint = 'ticket-groups/' . $id;
+        $endPoint = 'ticket_groups/' . $id;
         $options = array();
         $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
         $client->getHttpClient()->resetParameters();
@@ -1370,6 +1370,52 @@ class Ticketevolution_Webservice
 
 
     /**
+     * Search
+     * Currently searches both performers and venues for a match and will return
+     * any combination of such
+     *
+     * @param  string $query
+     * @param  array $options Options to use for the search query
+     * @throws Ticketevolution_Webservice_Exception
+     * @return Ticketevolution_Webservice_ResultSet
+     */
+    public function search($query, array $options)
+    {
+        $trimmedQuery = trim($query);
+        if (empty ($trimmedQuery)) {
+            throw new Ticketevolution_Webservice_Exception('You must provide a non-empty query string');
+        }
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $endPoint = 'search';
+        $options['q'] = (string) $query;
+        $defaultOptions = array('page'  => '1',
+                                'per_page' => '100');
+        $options = self::_prepareOptions('GET', $endPoint, $options, $defaultOptions);
+        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $client->getHttpClient()->resetParameters();
+        self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
+
+        $response = $client->restGet('/' . $endPoint, $options);
+        if ($response->isError()) {
+            /**
+             * @see Ticketevolution_Webservice_Exception
+             */
+            require_once 'Ticketevolution/Webservice/Exception.php';
+            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
+                                           . $response->getStatus());
+        }
+        $response = self::_jsonDecode($response->getBody());
+
+        /**
+         * @see Ticketevolution_Webservice_ResultSet
+         */
+        require_once 'Ticketevolution/Webservice/ResultSet.php';
+        return new Ticketevolution_Webservice_ResultSet($response);
+    }
+    /**
      * Returns a reference to the REST client
      *
      * @return Zend_Rest_Client
@@ -1409,9 +1455,11 @@ class Ticketevolution_Webservice
      */
     protected function _setHeaders($apiToken, $apiVersion, $requestSignature=null)
     {
-        $headers = array('X-Token'  => (string)$apiToken,
-                         'Accept'   => (string)'application/vnd.ticketevolution.api+json; version=' . $apiVersion
-                        );
+        $headers = array(
+            'User-Agent' => 'Ticketevolution_Webservice',
+            'X-Token'   => (string)$apiToken,
+            'Accept'    => (string)'application/vnd.ticketevolution.api+json; version=' . $apiVersion
+        );
         if(!empty($requestSignature)) {
             $headers['X-Signature'] = (string)$requestSignature;
         }
@@ -1449,7 +1497,7 @@ class Ticketevolution_Webservice
      * @param  array $options
      * @return string
      */
-    static public function computeSignature($baseUri, $secretKey, $action, $endPoint, array $options)
+    static public function computeSignature($baseUri, $secretKey, $action, $endPoint, $options)
     {
         $signature = self::buildRawSignature($baseUri, $action, $endPoint, $options);
 
@@ -1471,18 +1519,22 @@ class Ticketevolution_Webservice
      * @param  array $options
      * @return string
      */
-    static public function buildRawSignature($baseUri, $action, $endPoint, array $options)
+    static public function buildRawSignature($baseUri, $action, $endPoint, $options)
     {
         $signature = $action . ' ' . str_replace('http://', '', $baseUri) . '/' . $endPoint . '?';
         if(!empty($options)) {
-            // Turn the $options into GET parameters
-            ksort($options);
-            $params = array();
-            foreach($options AS $k => $v) {
-                // Oddly, we get 401 Unauthorized if we urlencode or rawurlencode
-                $params[] = $k."=".$v;
+            if(is_array($options)) {
+                // Turn the $options into GET parameters
+                ksort($options);
+                $params = array();
+                foreach($options AS $k => $v) {
+                    // Oddly, we get 401 Unauthorized if we urlencode or rawurlencode
+                    $params[] = $k."=".$v;
+                }
+                $signature .= implode('&', $params);
+            } else {
+                $signature .= (string)$options;
             }
-            $signature .= implode('&', $params);
         }
         return $signature;
     }
@@ -1498,7 +1550,7 @@ class Ticketevolution_Webservice
      */
     protected static function _jsonDecode($json)
     {
-        $decodedJson = json_decode($json);
+        $decodedJson = json_decode($json, false);
         if(!is_null($decodedJson)) {
             return $decodedJson;
         }

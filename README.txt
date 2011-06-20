@@ -3,7 +3,22 @@ Welcome to the Ticket Evolution Framework for PHP!
 RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
-Released on May 9, 2011.
+
+May 20, 2011
+Added data-loaders which is a handy app for caching the data locally in MySQL.
+To use it you will need to run teh create_tables.mysql script in scripts folder.
+
+Added "search" endpoint which searches venues and performers
+
+Many general improvements
+
+May 17, 2011
+Updated endpoint in Webservice.php from "ticket-groups" to "ticket_groups" 
+to reflect change in API.
+
+
+May 9, 2011.
+Initial Release
 
 NEW FEATURES
 ------------

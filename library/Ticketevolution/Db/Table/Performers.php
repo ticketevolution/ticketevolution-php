@@ -7,7 +7,7 @@
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt
+ * https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
@@ -18,8 +18,8 @@
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
- * @version     $Id: Performers.php 28 2011-05-09 22:53:01Z jcobb $
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
+ * @version     $Id: Performers.php 65 2011-06-13 22:19:01Z jcobb $
  */
 
 /**
@@ -32,7 +32,7 @@ require_once 'Ticketevolution/Db/Table/Abstract.php';
  * @package     Ticketevolution_Db
  * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 class Ticketevolution_Db_Table_Performers extends Ticketevolution_Db_Table_Abstract
 {
@@ -54,6 +54,13 @@ class Ticketevolution_Db_Table_Performers extends Ticketevolution_Db_Table_Abstr
     protected $_primary   = 'performerId';
     
     /**
+     * The column that we use to indicate status in boolean form
+     *
+     * @var string
+     */
+    protected $_statusColumn   = 'performerStatus';
+    
+    /**
      * Simple array of class names of tables that are "children" of the current
      * table, in other words tables that contain a foreign key to this one.
      * Array elements are not table names; they are class names of classes that
@@ -61,7 +68,9 @@ class Ticketevolution_Db_Table_Performers extends Ticketevolution_Db_Table_Abstr
      *
      * @var array
      */
-    protected $_dependentTables = array('Ticketevolution_Db_Table_Eventperformers');
+    protected $_dependentTables = array(
+        'Ticketevolution_Db_Table_Eventperformers',
+    );
     
     
     /**
@@ -93,17 +102,18 @@ class Ticketevolution_Db_Table_Performers extends Ticketevolution_Db_Table_Abstr
     /*
      * 
      */
-    public function getPerformersNotMatchedToTeamOneEvents($limitTo = 10)
+    public function getPerformersNotMatchedToTeamOnePerformers($limitTo = 10)
     {
         $sub_select = $this->select();
         $sub_select->setIntegrityCheck(false);
-        $sub_select->from("events", array("tevoPerformerId"));
-        $sub_select->where("`events`.`tevoPerformerId` IS NOT NULL");
+        $sub_select->from('performers', array('tevoPerformerId'));
+        $sub_select->where("`performers`.`tevoPerformerId` IS NOT NULL");
         $select = $this->select();
         $select->setIntegrityCheck(false);
         //$select->from("tevoPerformers");
-        $select->where("performerId NOT IN ?", $sub_select);
+        $select->where("performerStatus = 1 AND performerId NOT IN ?", $sub_select);
         $select->limit($limitTo);
+        //dump($select->__toString());
         return $this->fetchAll($select);
     }
     

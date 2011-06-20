@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Ticketevolution Framework
  *
@@ -8,17 +7,17 @@
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt
+ * https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    Ticketevolution
- * @package     Ticketevolution_Webservice
+ * @package     Ticketevolution
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  * @version     $Id$
  */
 
@@ -27,7 +26,7 @@
  * Make sure the Zend Framework library is in your include_path
  * You may need to uncomment and adjust this.
  */
-//set_include_path (get_include_path() . PATH_SEPARATOR . '../library/Zend');
+set_include_path (get_include_path() . PATH_SEPARATOR . '../library');
 
 /**
  * @see Zend_Config
@@ -60,9 +59,20 @@ $autoloader->setFallbackAutoloader(true);
  */
 $cfg['params']['apiToken'] = (string) 'YOUR_API_TOKEN_HERE';
 $cfg['params']['secretKey'] = (string) 'YOUR_SECRET_KEY_HERE';
+$cfg['params']['buyerId'] = 'YOUR_OFFICEID_HERE';
+
+$cfg['params']['baseUri'] = (string) 'http://api.sandbox.ticketevolution.com'; // Sandbox
+//$cfg['params']['baseUri'] = (string) 'http://api.ticketevolution.com'; // Production
+
 $cfg['exclude']['brokerage'] = array(
     692, // Testing only
     67, // Testing only
+    134, // Testing only
+);
+$cfg['exclusive']['brokerage'] = array(
+    692, // Testing only
+    67, // Testing only
+    134, // Testing only
 );
 
 
@@ -86,7 +96,6 @@ $Tevo = new Ticketevolution_Webservice($config->params);
 // Set up some default query options
 $options = array('page' => 1,
                  'per_page' => 10,
-                 //'created_at.gte' => '2011-01-01',
                  //'updated_at.gte' => '2011-04-13',
                  'event_id' => 38826,
                  //'price.gte' => 220,
@@ -134,12 +143,54 @@ $options = array('page' => 1,
                         
                         // Testing only
                         if($apiMethod == 'listTicketgroups') {
-                            $results->filterResults($cfg['exclude']['brokerage'], 'brokerage');
+                            //$results->excludeResults($cfg['exclude']['brokerage'], 'brokerage');
+                            $results->exclusiveResults($cfg['exclusive']['brokerage'], 'brokerage');
+                            $sortOptions = array(
+                                'section', // Defaults to SORT_ASC
+                                'row' => SORT_DESC,
+                                'retail_price' => SORT_ASC
+                            );
+                            $results->sortResults($sortOptions);
                         }
                     } elseif(strpos($apiMethod, 'search') !== false) {
                         // We're using a search method
                         // Execute the API query
                         $results = $Tevo->$apiMethod((string) strip_tags($_GET['query']), $options);
+                    } elseif(strpos($apiMethod, 'create') !== false) {
+                        // We're using a create method
+                        $order1 = array(
+                            'items' => array(array(
+                                'price' => '125.0',
+                                'ticket_group_id' => '5333842',
+                                'quantity' => 3,
+                                ),
+                            ),
+                            'buyer_id' => $cfg['params']['buyerId'],
+                            //'po_number' => 654321,
+                            //'invoice_number' => 123456,
+                            //'tax' => 3.28,
+                            //'additional_expense' => 10.99,
+                            //'instructions' => 'Will call for Homer Simpson 1 hour before. Emergency number: 480-555-1212',
+                            
+                        );
+                        $order2 = array(
+                            'items' => array(array(
+                                'price' => '45.0',
+                                'ticket_group_id' => '3017',
+                                'quantity' => 2,
+                                ),
+                            ),
+                            'buyer_id' => $cfg['params']['buyerId'],
+                            //'po_number' => 654321,
+                            //'invoice_number' => 123456,
+                            //'tax' => 3.28,
+                            //'additional_expense' => 10.99,
+                            //'instructions' => 'Will call for Homer Simpson 1 hour before. Emergency number: 480-555-1212',
+                            
+                        );
+                        $orderDetails[] = $order1;
+                        //$orderDetails[] = $order2;
+                        $results = $Tevo->$apiMethod($orderDetails);
                     } else {
                         // We're using a show method
                         // Execute the API query
@@ -196,12 +247,17 @@ $options = array('page' => 1,
 		            </optgroup>
 
 		            <optgroup label="search*() Methods">
+                        <option label="search" value="search">Performers & Venues</option>
                         <option label="searchBrokers" value="searchBrokers">searchBrokers</option>
                         <option label="searchOffices" value="searchOffices">searchOffices</option>
                         <option label="searchUsers" value="searchUsers">searchUsers</option>
                         <option label="searchPerformers" value="searchPerformers">searchPerformers</option>
                         <option label="searchVenues" value="searchVenues">searchVenues</option>
                         <option label="searchQuotes" value="searchQuotes">searchQuotes</option>
+		            </optgroup>
+
+		            <optgroup label="create*() Methods">
+                        <option label="createOrder" value="createOrder">createOrder</option>
 		            </optgroup>
 		        </select>
 		        

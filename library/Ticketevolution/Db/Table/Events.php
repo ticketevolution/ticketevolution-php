@@ -7,7 +7,7 @@
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt
+ * https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
@@ -18,8 +18,8 @@
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
- * @version     $Id: Events.php 28 2011-05-09 22:53:01Z jcobb $
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
+ * @version     $Id: Events.php 57 2011-06-07 01:28:48Z jcobb $
  */
 
 /**
@@ -32,7 +32,7 @@ require_once 'Ticketevolution/Db/Table/Abstract.php';
  * @package     Ticketevolution_Db
  * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 class Ticketevolution_Db_Table_Events extends Ticketevolution_Db_Table_Abstract
 {
@@ -52,6 +52,13 @@ class Ticketevolution_Db_Table_Events extends Ticketevolution_Db_Table_Abstract
      * @var mixed
      */
     protected $_primary   = 'eventId';
+    
+    /**
+     * The column that we use to indicate status in boolean form
+     *
+     * @var string
+     */
+    protected $_statusColumn   = 'eventStatus';
     
     /**
      * Simple array of class names of tables that are "children" of the current
@@ -99,4 +106,89 @@ class Ticketevolution_Db_Table_Events extends Ticketevolution_Db_Table_Abstract
             'refColumns'        => 'categoryId'
             ),
     );
+    
+    
+    /**
+     * Get results via an array of parameters
+     * (Jeff): I am overriding the abstract method here because I wanted to add the getPast option
+     *
+     * @param  mixed $params Options to use for the search query or a `uid`
+     * @throws Ticketevolution_Models_Exception
+     * @return TeamOne_Db_Events
+     */
+    public function getByParameters($params, $limit=null, $orderBy=null, $getPast=false)
+    {
+        /**
+         * @see Zend_Date
+         */
+        require_once 'Zend/Date.php';
+
+        if(!is_array($params) && !is_array($this->_primary)) {
+            // Assume this is a single Id and find it
+            $row = $this->find((int)$params);
+            if(isset($row[0])) {
+                return $row[0];
+            } else {
+                return false;
+            }
+        }
+        
+        // It appears that we have an array of search options
+        $options = $this->_prepareOptions($params);
+        
+        $select = $this->select();
+        foreach($options as $column => $value) {
+            // Some parameters may be like 'tevoPerformerId' 
+            // We need to change those to just 'performerId'
+            $column = lcfirst(preg_replace('/^tevo(\w{1})/i', "$1", $column));
+            if(is_array($value)) {
+                $select->where($column ." IN (?)", $value);
+            } elseif($value instanceof Zend_Date) {
+                $select->where($column ." = ?", $value->get(Ticketevolution_Date::MYSQL_DATETIME));
+            } else {
+                $select->where($column ." = ?", $value);
+            }
+        }
+        
+        if(!isset($options['eventDate']) && !$getPast) {
+            $curDate = new Zend_Date();
+            $select->where("eventDate > ?", $curDate->get(Ticketevolution_Date::MYSQL_DATETIME));
+        }
+        
+        if(!is_null($orderBy)) {
+            if(is_array($orderBy)) {
+                foreach($orderBy as $order) {
+                    $select->order($order);
+                }
+            } else {
+                $select->order($order);
+            }
+        }
+        
+        if(!is_null($limit)) {
+            $select->limit($limit);
+        }
+        //dump($select->__toString());
+        try{
+            if($limit == 1) {
+                $results = $this->fetchRow($select);
+                if(empty($results)) {
+                    return false;
+                } else {
+                    return new Ticketevolution_Event($results);
+                }
+            } else {
+                $results = $this->fetchAll($select);
+                if(isset($results[0])) {
+                    return $results;
+                } else {
+                    return false;
+                }
+            }
+        } catch(Exception $e) {
+            // rethrow to be caught and displayed if not on live
+            throw $e;
+        }
+        //dump($results);
+    }
 }

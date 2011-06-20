@@ -7,7 +7,7 @@
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt
+ * https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
@@ -17,8 +17,8 @@
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
- * @version     $Id: Date.php 28 2011-05-09 22:53:01Z jcobb $
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
+ * @version     $Id: Date.php 56 2011-06-05 02:05:49Z jcobb $
  */
 
 
@@ -35,24 +35,32 @@ require_once 'Zend/Date.php';
  * @category    Ticketevolution
  * @package     Ticketevolution_Date
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 class Ticketevolution_Date extends Zend_Date
 {
-    // These are here for convenience
-    const MYSQL_DATETIME        = 'YYYY-MM-dd HH:mm:ss';
-    const MYSQL_DATE            = 'YYYY-MM-dd';
+    /**
+     * These are here for convenience
+     * To see why some use lowercase 'y' instead of 'Y' as one would think
+     * @see http://framework.zend.com/issues/browse/ZF-5297
+     */
+    const MYSQL_DATETIME        = 'yyyy-MM-dd HH:mm:ss';
+    const MYSQL_DATE            = 'yyyy-MM-dd';
     const MYSQL_TIME            = 'HH:mm:ss';
 
-    const DATETIME_FULL_NOTZ    = 'EEEE, MMMM d, YYYY H:mm:ss a';
+    const DATETIME_FULL_NOTZ    = 'EEEE, MMMM d, yyyy h:mm a';
 
-    const DATETIME_EBAY         = 'YYYY-MM-ddTHH:mm:ss.S';
+    const DATETIME_EBAY         = 'yyyy-MM-ddTHH:mm:ss.S';
 
-    const DATE_FULL_US          = 'EEEE, MMMM d, YYYY';
-    const DATE_LONG_US          = 'MMMM d, YYYY';
+    const DATE_FULL_US          = 'EEEE, MMMM d, yyyy';
+    const DATE_LONG_US          = 'MMMM d, yyyy';
 
     const TBA_DISPLAY   = 'TBA';
 
+    /**
+     * The following are private and therefore we can't access the Zend_Date
+     * versions here
+     */
     private $_locale  = null;
 
     // Fractional second variables

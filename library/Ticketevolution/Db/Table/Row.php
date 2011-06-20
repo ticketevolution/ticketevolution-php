@@ -13,45 +13,30 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    Ticketevolution
- * @package     Ticketevolution
+ * @package     Ticketevolution_Db
+ * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Evopayaccount.php 70 2011-06-14 22:13:59Z jcobb $
+ * @version     $Id: Abstract.php 52 2011-06-03 20:24:33Z jeff $
  */
 
-
 /**
- * @see Ticketevolution_Date
+ * @see Ticketevolution_Db_Table_Row_Abstract
  */
-require_once 'Ticketevolution/Date.php';
-
+require_once 'Ticketevolution/Db/Table/Row/Abstract.php';
 
 /**
+ * Reference concrete class that extends Zend_Db_Table_Row_Abstract.
+ * Developers may also create their own classes that extend the abstract class.
+ *
  * @category    Ticketevolution
- * @package     Ticketevolution
+ * @package     Ticketevolution_Db
+ * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Evopayaccount
+class Ticketevolution_Db_Table_Row extends Ticketevolution_Db_Table_Row_Abstract
 {
-    /**
-     * Constructs a new Ticket Evolution EvoPay Account
-     *
-     * @param  object $object
-     * @throws Ticketevolution_Exception
-     * @return Ticketevolution_Evopayaccount
-     */
-    public function __construct($object)
-    {
-        foreach($object as $prop => $val) {
-            // If the value is an ISO 8601 date string make it into a Ticketevolution_Date object
-            if(is_string($val) && preg_match('/\d{4}-\d{2}-\d{2}([T ]\d{2}:\d{2}:\d{2})?/i', $val) === 1) {
-                $this->{$prop} = new Ticketevolution_Date($val, Ticketevolution_Date::ISO_8601);
-            } else {
-                $this->{$prop} = $val;
-            }
-        }
-    }
 }

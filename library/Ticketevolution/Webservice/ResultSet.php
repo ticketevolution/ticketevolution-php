@@ -7,7 +7,7 @@
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt
+ * https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
@@ -17,8 +17,8 @@
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
- * @version     $Id: ResultSet.php 28 2011-05-09 22:53:01Z jcobb $
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
+ * @version     $Id: ResultSet.php 70 2011-06-14 22:13:59Z jcobb $
  */
 
 
@@ -26,7 +26,7 @@
  * @category    Ticketevolution
  * @package     Ticketevolution
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 class Ticketevolution_Webservice_ResultSet implements SeekableIterator, Countable
 {
@@ -76,9 +76,16 @@ class Ticketevolution_Webservice_ResultSet implements SeekableIterator, Countabl
                 //dump($val);
                 $this->_results =  $val;
                 //dump($this->_results);
-                $this->_resultSetType = preg_replace('/ies$/i', 'y', $property);
-                // Remove trailing 's' from this property name
-                $this->_resultSetType = preg_replace('/s$/i', '', $this->_resultSetType);
+                if($property = 'results') {
+                    $this->_resultSetType = 'Searchresults';
+                } else {
+                    // Remove trailing 'ies' from this property name (for Categories)
+                    $this->_resultSetType = preg_replace('/ies$/i', 'y', $property);
+                    // Remove trailing 's' from this property name
+                    $this->_resultSetType = preg_replace('/s$/i', '', $this->_resultSetType);
+                    // Remove '_' from this property name
+                    $this->_resultSetType = preg_replace('/_/i', '', $this->_resultSetType);
+                }
                 break; // Break out of looping to find the array
             }
         }
@@ -198,19 +205,107 @@ class Ticketevolution_Webservice_ResultSet implements SeekableIterator, Countabl
 
 
     /**
-     * Remove entries attributed to certain brokerages.
-     * This is mainly used after performing a listTicketgroups() and is be used 
-     * to pass in an array of brokerage IDs to filter out their inventory
+     * Remove entries that are in the supplied array
+     * This is mainly used after performing a listTicketgroups() and can be used 
+     * to pass in an array of brokerage IDs to filter out their inventory if
+     * you do not want it to show.
      *
-     * @param array $omit   An array of brokerage IDs to remove
-     * @return boolean
+     * Usage: $results = $tevo->listTicketgroups($options);
+     *        $excludeArray = array(1,3,5,7,9);
+     *        $results->excludeResults($excludeArray, 'brokerage');
+     *
+     * @param array $exclude   An array of brokerage IDs to REMOVE
+     * @return void
      */
-    public function filterResults($omit, $type='brokerage')
+    public function excludeResults(array $exclude, $type='brokerage')
     {
-        $this->_results = array_filter($this->_results, function($v) use($omit, $type) { return !in_array($v->$type->id, $omit); });
+        $this->_results = array_filter($this->_results, function($v) use($exclude, $type) { return !in_array($v->$type->id, $exclude); });
         
         // Put the keys back in order, filling in any now-missing keys
         sort($this->_results);
+    }
+
+
+    /**
+     * Remove entries that are NOT in the supplied array
+     * This is mainly used after performing a listTicketgroups() and can be used 
+     * to pass in an array of brokerage IDs to show ONLY their inventory.
+     *
+     * Usage: $results = $tevo->listTicketgroups($options);
+     *        $exclusiveArray = array(2,4,6,8,10);
+     *        $results->filterResults($exclusiveArray, 'brokerage');
+     *
+     * @param array $exclusive   An array of brokerage IDs to KEEP
+     * @return void
+     */
+    public function exclusiveResults(array $exclusive, $type='brokerage')
+    {
+        $this->_results = array_filter($this->_results, function($v) use($exclusive, $type) { return in_array($v->$type->id, $exclusive); });
+        
+        // Put the keys back in order, filling in any now-missing keys
+        sort($this->_results);
+    }
+
+
+    /**
+     * Sort the resultSet.
+     *
+     * Usage: $results = $tevo->listTicketgroups($options);
+     *        $sortOptions = array('section', // Defaults to SORT_ASC
+     *                             'row' => SORT_DESC,
+     *                             'retail_price' => SORT_ASC);
+     *        $results->sortResults($sortOptions);
+     *
+     * @param array $sortOptions   An array of sorting instructions
+     * @return void
+     */
+    public function sortResults(array $sortOptions)
+    {
+        usort($this->_results, $this->_usortByMultipleKeys($sortOptions));
+    }
+
+
+    /**
+     * Used by sortResults()
+     *
+     * @link http://www.php.net/manual/en/function.usort.php#103722
+     * @param array $sortOptions   An array of sorting instructions
+     * @return void
+     */
+    protected function _usortByMultipleKeys($key, $direction=SORT_ASC)
+    {
+        $sortFlags = array(SORT_ASC, SORT_DESC);
+        if(!in_array($direction, $sortFlags)) {
+            throw new InvalidArgumentException('Sort flag only accepts SORT_ASC or SORT_DESC');
+        }
+        return function($a, $b) use ($key, $direction, $sortFlags) {
+            if(!is_array($key)) { //just one key and sort direction
+                if(!isset($a->$key) || !isset($b->$key)) {
+                    throw new Ticketevolution_Webservice_Exception('Attempting to sort on non-existent keys');
+                }
+                if($a->$key == $b->$key) {
+                    return 0;
+                }
+                return ($direction==SORT_ASC xor $a->$key < $b->$key) ? 1 : -1;
+            } else { //using multiple keys for sort and sub-sort
+                foreach($key as $sub_key => $sub_asc) {
+                    //array can come as 'sort_key'=>SORT_ASC|SORT_DESC or just 'sort_key', so need to detect which
+                    if(!in_array($sub_asc, $sortFlags)) {
+                        $sub_key = $sub_asc;
+                        $sub_asc = $direction;
+                    }
+                    //just like above, except 'continue' in place of return 0
+                    if(!isset($a->$sub_key) || !isset($b->$sub_key)) {
+                        throw new Ticketevolution_Webservice_Exception('Attempting to sort on non-existent keys');
+                    }
+                    if($a->$sub_key == $b->$sub_key) {
+                        continue;
+                    }
+                    return ($sub_asc==SORT_ASC xor $a->$sub_key < $b->$sub_key) ? 1 : -1;
+                }
+                return 0;
+            }
+        };
     }
 
 

@@ -7,7 +7,7 @@
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt
+ * https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
@@ -18,8 +18,8 @@
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
- * @version     $Id: Configurations.php 28 2011-05-09 22:53:01Z jcobb $
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
+ * @version     $Id: Configurations.php 57 2011-06-07 01:28:48Z jcobb $
  */
 
 /**
@@ -32,7 +32,7 @@ require_once 'Ticketevolution/Db/Table/Abstract.php';
  * @package     Ticketevolution_Db
  * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     http://teamonetickets.com/software/ticket-evolution-framework-for-php/LICENSE.txt     New BSD License
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 class Ticketevolution_Db_Table_Configurations extends Ticketevolution_Db_Table_Abstract
 {
@@ -52,6 +52,13 @@ class Ticketevolution_Db_Table_Configurations extends Ticketevolution_Db_Table_A
      * @var mixed
      */
     protected $_primary   = 'configurationId';
+    
+    /**
+     * The column that we use to indicate status in boolean form
+     *
+     * @var string
+     */
+    protected $_statusColumn   = 'configurationStatus';
     
     /**
      * Simple array of class names of tables that are "children" of the current

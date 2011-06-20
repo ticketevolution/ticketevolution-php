@@ -19,7 +19,7 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Users.php 57 2011-06-07 01:28:48Z jcobb $
+ * @version     $Id: Offices.php 28 2011-05-09 22:53:01Z jcobb $
  */
 
 /**
@@ -34,14 +34,14 @@ require_once 'Ticketevolution/Db/Table/Abstract.php';
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Db_Table_Users extends Ticketevolution_Db_Table_Abstract
+class Ticketevolution_Db_Table_Officeemails extends Ticketevolution_Db_Table_Abstract
 {
     /**
      * The table name.
      *
      * @var string
      */
-    protected $_name   = 'tevoUsers';
+    protected $_name   = 'tevoOfficeEmails';
 
     /**
      * The primary key column or columns.
@@ -51,14 +51,14 @@ class Ticketevolution_Db_Table_Users extends Ticketevolution_Db_Table_Abstract
      *
      * @var mixed
      */
-    protected $_primary   = 'userId';
+    protected $_primary   = 'officeEmailId';
     
     /**
      * The column that we use to indicate status in boolean form
      *
      * @var string
      */
-    protected $_statusColumn   = 'userStatus';
+    protected $_statusColumn   = 'officeEmailStatus';
     
     /**
      * Simple array of class names of tables that are "children" of the current
@@ -90,11 +90,6 @@ class Ticketevolution_Db_Table_Users extends Ticketevolution_Db_Table_Abstract
      * @var array
      */
     protected $_referenceMap    = array(
-        'brokers'            => array(
-            'columns'           => 'brokerId',
-            'refTableClass'     => 'Ticketevolution_Db_Table_Brokers',
-            'refColumns'        => 'brokerId'
-            ),
         'offices'            => array(
             'columns'           => 'officeId',
             'refTableClass'     => 'Ticketevolution_Db_Table_Offices',

@@ -1,0 +1,345 @@
+-- --------------------------------------------------------
+-- SQL Commands to set up tables for locally caching Ticket Evolution information.
+-- 
+-- This file is meant for use with MySQL 5 and above!
+-- 
+-- phpMyAdmin SQL Dump
+-- version 3.4.2
+-- http://www.phpmyadmin.net
+--
+-- Host: 192.168.2.1
+-- Generation Time: Jun 20, 2011 at 01:14 PM
+-- Server version: 5.1.22
+-- PHP Version: 5.3.5
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tevoBrokers`
+--
+
+CREATE TABLE IF NOT EXISTS `tevoBrokers` (
+  `brokerId` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `brokerName` varchar(200) NOT NULL,
+  `brokerAbbreviation` varchar(50) NOT NULL,
+  `natbMember` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `brokerUrl` varchar(50) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `brokerStatus` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`brokerId`),
+  UNIQUE KEY `brokerName` (`brokerName`),
+  UNIQUE KEY `brokerAbbreviation` (`brokerAbbreviation`),
+  KEY `natbMember` (`natbMember`),
+  KEY `brokerStatus` (`brokerStatus`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tevoCategories`
+--
+
+CREATE TABLE IF NOT EXISTS `tevoCategories` (
+  `categoryId` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `parentCategoryId` smallint(5) unsigned DEFAULT NULL,
+  `categoryName` varchar(100) NOT NULL,
+  `categoryUrl` varchar(100) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `categoryStatus` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`categoryId`),
+  KEY `parentCategoryId` (`parentCategoryId`),
+  KEY `categoryName` (`categoryName`),
+  KEY `categoryStatus` (`categoryStatus`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONS FOR TABLE `tevoCategories`:
+--   `parentCategoryId`
+--       `tevoCategories` -> `categoryId`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tevoConfigurations`
+--
+
+CREATE TABLE IF NOT EXISTS `tevoConfigurations` (
+  `configurationId` mediumint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `venueId` mediumint(5) unsigned NOT NULL,
+  `configurationName` varchar(200) NOT NULL,
+  `isPrimary` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `fanvenuesKey` mediumint(6) unsigned DEFAULT NULL,
+  `capacity` mediumint(6) DEFAULT NULL,
+  `isGeneralAdmission` tinyint(1) unsigned DEFAULT NULL,
+  `configurationUrl` varchar(100) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `configurationStatus` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`configurationId`),
+  KEY `venueId` (`venueId`),
+  KEY `configurationName` (`configurationName`),
+  KEY `configurationStatus` (`configurationStatus`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONS FOR TABLE `tevoConfigurations`:
+--   `venueId`
+--       `tevoVenues` -> `venueId`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tevoDataLoaderStatus`
+--
+
+CREATE TABLE IF NOT EXISTS `tevoDataLoaderStatus` (
+  `table` varchar(20) NOT NULL,
+  `lastRun` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`table`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tevoEventPerformers`
+--
+
+CREATE TABLE IF NOT EXISTS `tevoEventPerformers` (
+  `eventId` mediumint(8) unsigned NOT NULL,
+  `performerId` mediumint(8) NOT NULL,
+  `isPrimary` tinyint(1) unsigned NOT NULL,
+  `eventPerformersStatus` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`eventId`,`performerId`),
+  KEY `isPrimary` (`isPrimary`),
+  KEY `eventPerformersStatus` (`eventPerformersStatus`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONS FOR TABLE `tevoEventPerformers`:
+--   `eventId`
+--       `tevoEvents` -> `eventId`
+--   `performerId`
+--       `tevoPerformers` -> `performerId`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tevoEvents`
+--
+
+CREATE TABLE IF NOT EXISTS `tevoEvents` (
+  `eventId` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `eventName` varchar(200) NOT NULL,
+  `eventDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `venueId` smallint(5) unsigned NOT NULL,
+  `configurationId` smallint(5) unsigned NOT NULL,
+  `categoryId` smallint(5) unsigned NOT NULL,
+  `productsCount` smallint(5) unsigned NOT NULL,
+  `eventState` enum('shown','postponed','canceled') NOT NULL DEFAULT 'shown',
+  `eventUrl` varchar(100) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `eventStatus` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`eventId`),
+  KEY `eventName` (`eventName`),
+  KEY `occurs_at` (`eventDate`),
+  KEY `venueId` (`venueId`),
+  KEY `configurationId` (`configurationId`),
+  KEY `categoryId` (`categoryId`),
+  KEY `eventStatus` (`eventStatus`),
+  KEY `productsCount` (`productsCount`),
+  KEY `eventState` (`eventState`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONS FOR TABLE `tevoEvents`:
+--   `categoryId`
+--       `tevoCategories` -> `categoryId`
+--   `configurationId`
+--       `tevoConfigurations` -> `configurationId`
+--   `venueId`
+--       `tevoVenues` -> `venueId`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tevoOfficeEmails`
+--
+
+CREATE TABLE IF NOT EXISTS `tevoOfficeEmails` (
+  `officeEmailId` mediumint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `officeId` smallint(5) unsigned NOT NULL,
+  `email` varchar(200) NOT NULL DEFAULT '',
+  `officeEmailStatus` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`officeEmailId`),
+  KEY `officeStatus` (`officeEmailStatus`),
+  KEY `officeId` (`officeId`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tevoOffices`
+--
+
+CREATE TABLE IF NOT EXISTS `tevoOffices` (
+  `officeId` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `brokerId` smallint(5) unsigned NOT NULL,
+  `officeName` varchar(200) NOT NULL,
+  `phone` varchar(30) DEFAULT NULL,
+  `fax` varchar(30) DEFAULT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `streetAddress` varchar(200) NOT NULL,
+  `extendedAddress` varchar(200) DEFAULT NULL,
+  `locality` varchar(200) NOT NULL,
+  `regionCode` varchar(5) NOT NULL,
+  `postalCode` varchar(10) NOT NULL,
+  `countryCode` varchar(5) NOT NULL,
+  `isMain` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `latitutde` decimal(17,14) DEFAULT NULL,
+  `longitutde` decimal(17,14) DEFAULT NULL,
+  `timezone` varchar(100) DEFAULT NULL,
+  `officeUrl` varchar(100) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `officeStatus` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`officeId`),
+  KEY `brokerId` (`brokerId`),
+  KEY `region` (`regionCode`),
+  KEY `country_code` (`countryCode`),
+  KEY `main` (`isMain`),
+  KEY `officeStatus` (`officeStatus`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONS FOR TABLE `tevoOffices`:
+--   `brokerId`
+--       `tevoBrokers` -> `brokerId`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tevoPerformers`
+--
+
+CREATE TABLE IF NOT EXISTS `tevoPerformers` (
+  `performerId` mediumint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `performerName` varchar(200) NOT NULL,
+  `categoryId` smallint(5) unsigned DEFAULT NULL,
+  `venueId` mediumint(5) unsigned DEFAULT NULL,
+  `upcomingEventFirst` timestamp NULL DEFAULT NULL,
+  `upcomingEventLast` timestamp NULL DEFAULT NULL,
+  `performerUrl` varchar(100) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `performerStatus` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`performerId`),
+  UNIQUE KEY `performerName` (`performerName`),
+  KEY `venueId` (`venueId`),
+  KEY `performerStatus` (`performerStatus`),
+  KEY `categoryId` (`categoryId`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONS FOR TABLE `tevoPerformers`:
+--   `venueId`
+--       `tevoVenues` -> `venueId`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tevoUsers`
+--
+
+CREATE TABLE IF NOT EXISTS `tevoUsers` (
+  `userId` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `brokerId` smallint(5) unsigned NOT NULL,
+  `officeId` smallint(5) unsigned NOT NULL,
+  `userName` varchar(100) NOT NULL,
+  `userPhone` varchar(30) DEFAULT NULL,
+  `userPhoneExtension` varchar(10) DEFAULT NULL,
+  `userEmail` varchar(200) DEFAULT NULL,
+  `userUrl` varchar(100) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `userStatus` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`userId`),
+  KEY `brokerId` (`brokerId`),
+  KEY `officeId` (`officeId`),
+  KEY `userName` (`userName`),
+  KEY `userStatus` (`userStatus`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+--
+-- RELATIONS FOR TABLE `tevoUsers`:
+--   `brokerId`
+--       `tevoBrokers` -> `brokerId`
+--   `officeId`
+--       `tevoOffices` -> `officeId`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tevoVenues`
+--
+
+CREATE TABLE IF NOT EXISTS `tevoVenues` (
+  `venueId` mediumint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `venueName` varchar(150) NOT NULL,
+  `streetAddress` varchar(200) NOT NULL,
+  `extendedAddress` varchar(200) DEFAULT NULL,
+  `locality` varchar(200) NOT NULL,
+  `region` varchar(100) NOT NULL,
+  `postalCode` varchar(10) NOT NULL,
+  `countryCode` varchar(5) NOT NULL,
+  `latitude` decimal(17,14) DEFAULT NULL,
+  `longitude` decimal(17,14) DEFAULT NULL,
+  `upcomingEventFirst` timestamp NULL DEFAULT NULL,
+  `upcomingEventLast` timestamp NULL DEFAULT NULL,
+  `venueUrl` varchar(100) NOT NULL,
+  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `venueStatus` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `createdDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastModifiedDate` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`venueId`),
+  KEY `locality` (`locality`),
+  KEY `region` (`region`),
+  KEY `country_code` (`countryCode`),
+  KEY `venueStatus` (`venueStatus`),
+  KEY `venueName` (`venueName`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

@@ -18,7 +18,7 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Evopayaccount.php 70 2011-06-14 22:13:59Z jcobb $
+ * @version     $Id: Venue.php 66 2011-06-14 01:42:27Z jcobb $
  */
 
 
@@ -34,14 +34,14 @@ require_once 'Ticketevolution/Date.php';
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Evopayaccount
+class Ticketevolution_Searchresults
 {
     /**
-     * Constructs a new Ticket Evolution EvoPay Account
+     * Constructs a new Ticket Evolution Searchresults
      *
      * @param  object $object
      * @throws Ticketevolution_Exception
-     * @return Ticketevolution_Evopayaccount
+     * @return Ticketevolution_Searchresults
      */
     public function __construct($object)
     {
@@ -52,6 +52,14 @@ class Ticketevolution_Evopayaccount
             } else {
                 $this->{$prop} = $val;
             }
+        }
+        
+        // Loop above only catches dates at the root level. Set these too.
+        if(!empty($object->upcoming_events->first)) {
+            $this->upcoming_events->first = new Ticketevolution_Date($object->upcoming_events->first, Ticketevolution_Date::ISO_8601);
+        }
+        if(!empty($object->upcoming_events->last)) {
+            $this->upcoming_events->last = new Ticketevolution_Date($object->upcoming_events->last, Ticketevolution_Date::ISO_8601);
         }
     }
 }
