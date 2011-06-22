@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Ticketevolution Framework
  *
@@ -18,15 +19,12 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Date.php 56 2011-06-05 02:05:49Z jcobb $
+ * @version     $Id: Date.php 72 2011-06-22 20:21:47Z jeff $
  */
-
-
 /**
  * Include needed Date classes
  */
 require_once 'Zend/Date.php';
-
 
 /**
  * Extends Zend_Date with some handy constants and also allows for easy handling
@@ -37,44 +35,40 @@ require_once 'Zend/Date.php';
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Date extends Zend_Date
-{
+class Ticketevolution_Date extends Zend_Date {
     /**
      * These are here for convenience
      * To see why some use lowercase 'y' instead of 'Y' as one would think
      * @see http://framework.zend.com/issues/browse/ZF-5297
      */
-    const MYSQL_DATETIME        = 'yyyy-MM-dd HH:mm:ss';
-    const MYSQL_DATE            = 'yyyy-MM-dd';
-    const MYSQL_TIME            = 'HH:mm:ss';
+    const MYSQL_DATETIME = 'yyyy-MM-dd HH:mm:ss';
+    const MYSQL_DATE = 'yyyy-MM-dd';
+    const MYSQL_TIME = 'HH:mm:ss';
 
-    const DATETIME_FULL_NOTZ    = 'EEEE, MMMM d, yyyy h:mm a';
+    const DATETIME_FULL_NOTZ = 'EEEE, MMMM d, yyyy h:mm a';
 
-    const DATETIME_EBAY         = 'yyyy-MM-ddTHH:mm:ss.S';
+    const DATETIME_EBAY = 'yyyy-MM-ddTHH:mm:ss.S';
 
-    const DATE_FULL_US          = 'EEEE, MMMM d, yyyy';
-    const DATE_LONG_US          = 'MMMM d, yyyy';
+    const DATE_FULL_US = 'EEEE, MMMM d, yyyy';
+    const DATE_LONG_US = 'MMMM d, yyyy';
 
-    const TBA_DISPLAY   = 'TBA';
+    const TBA_DISPLAY = 'TBA';
 
     /**
      * The following are private and therefore we can't access the Zend_Date
      * versions here
      */
-    private $_locale  = null;
-
+    private $_locale = null;
     // Fractional second variables
     private $_fractional = 0;
-    private $_precision  = 3;
-
+    private $_precision = 3;
     private static $_options = array(
-        'format_type'  => 'iso',      // format for date strings 'iso' or 'php'
-        'fix_dst'      => true,       // fix dst on summer/winter time change
-        'extend_month' => false,      // false - addMonth like SQL, true like excel
-        'cache'        => null,       // cache to set
-        'timesync'     => null        // timesync server to set
+        'format_type' => 'iso', // format for date strings 'iso' or 'php'
+        'fix_dst' => true, // fix dst on summer/winter time change
+        'extend_month' => false, // false - addMonth like SQL, true like excel
+        'cache' => null, // cache to set
+        'timesync' => null        // timesync server to set
     );
-
 
     /**
      * Does exactly what Zend_Date does except that after setting the intial date/time
@@ -89,17 +83,15 @@ class Ticketevolution_Date extends Zend_Date
      * @return Zend_Date
      * @throws Zend_Date_Exception
      */
-    public function __construct($date = null, $part = null, $locale = null)
-    {
+    public function __construct($date = null, $part = null, $locale = null) {
         parent::__construct($date, $part, $locale);
-        
-        if($this->get('HH:mm') === '23:59') {
+
+        if ($this->get('HH:mm') === '23:59') {
             // This is an EventInventory TBA time
             // Set the time to '00:00:00'
             $this->set($this->get(self::DATES));
         }
     }
-
 
     /**
      * A "replacement" for the standard "get()" method that attempts to strip
@@ -110,9 +102,8 @@ class Ticketevolution_Date extends Zend_Date
      * @param  string|Zend_Locale  $locale  OPTIONAL Locale for parsing input
      * @return string  date or datepart
      */
-    public function getTbaSafe($part = null, $locale = null)
-    {
-        if($this->get('HH:mm') === '00:00') {
+    public function getTbaSafe($part = null, $locale = null) {
+        if ($this->get('HH:mm') === '00:00') {
             // This time is for a TBA event
             $patterns = array('/[HhmSsWTa:]+/', '/ $/');
             $replacements = array('');
@@ -120,6 +111,35 @@ class Ticketevolution_Date extends Zend_Date
             return $this->get($partCleaned, $locale) . ' ' . self::TBA_DISPLAY;
         }
         return $this->get($part, $locale);
+    }
+
+    /**
+     * set to the first second of current day
+     */
+    public function setDayStart() {
+        return $this->setHour(0)->setMinute(0)->setSecond(0);
+    }
+
+    /**
+     * get the first second of current day
+     */
+    public function getDayStart() {
+        $clone = clone $this;
+        return $clone->setDayStart();
+    }
+
+    /**
+     * get count of days between dates, ignores time values
+     * 
+     * @param Zend_Date $date
+     * @return int 
+     */
+    public function getDaysBetween(Zend_Date $date) {
+        // 86400 seconds/day = 24 hours/day * 60 minutes/hour * 60 seconds/minute
+        // rounding takes care of time changes
+        return round($date->getDayStart()->sub(
+                        $this->getDayStart()
+                )->toValue() / 86400);
     }
 
 }

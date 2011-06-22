@@ -18,14 +18,8 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Event.php 70 2011-06-14 22:13:59Z jcobb $
+ * @version     $Id: Event.php 74 2011-06-22 22:23:34Z jcobb $
  */
-
-
-/**
- * @see Ticketevolution_Date
- */
-require_once 'Ticketevolution/Date.php';
 
 
 /**
@@ -46,11 +40,20 @@ class Ticketevolution_Event
     public function __construct($object)
     {
         foreach($object as $prop => $val) {
-            // If the value is an ISO 8601 date string make it into a Ticketevolution_Date object
-            if(is_string($val) && preg_match('/\d{4}-\d{2}-\d{2}([T ]\d{2}:\d{2}:\d{2})?/i', $val) === 1) {
-                $this->{$prop} = new Ticketevolution_Date($val, Ticketevolution_Date::ISO_8601);
-            } else {
-                $this->{$prop} = $val;
+            switch($prop) {
+                case 'updated_at':
+                case 'occurs_at':
+                    // This property is a date, convert it into a Ticketevolution_Date object
+                    /**
+                     * @see Ticketevolution_Date
+                     */
+                    require_once 'Ticketevolution/Date.php';
+                    
+                    $this->{$prop} = new Ticketevolution_Date($val, Ticketevolution_Date::ISO_8601);
+                    break;
+                    
+                default:
+                    $this->{$prop} = $val;
             }
         }
     }

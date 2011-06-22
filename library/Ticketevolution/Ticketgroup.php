@@ -18,14 +18,8 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Ticketgroup.php 70 2011-06-14 22:13:59Z jcobb $
+ * @version     $Id: Ticketgroup.php 74 2011-06-22 22:23:34Z jcobb $
  */
-
-
-/**
- * @see Ticketevolution_Date
- */
-require_once 'Ticketevolution/Date.php';
 
 
 /**
@@ -46,17 +40,31 @@ class Ticketevolution_Ticketgroup
     public function __construct($object)
     {
         foreach($object as $prop => $val) {
-            // If the value is an ISO 8601 date string make it into a Ticketevolution_Date object
-            if(is_string($val) && preg_match('/\d{4}-\d{2}-\d{2}([T ]\d{2}:\d{2}:\d{2})?/i', $val) === 1) {
-                $this->{$prop} = new Ticketevolution_Date($val, Ticketevolution_Date::ISO_8601);
-            } elseif(preg_match('/_price$/i', $prop) === 1) {
-                /**
-                 * @see Zend_Currency
-                 */
-                require_once 'Zend/Currency.php';
-                $this->{$prop} = new Zend_Currency(array('value' => $val));
-            } else {
-                $this->{$prop} = $val;
+            switch($prop) {
+                case 'updated_at':
+                case 'in_hand_on':
+                    // This property is a date, convert it into a Ticketevolution_Date object
+                    /**
+                     * @see Ticketevolution_Date
+                     */
+                    require_once 'Ticketevolution/Date.php';
+                    
+                    $this->{$prop} = new Ticketevolution_Date($val, Ticketevolution_Date::ISO_8601);
+                    break;
+                    
+                case 'retail_price':
+                case 'wholesale_price':
+                    // This property is a currency, convert it into a Zend_Currency object
+                    /**
+                     * @see Zend_Currency
+                     */
+                    require_once 'Zend/Currency.php';
+                    
+                    $this->{$prop} = new Zend_Currency(array('value' => $val));
+                    break;
+                    
+                default:
+                    $this->{$prop} = $val;
             }
         }
     }
