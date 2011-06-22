@@ -1,0 +1,7 @@
+-- --------------------------------------------------------
+-- SQL Commands to update tables for locally caching Ticket Evolution information.
+-- 
+-- This file is meant for use with MySQL 5 and above!
+
+ALTER TABLE  `tevoConfigurations` ADD  `urlSeatingChartMedium` VARCHAR( 255 ) NULL DEFAULT NULL AFTER  `isGeneralAdmission` ,
+      ADD  `urlSeatingChartLarge` VARCHAR( 255 ) NULL DEFAULT NULL AFTER  `urlSeatingChartMedium`;

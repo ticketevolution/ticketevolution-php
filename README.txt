@@ -4,9 +4,15 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+May 22, 2011
+Added ability to store seating chart urls in the tevoConfigurations table. In 
+order to do so you will need to run the update_Tevo_tables.mysql script in 
+the scripts folder.
+
+
 May 20, 2011
 Added data-loaders which is a handy app for caching the data locally in MySQL.
-To use it you will need to run teh create_tables.mysql script in scripts folder.
+To use it you will need to run the create_tables.mysql script in scripts folder.
 
 Added sortResults() method to ResultSet to allow for sorting of results.
 
