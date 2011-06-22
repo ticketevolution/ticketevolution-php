@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Ticketevolution Framework
  *
@@ -7,22 +8,21 @@
  * This source file is subject to the new BSD license that is bundled
  * with this package in the file LICENSE.txt.
  * It is also available through the world-wide-web at this URL:
- * https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt
+ * http://code.ticketevolution.com/license/new-bsd
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@teamonetickets.com so we can send you a copy immediately.
+ * to license@ticketevolution.com so we can send you a copy immediately.
  *
  * @category    Ticketevolution
  * @package     Ticketevolution
  * @author      J Cobb <j@teamonetickets.com>
- * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
+ * @copyright   Copyright (c) 2011 Ticket Evolution INC (http://www.ticketevolution.com)
+ * @license     http://code.ticketevolution.com/license/new-bsd     New BSD License
  * @version     $Id$
  */
 
 
-require_once 'bootstrap.php';
+require_once 'application.php';
 ?>
 
 <!DOCTYPE html>

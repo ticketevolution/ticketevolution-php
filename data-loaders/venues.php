@@ -1,29 +1,6 @@
 <?php
-/**
- * Ticketevolution Framework
- *
- * LICENSE
- *
- * This source file is subject to the new BSD license that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@teamonetickets.com so we can send you a copy immediately.
- *
- * @category    Ticketevolution
- * @package     Ticketevolution
- * @author      J Cobb <j@teamonetickets.com>
- * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
- * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id$
- */
 
-
-require_once 'bootstrap.php';
-
+require_once 'application.php';
 error_reporting (E_ALL);
 ini_set('max_execution_time', 1200);
 
@@ -54,11 +31,16 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
         $maxPages = $results->totalPages();
     }
 
+    if($showStats) {
+        $curMem = memory_get_usage(true);
+        $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
+        echo '<h1>Current memory usage after fetching page ' . $currentPage . ' of ' . $maxPages . ': ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL;
+    }
+    
     /*******************************************************************************
      * Process the API results either INSERTing or UPDATEing our table(s)
      */
     foreach($results AS $result) {
-        //dump($result);
         $data = array(
             'venueId' => (int)$result->id,
             'venueName' => (string)$result->name,
@@ -71,7 +53,8 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
             'venueUrl' => (string)$result->url,
             'updated_at' => (string)$result->updated_at->get(Zend_Date::ISO_8601),
             'venueStatus' => (int)1,
-            'lastModifiedDate' => (string)$now->get(Zend_Date::ISO_8601));
+            'lastModifiedDate' => (string)$now->get(Zend_Date::ISO_8601)
+        );
         if(isset($result->address->countryCode)) {
             $data['countryCode'] = (int)$result->address->countryCode;
         }
@@ -81,7 +64,6 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
         if(!empty($result->upcoming_events->last)) {
             $data['upcomingEventLast'] = (string)$result->upcoming_events->last->get(Zend_Date::ISO_8601);
         }
-        //dump($data);
 
         if($row = $table->fetchRow($table->select()->where('venueId = ?', $data['venueId']))) {
             $row->setFromArray($data);
@@ -89,20 +71,24 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
             $row = $table->createRow($data);
         }
         if(!$row->save()) {
-            echo '<h1 class="error">Error attempting to save ' . htmlentities($data['venueId'] . ': ' . $data['venueName']) . ' to `tevoVenues`</h1>' . PHP_EOL;
+            echo '<h1 class="error">Error attempting to save ' . tohtmlentities($data['venueId'] . ': ' . $data['venueName']) . ' to `tevoVenues`</h1>' . PHP_EOL;
         } else {
-            echo '<h1>Saved ' . htmlentities($data['venueId'] . ': ' . $data['venueName']) . ' to `tevoVenues`</h1>' . PHP_EOL;
+            echo '<h1>Saved ' . tohtmlentities($data['venueId'] . ': ' . $data['venueName']) . ' to `tevoVenues`</h1>' . PHP_EOL;
         }
         unset($data);
         unset($row);
 
     } // End loop through this page of results
+    if($showStats) {
+        $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
+        echo '<h1>Current memory usage after database work of page ' . $currentPage . ' of ' . $maxPages . ': ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL;
+    }
     echo '<h1>Done with page ' . $currentPage . '</h1>' . PHP_EOL;
     sleep(1);
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string)$now->get(Ticketevolution_Date::ISO_8601);
+$statusData['lastRun'] = (string)$now->get(Onyx_Date::ISO_8601);
 if(isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {
@@ -112,3 +98,13 @@ $statusRow->save();
 
 
 echo '<h1>Finished updating `tevo' . $statusData['table'] . '` table</h1>' . PHP_EOL;
+
+if($showStats) {
+    $allTimer->endTimer();
+    $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
+    $peakMem = new Zend_Measure_Binary(memory_get_peak_usage(true), Zend_Measure_Binary::BYTE);
+    echo '<p class="codetimer">Time to complete everything: ' . $allTimer->getElapsedTime() . '</p>' . PHP_EOL
+       . '<h1>Current memory usage at end of script: ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL
+       . '<h1>PEAK memory usage: ' . $peakMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL
+    ;
+}
