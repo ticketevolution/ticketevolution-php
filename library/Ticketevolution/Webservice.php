@@ -31,25 +31,33 @@
 class Ticketevolution_Webservice
 {
     /**
-     * Amazon Web Services Access Key ID
+     * Ticket Evolution API Token
      *
      * @var string
+     * @link http://exchange.ticketevolution.com/brokerage/credentials
      */
     public $apiToken;
 
     /**
+     * Ticket Evolution API Secret Key
+     *
      * @var string
+     * @link http://exchange.ticketevolution.com/brokerage/credentials
      */
     protected $_secretKey = null;
 
     /**
      * Base URI for the REST client
+     * You should override and use the sandbox (http://api.sandbox.ticketevolution.com) 
+     * for testing and development
+     *
      * @var string
      */
     protected $_baseUri = 'http://api.ticketevolution.com';
 
     /**
      * API version
+     * Current version can be found at http://api.ticketevolution.com/
      *
      * @var string
      */
@@ -1436,7 +1444,7 @@ class Ticketevolution_Webservice
      * Set REST client
      *
      * @param Zend_Rest_Client
-     * @return Zend_Service_Amazon
+     * @return Ticketevolution_Webservice
      */
     public function setRestClient(Zend_Rest_Client $client)
     {
