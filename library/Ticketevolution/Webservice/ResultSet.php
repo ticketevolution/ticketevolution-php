@@ -219,8 +219,13 @@ class Ticketevolution_Webservice_ResultSet implements SeekableIterator, Countabl
      */
     public function excludeResults(array $exclude, $type='brokerage')
     {
-        $this->_results = array_filter($this->_results, function($v) use($exclude, $type) { return !in_array($v->$type->id, $exclude); });
-        
+        if($type == 'brokerage') {
+            // In ticketGroups brokerage is now a nested property of office
+            $this->_results = array_filter($this->_results, function($v) use($exclude, $type) { return !in_array($v->office->$type->id, $exclude); });
+        } else {
+            $this->_results = array_filter($this->_results, function($v) use($exclude, $type) { return !in_array($v->$type->id, $exclude); });
+        }
+
         // Put the keys back in order, filling in any now-missing keys
         sort($this->_results);
     }
@@ -240,8 +245,13 @@ class Ticketevolution_Webservice_ResultSet implements SeekableIterator, Countabl
      */
     public function exclusiveResults(array $exclusive, $type='brokerage')
     {
-        $this->_results = array_filter($this->_results, function($v) use($exclusive, $type) { return in_array($v->$type->id, $exclusive); });
-        
+        if($type == 'brokerage') {
+            // In ticketGroups brokerage is now a nested property of office
+            $this->_results = array_filter($this->_results, function($v) use($exclusive, $type) { return in_array($v->office->$type->id, $exclusive); });
+        } else {
+            $this->_results = array_filter($this->_results, function($v) use($exclusive, $type) { return in_array($v->$type->id, $exclusive); });
+        }
+
         // Put the keys back in order, filling in any now-missing keys
         sort($this->_results);
     }
