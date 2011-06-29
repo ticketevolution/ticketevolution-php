@@ -53,7 +53,7 @@ class Ticketevolution_Webservice
      *
      * @var string
      */
-    protected $_apiVersion = '5';
+    protected $_apiVersion = '6';
 
 
     /**
@@ -963,7 +963,7 @@ class Ticketevolution_Webservice
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
 
-        $defaultOptions = array('per_page' => '500');
+        $defaultOptions = array();
         $options = self::_prepareOptions('GET', 'ticket_groups', $options, $defaultOptions);
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
