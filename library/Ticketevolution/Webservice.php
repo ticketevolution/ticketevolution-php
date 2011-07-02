@@ -968,6 +968,11 @@ class Ticketevolution_Webservice
      */
     public function listTicketgroups(array $options)
     {
+        if(!isset($options['event_id'])) {
+            throw new Ticketevolution_Webservice_Exception(
+                '"event_id" is a required parameter');
+        }
+
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
 
@@ -1536,8 +1541,7 @@ class Ticketevolution_Webservice
                 ksort($options);
                 $params = array();
                 foreach($options AS $k => $v) {
-                    // Oddly, we get 401 Unauthorized if we urlencode or rawurlencode
-                    $params[] = $k."=".$v;
+                    $params[] = $k . '=' . rawurlencode($v);
                 }
                 $signature .= implode('&', $params);
             } else {
