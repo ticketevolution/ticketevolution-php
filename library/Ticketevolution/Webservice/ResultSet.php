@@ -76,7 +76,7 @@ class Ticketevolution_Webservice_ResultSet implements SeekableIterator, Countabl
                 //dump($val);
                 $this->_results =  $val;
                 //dump($this->_results);
-                if($property = 'results') {
+                if($property == 'results') {
                     $this->_resultSetType = 'Searchresults';
                 } else {
                     // Remove trailing 'ies' from this property name (for Categories)
