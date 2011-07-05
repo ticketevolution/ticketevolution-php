@@ -1,6 +1,6 @@
 <?php
 
-require_once 'application.php';
+require_once 'bootstrap.php';
 error_reporting (E_ALL);
 ini_set('max_execution_time', 1200);
 
@@ -22,8 +22,8 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
     // Execute the request
     try{
         $results = $tevo->listCategories($options);
-    } catch(Ticketevolution_Webservice_Exception $e) {
-        //continue;
+    } catch(Exception $e) {
+        throw new Ticketevolution_Webservice_Exception($e);
     }
     
     // Set the correct $maxPages
@@ -76,7 +76,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string)$now->get(Onyx_Date::ISO_8601);
+$statusData['lastRun'] = (string)$now->get(Zend_Date::ISO_8601);
 if(isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {

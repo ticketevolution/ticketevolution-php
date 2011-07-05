@@ -1,6 +1,6 @@
 <?php
 
-require_once 'application.php';
+require_once 'bootstrap.php';
 error_reporting (E_ALL);
 ini_set('max_execution_time', 1200);
 
@@ -25,8 +25,8 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
     // Execute the request
     try{
         $results = $tevo->listEvents($options);
-    } catch(Ticketevolution_Webservice_Exception $e) {
-        //continue;
+    } catch(Exception $e) {
+        throw new Ticketevolution_Webservice_Exception($e);
     }
     
     // Set the correct $maxPages
@@ -47,15 +47,15 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
         $data = array(
             'eventId' => (int)$result->id,
             'eventName' => (string)$result->name,
-            'eventDate' => (string)$result->occurs_at->get(Onyx_Date::ISO_8601),
+            'eventDate' => (string)$result->occurs_at->get(Zend_Date::ISO_8601),
             'venueId' => (int)$result->venue->id,
             'categoryId' => (int)$result->category->id,
             'productsCount' => (int)$result->products_count,
             'eventUrl' => (string)$result->url,
-            'updated_at' => (string)$result->updated_at->get(Onyx_Date::ISO_8601),
+            'updated_at' => (string)$result->updated_at->get(Zend_Date::ISO_8601),
             'eventStatus' => (int)1,
             'eventState' => (string)$result->state,
-            'lastModifiedDate' => (string)$now->get(Onyx_Date::ISO_8601)
+            'lastModifiedDate' => (string)$now->get(Zend_Date::ISO_8601)
         );
         if(isset($result->configuration->id)) {
             $data['configurationId'] = (int)$result->configuration->id;
@@ -83,7 +83,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
                 'eventId' => (int)$result->id,
                 'performerId' => (int)$performance->performer->id,
                 'isPrimary' => (int)$performance->primary,
-                'lastModifiedDate' => (string)$now->get(Onyx_Date::ISO_8601)
+                'lastModifiedDate' => (string)$now->get(Zend_Date::ISO_8601)
             );
 
             if($row = $epTable->fetchRow($epTable->select()->where("`eventId` = ?", (int)$result->id)->where("`performerId` = ?", (int)$performance->performer->id))) {
@@ -123,7 +123,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string)$now->get(Onyx_Date::ISO_8601);
+$statusData['lastRun'] = (string)$now->get(Zend_Date::ISO_8601);
 if(isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {

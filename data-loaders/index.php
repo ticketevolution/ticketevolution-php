@@ -22,7 +22,7 @@
  */
 
 
-require_once 'application.php';
+require_once 'bootstrap.php';
 ?>
 
 <!DOCTYPE html>

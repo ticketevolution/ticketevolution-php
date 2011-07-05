@@ -1,6 +1,6 @@
 <?php
 
-require_once 'application.php';
+require_once 'bootstrap.php';
 error_reporting (E_ALL);
 ini_set('max_execution_time', 1200);
 
@@ -25,8 +25,8 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
     // Execute the request
     try{
         $results = $tevo->listOffices($options);
-    } catch(Ticketevolution_Webservice_Exception $e) {
-        //continue;
+    } catch(Exception $e) {
+        throw new Ticketevolution_Webservice_Exception($e);
     }
     
     // Set the correct $maxPages
@@ -89,7 +89,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
                     'officeId' => (int)$result->id,
                     'email' => strtolower((string)$email),
                     'officeEmailStatus' => (int)1,
-                    'lastModifiedDate' => (string)$now->get(Onyx_Date::ISO_8601)
+                    'lastModifiedDate' => (string)$now->get(Zend_Date::ISO_8601)
                 );
     
                 if($row = $eTable->fetchRow($eTable->select()->where("`officeId` = ?", (int)$result->id)->where("`officeEmailStatus` = ?", (int)0)->where("`email` = ?", (string)$email))) {
@@ -112,7 +112,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
             if(isset($emailList)) {
                 $data = array(
                     'officeEmailStatus' => (int)0,
-                    'lastModifiedDate' => (string)$now->get(Onyx_Date::ISO_8601));
+                    'lastModifiedDate' => (string)$now->get(Zend_Date::ISO_8601));
                 $where = $eTable->getAdapter()->quoteInto("`officeId` = ?", $result->id);
                 $where .= $eTable->getAdapter()->quoteInto(" AND `officeEmailStatus` = (?)", (int)1);
                 $where .= $eTable->getAdapter()->quoteInto(" AND `email` NOT IN (?)", $emailArray);
@@ -130,7 +130,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string)$now->get(Onyx_Date::ISO_8601);
+$statusData['lastRun'] = (string)$now->get(Zend_Date::ISO_8601);
 if(isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {
