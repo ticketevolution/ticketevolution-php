@@ -4,6 +4,13 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+July 5, 2011
+Bug fixes.
+In the configuration data-loader the venueId column was being populated with 
+the configurationId.
+ResultSet was returning all results as Ticketevolution_Searchresults objects
+instead of teh ones specififc to their type of result.
+
 May 22, 2011
 Added ability to store seating chart urls in the tevoConfigurations table. In 
 order to do so you will need to run the update_Tevo_tables.mysql script in 
