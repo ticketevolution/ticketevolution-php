@@ -47,7 +47,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
             'streetAddress' => (string)$result->address->street_address,
             'extendedAddress' => (string)$result->address->extended_address,
             'locality' => (string)$result->address->locality,
-            'regionCode' => (string)$result->address->region,
+            'region' => (string)$result->address->region,
             'postalCode' => (string)$result->address->postal_code,
             'countryCode' => (string)$result->address->country_code,
             'venueUrl' => (string)$result->url,
