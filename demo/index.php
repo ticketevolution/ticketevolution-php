@@ -59,6 +59,7 @@ $autoloader->setFallbackAutoloader(true);
  */
 $cfg['params']['apiToken'] = (string) 'YOUR_API_TOKEN_HERE';
 $cfg['params']['secretKey'] = (string) 'YOUR_SECRET_KEY_HERE';
+$cfg['params']['apiVersion'] = (string) '6';
 $cfg['params']['buyerId'] = 'YOUR_OFFICEID_HERE';
 
 $cfg['params']['baseUri'] = (string) 'http://api.sandbox.ticketevolution.com'; // Sandbox
