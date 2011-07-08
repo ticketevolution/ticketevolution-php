@@ -62,18 +62,17 @@ $cfg['params']['secretKey'] = (string) 'YOUR_SECRET_KEY_HERE';
 $cfg['params']['apiVersion'] = (string) '6';
 $cfg['params']['buyerId'] = 'YOUR_OFFICEID_HERE';
 
-$cfg['params']['baseUri'] = (string) 'http://api.sandbox.ticketevolution.com'; // Sandbox
-//$cfg['params']['baseUri'] = (string) 'http://api.ticketevolution.com'; // Production
+//$cfg['params']['baseUri'] = (string) 'http://api.sandbox.ticketevolution.com'; // Sandbox
+$cfg['params']['baseUri'] = (string) 'http://api.ticketevolution.com'; // Production
 
 $cfg['exclude']['brokerage'] = array(
-    692, // Testing only
-    67, // Testing only
-    134, // Testing only
+    389, // Testing only
+    691, // Testing only
+    117, // Testing only
 );
 $cfg['exclusive']['brokerage'] = array(
-    692, // Testing only
-    67, // Testing only
-    134, // Testing only
+    223, // Testing only
+    154, // Testing only
 );
 
 
@@ -98,7 +97,7 @@ $Tevo = new Ticketevolution_Webservice($config->params);
 $options = array('page' => 1,
                  'per_page' => 10,
                  //'updated_at.gte' => '2011-04-13',
-                 'event_id' => 38826,
+                 //'event_id' => 136957,
                  //'price.gte' => 220,
                  //'price.lte' => 500,
                  );
@@ -140,19 +139,27 @@ $options = array('page' => 1,
                     if(strpos($apiMethod, 'list') !== false) {
                         // We're using a list method
                         // Execute the API query using the above default options
-                        $results = $Tevo->$apiMethod($options);
-                        
                         // Testing only
                         if($apiMethod == 'listTicketgroups') {
+                            $options['event_id'] = strip_tags($_GET['eventId']);
+                            unset($options['page']);
+                            unset($options['per_page']);
+                            //var_dump($options);
+                            $results = $Tevo->$apiMethod($options);
                             //$results->excludeResults($cfg['exclude']['brokerage'], 'brokerage');
-                            $results->exclusiveResults($cfg['exclusive']['brokerage'], 'brokerage');
+                            //$results->exclusiveResults($cfg['exclusive']['brokerage'], 'brokerage');
                             $sortOptions = array(
                                 'section', // Defaults to SORT_ASC
                                 'row' => SORT_DESC,
                                 'retail_price' => SORT_ASC
                             );
                             $results->sortResults($sortOptions);
-                        }
+                        } elseif($apiMethod == 'listEvopaytransactions') {
+                            $epAccountId = strip_tags($_GET['accountId']);
+                            $results = $Tevo->$apiMethod($epAccountId, $options);
+                        } else {
+                            $results = $Tevo->$apiMethod($options);
+                        }                
                     } elseif(strpos($apiMethod, 'search') !== false) {
                         // We're using a search method
                         // Execute the API query
@@ -258,7 +265,7 @@ $options = array('page' => 1,
 		            </optgroup>
 
 		            <optgroup label="create*() Methods">
-                        <option label="createOrder" value="createOrder">createOrder</option>
+                        <option label="createOrder (Not yet functional)" value="createOrder">createOrder (Not yet functional)</option>
 		            </optgroup>
 		        </select>
 		        
@@ -266,13 +273,27 @@ $options = array('page' => 1,
                     <br />
                     <br />
                     <label for="id" accesskey="i">ID: </label>
-                    <input name="id" id="id" type="text" value="48" tabindex="2" size="10" maxlength="7" />
+                    <input name="id" id="id" type="text" value="49" tabindex="2" size="10" maxlength="7" />
+		        </div>
+
+		        <div id="eventIdOption">
+                    <br />
+                    <br />
+                    <label for="eventId" accesskey="e">eventId: </label>
+                    <input name="eventId" id="eventId" type="text" value="136957" tabindex="2" size="10" maxlength="7" />
+		        </div>
+
+		        <div id="accountIdOption">
+                    <br />
+                    <br />
+                    <label for="accountId" accesskey="1">Your EvoPay AccountID: </label>
+                    <input name="accountId" id="accountId" type="text" value="" tabindex="2" size="10" maxlength="7" />
 		        </div>
 
 		        <div id="searchOption">
                     <br />
                     <br />
-                    <label for="query" accesskey="i">Query: </label>
+                    <label for="query" accesskey="s">Query: </label>
                     <input name="query" id="query" type="text" value="front" tabindex="2" size="20" maxlength="50" />
 		        </div>
 
@@ -305,33 +326,43 @@ $options = array('page' => 1,
             toggleOptions();
         }
 
+        var idDiv = document.getElementById("idOption");
+        var searchDiv = document.getElementById("searchOption");
+        var optionsDiv = document.getElementById("options");
+        var eventIdDiv = document.getElementById("eventIdOption");
+        var accountIdDiv = document.getElementById("accountIdOption");
+
         function toggleOptions() {
             var selectedObj = document.getElementById("apiMethod");
             var selIndex = selectedObj.selectedIndex;
-            var idDiv = document.getElementById("idOption");
-            var searchDiv = document.getElementById("searchOption");
-            var optionsDiv = document.getElementById("options");
+
+            hideAllOptions();
 
             if(selIndex == 0) {
-                idDiv.style.display = 'none';
-                searchDiv.style.display = 'none';
-                optionsDiv.style.display = 'none';
+            } else if(selIndex == 9) { // listTicketgroups
+                // Make the eventIdOption div visible
+                eventIdDiv.style.display = 'block';
+            } else if(selIndex == 13) { // listEvopaytransactions
+                // Make the accountIdOption div visible
+                accountIdDiv.style.display = 'block';
             } else if(selIndex > 25) {
                 // Make the search div visible
                 searchDiv.style.display = 'block';
-                idDiv.style.display = 'none';
-                optionsDiv.style.display = 'none';
             } else if(selIndex > 13) {
                 // Make the ID div visible
                 idDiv.style.display = 'block';
-                searchDiv.style.display = 'none';
-                optionsDiv.style.display = 'none';
             } else {
                 // Make the deafult options visible
-                idDiv.style.display = 'none';
-                searchDiv.style.display = 'none';
                 optionsDiv.style.display = 'block';
             }
+        }
+        
+        function hideAllOptions() {
+            idDiv.style.display = 'none';
+            searchDiv.style.display = 'none';
+            optionsDiv.style.display = 'none';
+            eventIdDiv.style.display = 'none';
+            accountIdDiv.style.display = 'none';
         }
     //-->
     </script>
