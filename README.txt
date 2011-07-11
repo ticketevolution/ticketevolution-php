@@ -51,7 +51,7 @@ NEW FEATURES
 SYSTEM REQUIREMENTS
 -------------------
 
-Ticket Evolution Framework for PHP requires PHP 5.2.4 or later and Zend Framework.
+Ticket Evolution Framework for PHP requires PHP 5.3 or later and Zend Framework.
 Please see our reference guide for more detailed system requirements:
 
 https://github.com/ticketevolution/ticketevolution-php/wiki
