@@ -1541,7 +1541,7 @@ class Ticketevolution_Webservice
                 ksort($options);
                 $params = array();
                 foreach($options AS $k => $v) {
-                    $params[] = $k . '=' . rawurlencode($v);
+                    $params[] = $k . '=' . urlencode($v);
                 }
                 $signature .= implode('&', $params);
             } else {
