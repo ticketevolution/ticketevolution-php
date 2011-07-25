@@ -4,6 +4,14 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+July 25, 2011
+Fixed a bug in buildRawSignature() (in Webservices.php) in which parameter names 
+were not being urlencoded (only the values were) which resulted in 401 Unauthorized 
+errors when attempting to listEvents() using 'performances[performer_id]='.
+
+Also cleaned up some of the code in Webservices.php to make it pass CodeSniffer
+using the Zend sniffs.
+
 July 5, 2011
 Bug fixes.
 In the configuration data-loader the venueId column was being populated with 

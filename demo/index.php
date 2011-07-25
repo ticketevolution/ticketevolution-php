@@ -100,6 +100,7 @@ $options = array('page' => 1,
                  //'event_id' => 136957,
                  //'price.gte' => 220,
                  //'price.lte' => 500,
+                 'performances[performer_id]' => 15663,
                  );
 //$options = 836;
 ?>

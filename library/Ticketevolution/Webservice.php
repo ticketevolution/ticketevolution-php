@@ -18,7 +18,7 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Webservice.php 30 2011-05-09 23:41:55Z jcobb $
+ * @version     $Id: Webservice.php 78 2011-07-02 01:12:53Z jcobb $
  */
 
 
@@ -161,8 +161,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -188,7 +190,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'brokerages/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -198,8 +202,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -223,7 +229,9 @@ class Ticketevolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
-            throw new Ticketevolution_Webservice_Exception('You must provide a non-empty query string');
+            throw new Ticketevolution_Webservice_Exception(
+                'You must provide a non-empty query string'
+            );
         }
 
         $client = $this->getRestClient();
@@ -234,7 +242,9 @@ class Ticketevolution_Webservice
         $defaultOptions = array('page'  => '1',
                                 'per_page' => '100');
         $options = self::_prepareOptions('GET', $endPoint, $options, $defaultOptions);
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -244,8 +254,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -281,8 +293,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -308,7 +322,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'offices/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -318,8 +334,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -343,7 +361,9 @@ class Ticketevolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
-            throw new Ticketevolution_Webservice_Exception('You must provide a non-empty query string');
+            throw new Ticketevolution_Webservice_Exception(
+                'You must provide a non-empty query string'
+            );
         }
 
         $client = $this->getRestClient();
@@ -354,7 +374,9 @@ class Ticketevolution_Webservice
         $defaultOptions = array('page'  => '1',
                                 'per_page' => '100');
         $options = self::_prepareOptions('GET', $endPoint, $options, $defaultOptions);
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -364,8 +386,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -401,8 +425,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -428,7 +454,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'users/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -438,8 +466,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -463,7 +493,9 @@ class Ticketevolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
-            throw new Ticketevolution_Webservice_Exception('You must provide a non-empty query string');
+            throw new Ticketevolution_Webservice_Exception(
+                'You must provide a non-empty query string'
+            );
         }
 
         $client = $this->getRestClient();
@@ -474,7 +506,9 @@ class Ticketevolution_Webservice
         $defaultOptions = array('page'  => '1',
                                 'per_page' => '100');
         $options = self::_prepareOptions('GET', $endPoint, $options, $defaultOptions);
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -484,8 +518,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -521,8 +557,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -548,7 +586,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'categories/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -558,8 +598,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -583,8 +625,10 @@ class Ticketevolution_Webservice
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
 
-        $defaultOptions = array('page'  => '1',
-                                'per_page' => '100');
+        $defaultOptions = array(
+            'page'  => '1',
+            'per_page' => '100'
+        );
         $options = self::_prepareOptions('GET', 'events', $options, $defaultOptions);
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
@@ -595,8 +639,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -622,7 +668,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'events/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -632,8 +680,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -669,8 +719,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -696,7 +748,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'performers/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -706,8 +760,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -731,7 +787,9 @@ class Ticketevolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
-            throw new Ticketevolution_Webservice_Exception('You must provide a non-empty query string');
+            throw new Ticketevolution_Webservice_Exception(
+                'You must provide a non-empty query string'
+            );
         }
 
         $client = $this->getRestClient();
@@ -742,7 +800,9 @@ class Ticketevolution_Webservice
         $defaultOptions = array('page'  => '1',
                                 'per_page' => '100');
         $options = self::_prepareOptions('GET', $endPoint, $options, $defaultOptions);
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -752,8 +812,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -789,8 +851,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -816,7 +880,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'venues/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -826,8 +892,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -851,7 +919,9 @@ class Ticketevolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
-            throw new Ticketevolution_Webservice_Exception('You must provide a non-empty query string');
+            throw new Ticketevolution_Webservice_Exception(
+                'You must provide a non-empty query string'
+            );
         }
 
         $client = $this->getRestClient();
@@ -862,7 +932,9 @@ class Ticketevolution_Webservice
         $defaultOptions = array('page'  => '1',
                                 'per_page' => '100');
         $options = self::_prepareOptions('GET', $endPoint, $options, $defaultOptions);
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -872,8 +944,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -909,8 +983,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -936,7 +1012,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'configurations/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -946,8 +1024,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -968,9 +1048,10 @@ class Ticketevolution_Webservice
      */
     public function listTicketgroups(array $options)
     {
-        if(!isset($options['event_id'])) {
+        if (!isset($options['event_id'])) {
             throw new Ticketevolution_Webservice_Exception(
-                '"event_id" is a required parameter');
+                '"event_id" is a required parameter'
+            );
         }
 
         $client = $this->getRestClient();
@@ -987,8 +1068,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1014,7 +1097,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'ticket_groups/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -1024,8 +1109,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1061,8 +1148,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1088,7 +1177,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'orders/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -1098,8 +1189,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1135,8 +1228,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1162,7 +1257,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'quotes/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -1172,8 +1269,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1208,7 +1307,9 @@ class Ticketevolution_Webservice
         $defaultOptions = array('page'  => '1',
                                 'per_page' => '100');
         $options = self::_prepareOptions('GET', $endPoint, $options, $defaultOptions);
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -1218,8 +1319,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1255,8 +1358,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1282,7 +1387,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'accounts/' . $id;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -1292,8 +1399,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1331,8 +1440,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1359,7 +1470,9 @@ class Ticketevolution_Webservice
 
         $endPoint = 'accounts/' . $accountId . '/transactions/' . $transactionId;
         $options = array();
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -1369,8 +1482,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1407,7 +1522,9 @@ class Ticketevolution_Webservice
         $defaultOptions = array('page'  => '1',
                                 'per_page' => '100');
         $options = self::_prepareOptions('GET', $endPoint, $options, $defaultOptions);
-        $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'GET', $endPoint, $options
+        );
         $client->getHttpClient()->resetParameters();
         self::_setHeaders($this->apiToken, $this->_apiVersion, $this->_requestSignature);
 
@@ -1417,8 +1534,10 @@ class Ticketevolution_Webservice
              * @see Ticketevolution_Webservice_Exception
              */
             require_once 'Ticketevolution/Webservice/Exception.php';
-            throw new Ticketevolution_Webservice_Exception('An error occurred sending request. Status code: '
-                                           . $response->getStatus());
+            throw new Ticketevolution_Webservice_Exception(
+                'An error occurred sending request. Status code: '
+                . $response->getStatus()
+            );
         }
         $response = self::_jsonDecode($response->getBody());
 
@@ -1435,7 +1554,7 @@ class Ticketevolution_Webservice
      */
     public function getRestClient()
     {
-        if($this->_rest === null) {
+        if ($this->_rest === null) {
             /**
              * @see Zend_Rest_Client
              */
@@ -1473,7 +1592,7 @@ class Ticketevolution_Webservice
             'X-Token'   => (string)$apiToken,
             'Accept'    => (string)'application/vnd.ticketevolution.api+json; version=' . $apiVersion
         );
-        if(!empty($requestSignature)) {
+        if (!empty($requestSignature)) {
             $headers['X-Signature'] = (string)$requestSignature;
         }
         $this->_rest->getHttpClient()->setHeaders($headers);
@@ -1494,8 +1613,10 @@ class Ticketevolution_Webservice
         $options = array_merge($defaultOptions, $options);
         ksort($options);
 
-        if($this->_secretKey !== null) {
-            $this->_requestSignature = self::computeSignature($this->_baseUri, $this->_secretKey, (string)$action, (string)$endPoint, $options);
+        if ($this->_secretKey !== null) {
+            $this->_requestSignature = self::computeSignature(
+                $this->_baseUri, $this->_secretKey, (string)$action, (string)$endPoint, $options
+            );
         }
         return $options;
     }
@@ -1518,6 +1639,7 @@ class Ticketevolution_Webservice
          * @see Zend_Crypt_Hmac
          */
         require_once 'Zend/Crypt/Hmac.php';
+        
         return base64_encode(
             Zend_Crypt_Hmac::compute($secretKey, 'sha256', $signature, Zend_Crypt_Hmac::BINARY)
         );
@@ -1535,13 +1657,13 @@ class Ticketevolution_Webservice
     static public function buildRawSignature($baseUri, $action, $endPoint, $options)
     {
         $signature = $action . ' ' . str_replace('http://', '', $baseUri) . '/' . $endPoint . '?';
-        if(!empty($options)) {
-            if(is_array($options)) {
+        if (!empty($options)) {
+            if (is_array($options)) {
                 // Turn the $options into GET parameters
                 ksort($options);
                 $params = array();
-                foreach($options AS $k => $v) {
-                    $params[] = $k . '=' . urlencode($v);
+                foreach ($options AS $k => $v) {
+                    $params[] = urlencode($k) . '=' . urlencode($v);
                 }
                 $signature .= implode('&', $params);
             } else {
@@ -1563,7 +1685,7 @@ class Ticketevolution_Webservice
     protected static function _jsonDecode($json)
     {
         $decodedJson = json_decode($json, false);
-        if(!is_null($decodedJson)) {
+        if (!is_null($decodedJson)) {
             return $decodedJson;
         }
         switch(json_last_error())
@@ -1597,7 +1719,8 @@ class Ticketevolution_Webservice
          * @see Ticketevolution_Webservice_Exception
          */
         require_once 'Ticketevolution/Webservice/Exception.php';
-        throw new Ticketevolution_Webservice_Exception('An error occurred decoding the JSON received: '
-                                       . $error);
+        throw new Ticketevolution_Webservice_Exception(
+            'An error occurred decoding the JSON received: ' . $error
+        );
     }
 }
