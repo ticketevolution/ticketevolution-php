@@ -1,0 +1,6 @@
+body {
+	background-image: url('../images/production-banner.png');
+	background-repeat: no-repeat;
+	background-position: top right;
+	background-attachment: fixed;
+}

@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,29 +12,29 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Performers.php 65 2011-06-13 22:19:01Z jcobb $
+ * @version     $Id: Performers.php 85 2011-07-10 08:07:26Z jcobb $
  */
 
 /**
- * @see Ticketevolution_Db_Table_Abstract
+ * @see TicketEvolution_Db_Table_Abstract
  */
-require_once 'Ticketevolution/Db/Table/Abstract.php';
+require_once 'TicketEvolution/Db/Table/Abstract.php';
 
 /**
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Db_Table_Performers extends Ticketevolution_Db_Table_Abstract
+class TicketEvolution_Db_Table_Performers extends TicketEvolution_Db_Table_Abstract
 {
     /**
      * The table name.
@@ -69,7 +69,8 @@ class Ticketevolution_Db_Table_Performers extends Ticketevolution_Db_Table_Abstr
      * @var array
      */
     protected $_dependentTables = array(
-        'Ticketevolution_Db_Table_Eventperformers',
+        'TicketEvolution_Db_Table_Eventperformers',
+        'TeamOne_Db_Table_Performers',
     );
     
     
@@ -92,29 +93,11 @@ class Ticketevolution_Db_Table_Performers extends Ticketevolution_Db_Table_Abstr
      * @var array
      */
     protected $_referenceMap    = array(
-        'venues'            => array(
+        'Venues'            => array(
             'columns'           => 'venueId',
-            'refTableClass'     => 'Ticketevolution_Db_Table_Venues',
+            'refTableClass'     => 'TicketEvolution_Db_Table_Venues',
             'refColumns'        => 'venueId'
             ),
     );
-    
-    /*
-     * 
-     */
-    public function getPerformersNotMatchedToTeamOnePerformers($limitTo = 10)
-    {
-        $sub_select = $this->select();
-        $sub_select->setIntegrityCheck(false);
-        $sub_select->from('performers', array('tevoPerformerId'));
-        $sub_select->where("`performers`.`tevoPerformerId` IS NOT NULL");
-        $select = $this->select();
-        $select->setIntegrityCheck(false);
-        //$select->from("tevoPerformers");
-        $select->where("performerStatus = 1 AND performerId NOT IN ?", $sub_select);
-        $select->limit($limitTo);
-        //dump($select->__toString());
-        return $this->fetchAll($select);
-    }
-    
+
 }

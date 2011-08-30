@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,25 +12,25 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Venues.php 59 2011-06-08 00:14:16Z jcobb $
+ * @version     $Id: Venues.php 86 2011-07-10 08:07:50Z jcobb $
  */
 
 
 /**
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Db_Table_Venues extends Ticketevolution_Db_Table_Abstract
+class TicketEvolution_Db_Table_Venues extends TicketEvolution_Db_Table_Abstract
 {
     /**
      * The table name.
@@ -64,9 +64,12 @@ class Ticketevolution_Db_Table_Venues extends Ticketevolution_Db_Table_Abstract
      *
      * @var array
      */
-    protected $_dependentTables = array('Ticketevolution_Db_Table_Configurations',
-                                        'Ticketevolution_Db_Table_Events',
-                                        'Ticketevolution_Db_Table_Performers');
+    protected $_dependentTables = array(
+        'TicketEvolution_Db_Table_Configurations',
+        'TicketEvolution_Db_Table_Events',
+        'TicketEvolution_Db_Table_Performers',
+        'TeamOne_Db_Table_Venues',
+    );
     
     
     /**
@@ -87,22 +90,32 @@ class Ticketevolution_Db_Table_Venues extends Ticketevolution_Db_Table_Abstract
      *
      * @var array
      */
-    protected $_referenceMap    = array();
-
+    protected $_referenceMap    = array(
+        'Region'            => array(
+            'columns'           => 'region',
+            'refTableClass'     => 'TeamOne_Db_Table_Addressregions',
+            'refColumns'        => 'regionCode'
+        ),
+        'Country'           => array(
+            'columns'           => 'countryCode',
+            'refTableClass'     => 'TeamOne_Db_Table_Addresscountries',
+            'refColumns'        => 'countryCode'
+        ),
+    );
 
     /*
      * 
      */
     public function getVenuesNotMatchedToTeamOneVenues($limitTo = 10)
     {
-        $sub_select = $this->select();
-        $sub_select->setIntegrityCheck(false);
-        $sub_select->from('venues', array('tevoVenueId'));
-        $sub_select->where("`venues`.`tevoVenueId` IS NOT NULL");
+        $subSelect = $this->select();
+        $subSelect->setIntegrityCheck(false);
+        $subSelect->from('venues', array('tevoVenueId'));
+        $subSelect->where("`venues`.`tevoVenueId` IS NOT NULL");
         $select = $this->select();
         $select->setIntegrityCheck(false);
         //$select->from("tevoPerformers");
-        $select->where("venueStatus = 1 AND venueId NOT IN ?", $sub_select);
+        $select->where("venueStatus = 1 AND venueId NOT IN ?", $subSelect);
         $select->limit($limitTo);
         return $this->fetchAll($select);
     }

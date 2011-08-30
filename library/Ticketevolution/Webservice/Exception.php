@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,8 +12,8 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Webservice
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
@@ -22,15 +22,16 @@
  */
 
 /**
- * @see Ticketevolution_Exception
+ * @see TicketEvolution_Exception
  */
-require_once 'Ticketevolution/Exception.php';
+require_once 'TicketEvolution/Exception.php';
 
 /**
- * @category    Ticketevolution
- * @package     Ticketevolution
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Webservice
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Webservice_Exception extends Ticketevolution_Exception
-{}
+class TicketEvolution_Webservice_Exception extends TicketEvolution_Exception
+{
+}

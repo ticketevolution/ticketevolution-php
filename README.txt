@@ -4,6 +4,18 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+Aug 30, 2011
+This is the big update you've been waiting for.
+- Added new API features through v8 including client and order methods
+- Much improved "Demo App"
+  - Now shows exact PHP code used
+  - Method selector re-ordered to match API documentation
+  - Methods that affect data are disabled if you do not use the Sandbox API
+- Much easier to override how the data is returned from API calls. Specify your
+  own ResultSet and Result classes if you like as well as and "Post-Processing"
+  of the JSON returned
+- Code now passes Zend CodeSniffer tests with no errors
+
 July 25, 2011
 Fixed a bug in buildRawSignature() (in Webservices.php) in which parameter names 
 were not being urlencoded (only the values were) which resulted in 401 Unauthorized 
