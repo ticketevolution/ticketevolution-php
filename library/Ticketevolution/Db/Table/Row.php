@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,8 +12,8 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
@@ -23,20 +23,20 @@
  */
 
 /**
- * @see Ticketevolution_Db_Table_Row_Abstract
+ * @see TicketEvolution_Db_Table_Row_Abstract
  */
-require_once 'Ticketevolution/Db/Table/Row/Abstract.php';
+require_once 'TicketEvolution/Db/Table/Row/Abstract.php';
 
 /**
  * Reference concrete class that extends Zend_Db_Table_Row_Abstract.
  * Developers may also create their own classes that extend the abstract class.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Db_Table_Row extends Ticketevolution_Db_Table_Row_Abstract
+class TicketEvolution_Db_Table_Row extends TicketEvolution_Db_Table_Row_Abstract
 {
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,56 +12,48 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution
+ * @category    TicketEvolution
+ * @package     TicketEvolution
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Venue.php 66 2011-06-14 01:42:27Z jcobb $
+ * @version     $Id: EmailAddress.php 74 2011-06-22 22:23:34Z jcobb $
  */
 
 
 /**
- * @category    Ticketevolution
- * @package     Ticketevolution
+ * @category    TicketEvolution
+ * @package     TicketEvolution
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Searchresults
+class TicketEvolution_EmailAddress
 {
     /**
-     * Constructs a new Ticket Evolution Searchresults
+     * Constructs a new Ticket Evolution EmailAddress
      *
      * @param  object $object
-     * @throws Ticketevolution_Exception
-     * @return Ticketevolution_Searchresults
+     * @throws TicketEvolution_Exception
+     * @return TicketEvolution_EmailAddress
      */
     public function __construct($object)
     {
-        foreach($object as $prop => $val) {
+        foreach ($object as $prop => $val) {
             switch($prop) {
                 case 'updated_at':
-                    // This property is a date, convert it into a Ticketevolution_Date object
+                    // This property is a date, convert it into a TicketEvolution_Date object
                     /**
-                     * @see Ticketevolution_Date
+                     * @see TicketEvolution_Date
                      */
-                    require_once 'Ticketevolution/Date.php';
+                    require_once 'TicketEvolution/Date.php';
                     
-                    $this->{$prop} = new Ticketevolution_Date($val, Ticketevolution_Date::ISO_8601);
+                    $this->{$prop} = new TicketEvolution_Date($val, TicketEvolution_Date::ISO_8601);
                     break;
                     
                 default:
                     $this->{$prop} = $val;
             }
-        }
-        
-        // Loop above only catches dates at the root level. Set these too.
-        if(!empty($object->upcoming_events->first)) {
-            $this->upcoming_events->first = new Ticketevolution_Date($object->upcoming_events->first, Ticketevolution_Date::ISO_8601);
-        }
-        if(!empty($object->upcoming_events->last)) {
-            $this->upcoming_events->last = new Ticketevolution_Date($object->upcoming_events->last, Ticketevolution_Date::ISO_8601);
         }
     }
 }

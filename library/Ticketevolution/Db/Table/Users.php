@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,8 +12,8 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
@@ -23,18 +23,18 @@
  */
 
 /**
- * @see Ticketevolution_Db_Table_Abstract
+ * @see TicketEvolution_Db_Table_Abstract
  */
-require_once 'Ticketevolution/Db/Table/Abstract.php';
+require_once 'TicketEvolution/Db/Table/Abstract.php';
 
 /**
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Db_Table_Users extends Ticketevolution_Db_Table_Abstract
+class TicketEvolution_Db_Table_Users extends TicketEvolution_Db_Table_Abstract
 {
     /**
      * The table name.
@@ -92,12 +92,12 @@ class Ticketevolution_Db_Table_Users extends Ticketevolution_Db_Table_Abstract
     protected $_referenceMap    = array(
         'brokers'            => array(
             'columns'           => 'brokerId',
-            'refTableClass'     => 'Ticketevolution_Db_Table_Brokers',
+            'refTableClass'     => 'TicketEvolution_Db_Table_Brokers',
             'refColumns'        => 'brokerId'
             ),
         'offices'            => array(
             'columns'           => 'officeId',
-            'refTableClass'     => 'Ticketevolution_Db_Table_Offices',
+            'refTableClass'     => 'TicketEvolution_Db_Table_Offices',
             'refColumns'        => 'officeId'
             ),
     );

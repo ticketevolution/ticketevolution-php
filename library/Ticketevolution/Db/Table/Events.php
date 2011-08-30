@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,29 +12,29 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Events.php 57 2011-06-07 01:28:48Z jcobb $
+ * @version     $Id: Events.php 84 2011-07-10 08:06:54Z jcobb $
  */
 
 /**
- * @see Ticketevolution_Db_Table_Abstract
+ * @see TicketEvolution_Db_Table_Abstract
  */
-require_once 'Ticketevolution/Db/Table/Abstract.php';
+require_once 'TicketEvolution/Db/Table/Abstract.php';
 
 /**
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Db_Table_Events extends Ticketevolution_Db_Table_Abstract
+class TicketEvolution_Db_Table_Events extends TicketEvolution_Db_Table_Abstract
 {
     /**
      * The table name.
@@ -68,7 +68,9 @@ class Ticketevolution_Db_Table_Events extends Ticketevolution_Db_Table_Abstract
      *
      * @var array
      */
-    protected $_dependentTables = array('Ticketevolution_Db_Table_Eventperformers');
+    protected $_dependentTables = array(
+        'TicketEvolution_Db_Table_Eventperformers',
+    );
     
     
     /**
@@ -90,22 +92,101 @@ class Ticketevolution_Db_Table_Events extends Ticketevolution_Db_Table_Abstract
      * @var array
      */
     protected $_referenceMap    = array(
-        'venues'            => array(
+        'tevoVenue'             => array(
             'columns'           => 'venueId',
-            'refTableClass'     => 'Ticketevolution_Db_Table_Venues',
+            'refTableClass'     => 'TicketEvolution_Db_Table_Venues',
             'refColumns'        => 'venueId'
             ),
-        'configurations'    => array(
+        'Venue'             => array(
+            'columns'           => 'venueId',
+            'refTableClass'     => 'TeamOne_Db_Table_Venues',
+            'refColumns'        => 'venueId'
+            ),
+        'Configuration'     => array(
             'columns'           => 'configurationId',
-            'refTableClass'     => 'Ticketevolution_Db_Table_Configurations',
+            'refTableClass'     => 'TicketEvolution_Db_Table_Configurations',
             'refColumns'        => 'configurationId'
             ),
-        'categories'        => array(
+        'Category'          => array(
             'columns'           => 'categoryId',
-            'refTableClass'     => 'Ticketevolution_Db_Table_Categories',
+            'refTableClass'     => 'TicketEvolution_Db_Table_Categories',
             'refColumns'        => 'categoryId'
             ),
     );
+    
+    
+    /**
+     * Get results via an array of parameters
+     * (Jeff): I am overriding the abstract method here because I wanted to add the getPast option
+     *
+     * @param  mixed $params Options to use for the search query or a `uid`
+     * @throws TicketEvolution_Models_Exception
+     * @return TeamOne_Db_Events
+     */
+    public function getByParameters($params, $limit=null, $orderBy=null, $getPast=false)
+    {
+        /**
+         * @see Zend_Date
+         */
+        require_once 'Zend/Date.php';
+
+        if (!is_array($params) && !is_array($this->_primary)) {
+            // Assume this is a single Id and find it
+            $row = $this->find((int)$params);
+            if (isset($row[0])) {
+                return $row[0];
+            } else {
+                return false;
+            }
+        }
+        
+        // It appears that we have an array of search options
+        $options = $this->_prepareOptions($params);
+        
+        $select = $this->select();
+        foreach ($options as $column => $value) {
+            // Some parameters may be like 'tevoPerformerId' 
+            // We need to change those to just 'performerId'
+            $column = lcfirst(preg_replace('/^tevo(\w{1})/i', "$1", $column));
+            if (is_array($value)) {
+                $select->where($column ." IN (?)", $value);
+            } elseif ($value instanceof Zend_Date) {
+                $select->where($column ." = ?", $value->get(TicketEvolution_Date::MYSQL_DATETIME));
+            } else {
+                $select->where($column ." = ?", $value);
+            }
+        }
+        
+        if (!isset($options['eventDate']) && !$getPast) {
+            $curDate = new Zend_Date();
+            $select->where("eventDate > ?", $curDate->get(TicketEvolution_Date::MYSQL_DATETIME));
+        }
+        
+        if (!is_null($orderBy)) {
+            if (is_array($orderBy)) {
+                foreach ($orderBy as $order) {
+                    $select->order($order);
+                }
+            } else {
+                $select->order($orderBy);
+            }
+        }
+        
+        if (!is_null($limit)) {
+            $select->limit($limit);
+        }
+
+        try{
+            if ($limit == 1) {
+                $results = $this->fetchRow($select);
+            } else {
+                $results = $this->fetchAll($select);
+            }
+        } catch(Exception $e) {
+            throw new TicketEvolution_Db_Table_Exception($e);
+        }
+        return $results;
+    }
 
 
 }
