@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,29 +12,29 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Eventperformers.php 57 2011-06-07 01:28:48Z jcobb $
+ * @version     $Id: Eventperformers.php 80 2011-07-07 19:57:09Z jcobb $
  */
 
 /**
- * @see Ticketevolution_Db_Table_Abstract
+ * @see TicketEvolution_Db_Table_Abstract
  */
-require_once 'Ticketevolution/Db/Table/Abstract.php';
+require_once 'TicketEvolution/Db/Table/Abstract.php';
 
 /**
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Db_Table_Eventperformers extends Ticketevolution_Db_Table_Abstract
+class TicketEvolution_Db_Table_Eventperformers extends TicketEvolution_Db_Table_Abstract
 {
     /**
      * The table name.
@@ -90,14 +90,20 @@ class Ticketevolution_Db_Table_Eventperformers extends Ticketevolution_Db_Table_
      * @var array
      */
     protected $_referenceMap    = array(
-        'event'            => array(
+        'Event'            => array(
             'columns'           => 'eventId',
-            'refTableClass'     => 'Ticketevolution_Db_Table_Events',
-            'refColumns'        => 'eventId'
+            'refTableClass'     => 'TicketEvolution_Db_Table_Events',
+            'refColumns'        => 'eventId',
+            'onDelete'          => self::CASCADE,
             ),
-        'performer'        => array(
+        'Performer'        => array(
             'columns'           => 'performerId',
-            'refTableClass'     => 'Ticketevolution_Db_Table_Performers',
+            'refTableClass'     => 'TeamOne_Db_Table_Performers',
+            'refColumns'        => 'performerId'
+            ),
+        'tevoPerformer'        => array(
+            'columns'           => 'performerId',
+            'refTableClass'     => 'TicketEvolution_Db_Table_Performers',
             'refColumns'        => 'performerId'
             ),
     );

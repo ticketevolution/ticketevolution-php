@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,14 +12,14 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Abstract.php 61 2011-06-09 03:43:48Z jcobb $
+ * @version     $Id: Abstract.php 83 2011-07-10 08:06:34Z jcobb $
  */
 
 /**
@@ -28,13 +28,13 @@
 require_once 'Zend/Db/Table/Abstract.php';
 
 /**
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
+class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
 {
     /**
      * The column that we use to indicate status in boolean form
@@ -48,22 +48,23 @@ class Ticketevolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
      *
      * @var string
      */
-    protected $_rowClass = 'Ticketevolution_Db_Table_Row';
+    protected $_rowClass = 'TicketEvolution_Db_Table_Row';
 
     /**
      * Returns the name of the column we are using to track status
      *
      * @return string
      */
-    public function getStatusColumn() {
+    public function getStatusColumn()
+    {
         // If a _statusColumn is explicitly set the return the column name
-        if(isset($this->_statusColumn)) {
+        if (isset($this->_statusColumn)) {
             return $this->_statusColumn;
         }
         
         // If _statusColumn is not set find a column with 'status' in the name
-        foreach($this->_getCols() as $column) {
-            if(stripos($column, 'status') !== false) {
+        foreach ($this->_getCols() as $column) {
+            if (stripos($column, 'status') !== false) {
                 return $column;
             }
         }
@@ -78,7 +79,8 @@ class Ticketevolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
      * @param array $data
      * @return void
      */
-    protected function _trimAllFields(array &$data) {
+    protected function _trimAllFields(array &$data)
+    {
         array_map('trim', $data);
     }
 
@@ -91,8 +93,9 @@ class Ticketevolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
      * @param array $data
      * @return void
      */
-    protected function _setEmptyFieldsToNull(array &$data) {
-        array_walk($data, array('Ticketevolution_Db_Table_Abstract', '_emptyFieldsToNull'));
+    protected function _setEmptyFieldsToNull(array &$data)
+    {
+        array_walk($data, array('TicketEvolution_Db_Table_Abstract', '_emptyFieldsToNull'));
     }
 
 
@@ -103,8 +106,9 @@ class Ticketevolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
      * @param string $key
      * @return void
      */
-    protected function _emptyFieldsToNull(&$field, $key) {
-        if($this->_metadata[$key]['NULLABLE'] && empty($field)) {
+    protected function _emptyFieldsToNull(&$field, $key)
+    {
+        if ($this->_metadata[$key]['NULLABLE'] && empty($field)) {
             $field = null;
         }
     }
@@ -124,12 +128,12 @@ class Ticketevolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
         // Make sure we don't try and set an empty createdDate
         // We don't need have to check if it exists because MySQL will add it 
         // automatically but we will for consistency
-        if(!isset($data['createdDate']) || empty($data['createdDate'])) {
+        if (!isset($data['createdDate']) || empty($data['createdDate'])) {
             $data['createdDate'] = date('c');
         }
 
         // Make sure we have a lastModifiedDate
-        if(!isset($data['lastModifiedDate']) || empty($data['lastModifiedDate'])) {
+        if (!isset($data['lastModifiedDate']) || empty($data['lastModifiedDate'])) {
             $data['lastModifiedDate'] = date('c');
         }
 
@@ -149,11 +153,11 @@ class Ticketevolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
         $this->_trimAllFields($data);
 
         // Make sure we don't mess with createdDate
-        if(isset($data['createdDate'])) {
+        if (isset($data['createdDate'])) {
             unset($data['createdDate']);
         }
         // Make sure we have a lastModifiedDate
-        if(!isset($data['lastModifiedDate']) || empty($data['lastModifiedDate'])) {
+        if (!isset($data['lastModifiedDate']) || empty($data['lastModifiedDate'])) {
             $data['lastModifiedDate'] = date('c');
         }
         
@@ -170,7 +174,7 @@ class Ticketevolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
         $data[$this->_statusColumn] = 0;
 
         // Make sure we have a lastModifiedDate
-        if(!isset($data['lastModifiedDate']) || empty($data['lastModifiedDate'])) {
+        if (!isset($data['lastModifiedDate']) || empty($data['lastModifiedDate'])) {
             $data['lastModifiedDate'] = date('c');
         }
         

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -13,14 +13,15 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution_Date
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Date
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Date.php 72 2011-06-22 20:21:47Z jeff $
+ * @version     $Id: Date.php 82 2011-07-10 08:05:51Z jcobb $
  */
+
 /**
  * Include needed Date classes
  */
@@ -30,12 +31,13 @@ require_once 'Zend/Date.php';
  * Extends Zend_Date with some handy constants and also allows for easy handling
  * of "TBA" event times.
  * 
- * @category    Ticketevolution
- * @package     Ticketevolution_Date
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Date
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Date extends Zend_Date {
+class TicketEvolution_Date extends Zend_Date
+{
     /**
      * These are here for convenience
      * To see why some use lowercase 'y' instead of 'Y' as one would think
@@ -51,6 +53,9 @@ class Ticketevolution_Date extends Zend_Date {
 
     const DATE_FULL_US = 'EEEE, MMMM d, yyyy';
     const DATE_LONG_US = 'MMMM d, yyyy';
+
+    const TIME_12_HOUR = 'h:mm a';
+    const TIME_24_HOUR = 'H:mm';
 
     const TBA_DISPLAY = 'TBA';
 
@@ -83,7 +88,8 @@ class Ticketevolution_Date extends Zend_Date {
      * @return Zend_Date
      * @throws Zend_Date_Exception
      */
-    public function __construct($date = null, $part = null, $locale = null) {
+    public function __construct($date = null, $part = null, $locale = null)
+    {
         parent::__construct($date, $part, $locale);
 
         if ($this->get('HH:mm') === '23:59') {
@@ -102,7 +108,8 @@ class Ticketevolution_Date extends Zend_Date {
      * @param  string|Zend_Locale  $locale  OPTIONAL Locale for parsing input
      * @return string  date or datepart
      */
-    public function getTbaSafe($part = null, $locale = null) {
+    public function getTbaSafe($part = null, $locale = null)
+    {
         if ($this->get('HH:mm') === '00:00') {
             // This time is for a TBA event
             $patterns = array('/[HhmSsWTa:]+/', '/ $/');
@@ -116,14 +123,16 @@ class Ticketevolution_Date extends Zend_Date {
     /**
      * set to the first second of current day
      */
-    public function setDayStart() {
+    public function setDayStart()
+    {
         return $this->setHour(0)->setMinute(0)->setSecond(0);
     }
 
     /**
      * get the first second of current day
      */
-    public function getDayStart() {
+    public function getDayStart()
+    {
         $clone = clone $this;
         return $clone->setDayStart();
     }
@@ -134,12 +143,15 @@ class Ticketevolution_Date extends Zend_Date {
      * @param Zend_Date $date
      * @return int 
      */
-    public function getDaysBetween(Zend_Date $date) {
+    public function getDaysBetween(Zend_Date $date)
+    {
         // 86400 seconds/day = 24 hours/day * 60 minutes/hour * 60 seconds/minute
         // rounding takes care of time changes
-        return round($date->getDayStart()->sub(
-                        $this->getDayStart()
-                )->toValue() / 86400);
+        return round(
+            $date->getDayStart()
+            ->sub($this->getDayStart())
+            ->toValue() / 8640
+        );
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,8 +12,8 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
@@ -33,13 +33,15 @@ require_once 'Zend/Db.php';
 require_once 'Zend/Db/Table/Row/Abstract.php';
 
 /**
- * @category    Ticketevolution
- * @package     Ticketevolution_Db
+ * @category    TicketEvolution
+ * @package     TicketEvolution_Db
  * @subpackage  Table
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-abstract class Ticketevolution_Db_Table_Row_Abstract extends Zend_Db_Table_Row_Abstract implements ArrayAccess, IteratorAggregate
+abstract class TicketEvolution_Db_Table_Row_Abstract
+    extends Zend_Db_Table_Row_Abstract
+    implements ArrayAccess, IteratorAggregate
 {
     /**
      * Allows pre-insert logic to be applied to row.
@@ -105,7 +107,7 @@ abstract class Ticketevolution_Db_Table_Row_Abstract extends Zend_Db_Table_Row_A
         // Make sure we don't try and set an empty createdDate
         // We don't need have to check if it exists because MySQL will add it 
         // automatically but we will for consistency
-        if(!isset($this->_data['createdDate']) 
+        if (!isset($this->_data['createdDate']) 
            || empty($this->_data['createdDate'])) {
             $this->__set('createdDate', date('c'));
         }
@@ -120,7 +122,7 @@ abstract class Ticketevolution_Db_Table_Row_Abstract extends Zend_Db_Table_Row_A
     protected function _setModificationInfo()
     {
         // Make sure we have a lastModifiedDate
-        if(!isset($this->_data['lastModifiedDate']) 
+        if (!isset($this->_data['lastModifiedDate']) 
            || empty($this->_data['lastModifiedDate'])) {
             $this->__set('lastModifiedDate', date('c'));
         }

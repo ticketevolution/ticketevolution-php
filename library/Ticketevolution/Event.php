@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,8 +12,8 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution
+ * @category    TicketEvolution
+ * @package     TicketEvolution
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
@@ -23,33 +23,33 @@
 
 
 /**
- * @category    Ticketevolution
- * @package     Ticketevolution
+ * @category    TicketEvolution
+ * @package     TicketEvolution
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Ticketevolution_Event
+class TicketEvolution_Event
 {
     /**
      * Constructs a new Ticket Evolution Event
      *
      * @param  object $object
-     * @throws Ticketevolution_Exception
-     * @return Ticketevolution_Event
+     * @throws TicketEvolution_Exception
+     * @return TicketEvolution_Event
      */
     public function __construct($object)
     {
-        foreach($object as $prop => $val) {
+        foreach ($object as $prop => $val) {
             switch($prop) {
                 case 'updated_at':
                 case 'occurs_at':
-                    // This property is a date, convert it into a Ticketevolution_Date object
+                    // This property is a date, convert it into a TicketEvolution_Date object
                     /**
-                     * @see Ticketevolution_Date
+                     * @see TicketEvolution_Date
                      */
-                    require_once 'Ticketevolution/Date.php';
+                    require_once 'TicketEvolution/Date.php';
                     
-                    $this->{$prop} = new Ticketevolution_Date($val, Ticketevolution_Date::ISO_8601);
+                    $this->{$prop} = new TicketEvolution_Date($val, TicketEvolution_Date::ISO_8601);
                     break;
                     
                 default:
