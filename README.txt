@@ -4,6 +4,11 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+Aug 30, 2011 Part Deux
+- Corrected some documentation. You can create multiple client addresses/emails/phone numbers
+  in a single API call
+- Corrected demo app to show example of creating two client addresses at once
+
 Aug 30, 2011
 This is the big update you've been waiting for.
 - Added new API features through v8 including client and order methods

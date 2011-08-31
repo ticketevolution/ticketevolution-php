@@ -483,20 +483,17 @@ if(isset($_GET['apiMethod'])) {
                             $address1->country_code = 'US';
                             $address1->label = 'Work';
                             
-                            /**
-                             * Create another properly formatted client address
-                             * NOT CURRENTLY SUPPORTED
+                            // Create another properly formatted client address
                             $address2 = new stdClass;
                             $address2->street_address = '744 Evergreen Terrace';
                             $address2->locality = 'Springfield';
                             $address2->region = 'MG';
                             $address2->postal_code = '58008-1111';
                             $address2->country_code = 'US';
-                            $address2->label = 'Billing (Flander’s Residence)';
-                            */
+                            $address2->label = 'Ned’s House';
                             
                             $addresses[] = $address1;
-                            //$addresses[] = $address2;
+                            $addresses[] = $address2;
                             
                             // Display the code
                             echo '$address1 = new stdClass;' . PHP_EOL
@@ -508,19 +505,17 @@ if(isset($_GET['apiMethod'])) {
                                . '$address1->country_code = \'US\';' . PHP_EOL
                                . '$address1->label = \'Work\';' . PHP_EOL
                                . PHP_EOL
-/**
+
                                . '$address2 = new stdClass;' . PHP_EOL
                                . '$address2->street_address = \'744 Evergreen Terrace\';' . PHP_EOL
                                . '$address2->locality = \'Springfield\';' . PHP_EOL
                                . '$address2->region = \'MG\';' . PHP_EOL
                                . '$address2->postal_code = \'58008-0000\';' . PHP_EOL
                                . '$address2->country_code = \'US\';' . PHP_EOL
-                               . '$address2->label = \'Billing (Flander’s Residence)\';' . PHP_EOL
+                               . '$address2->label = \'Ned’s House\';' . PHP_EOL
                                . PHP_EOL
-
- */
                                . '$addresses[] = $address1;' . PHP_EOL
-                               //. '$addresses[] = $address2;' . PHP_EOL
+                               . '$addresses[] = $address2;' . PHP_EOL
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($clientId, $addresses);' . PHP_EOL
                             ;
