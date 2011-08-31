@@ -4,6 +4,12 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+Aug 30, 2011 Part III: Return of the RedEye
+- Cleaned up/corrected some more documentation in Webservice.php
+- Moved TicketEvolution_ClientAddress to TicketEvolution_Address_Client
+- Moved TicketEvolution_ClientEmailAddress to TicketEvolution_EmailAddress_Client
+- Moved TicketEvolution_ClientPhoneNumber to TicketEvolution_PhoneNumber_Client
+
 Aug 30, 2011 Part Deux
 - Corrected some documentation. You can create multiple client addresses/emails/phone numbers
   in a single API call

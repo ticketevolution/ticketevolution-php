@@ -18,7 +18,7 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Address.php 74 2011-06-22 22:23:34Z jcobb $
+ * @version     $Id: EmailAddress_Client.php 74 2011-06-22 22:23:34Z jcobb $
  */
 
 
@@ -28,14 +28,14 @@
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_ClientAddress extends TicketEvolution_Address
+class TicketEvolution_EmailAddress_Client extends TicketEvolution_EmailAddress
 {
     /**
-     * Constructs a new Ticket Evolution ClientAddress
+     * Constructs a new Ticket Evolution EmailAddress_Client
      *
      * @param  object $object
      * @throws TicketEvolution_Exception
-     * @return TicketEvolution_Address
+     * @return TicketEvolution_EmailAddress_Client
      */
     public function __construct($object)
     {
