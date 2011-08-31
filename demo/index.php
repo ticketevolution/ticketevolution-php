@@ -538,14 +538,12 @@ if(isset($_GET['apiMethod'])) {
                             $address = new stdClass;
                             $address->company = 'Uncle Moe’s Family Feed-Bag';
                             $address->extended_address = 'Next to King Toot’s';
-                            $address->time_zone = 'Arizona';
                             $address->label = 'Work (and home)';
                             
                             // Display the code
                             echo '$address = new stdClass;' . PHP_EOL
                                . '$address->company = \'Uncle Moe’s Family Feed-Bag\';' . PHP_EOL
                                . '$address->extended_address = \'Next to King Toot’s\';' . PHP_EOL
-                               . '$address->time_zone = \'CST\';' . PHP_EOL
                                . '$address->label = \'Work (and home)\';' . PHP_EOL
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($clientId, $addressId, $address);' . PHP_EOL
