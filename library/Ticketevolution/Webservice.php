@@ -549,7 +549,6 @@ class TicketEvolution_Webservice
 
     /**
      * Create a client address
-     * Currently the API only supports making one at a time
      *
      * @param  int $clientId ID of the specific client
      * @param  array $addresses Array of address data structured per API example
@@ -707,7 +706,6 @@ class TicketEvolution_Webservice
 
     /**
      * Create a client phone number
-     * Currently the API only supports making one at a time
      *
      * @param  int $clientId ID of the specific client
      * @param  array $phoneNumbers Array of phone numbers structured per API example
@@ -865,7 +863,6 @@ class TicketEvolution_Webservice
 
     /**
      * Create a client email address
-     * Currently the API only supports making one at a time
      *
      * @param  int $clientId ID of the specific client
      * @param  array $emailAddresses Array of email addresses structured per API example
@@ -1856,10 +1853,8 @@ class TicketEvolution_Webservice
     /**
      * Create an order
      *
-     * @param  array $orders Can be either an array with details for a single order
-                            or an array of arrays for multiple orders.
-                            Multiple items per order is not currently supported
-                            by the API.
+     * @param  array $orders Multiple items per order is not currently supported 
+     *      by the API.
      * @param bool $fulfillment Whether this is a fulfillment order or not
      * @throws TicketEvolution_Webservice_Exception
      * @return 
