@@ -2587,7 +2587,7 @@ class TicketEvolution_Webservice
      */
     static public function buildRawSignature($baseUri, $action, $endPoint, $options)
     {
-        $signature = $action . ' ' . str_replace('http://', '', $baseUri) . '/' . $endPoint . '?';
+        $signature = $action . ' ' . preg_replace('/https?:\/\//', '', $baseUri) . '/' . $endPoint . '?';
         if (!empty($options)) {
             if (is_array($options)) {
                 // Turn the $options into GET parameters
