@@ -13,7 +13,7 @@ require_once './includes/common.php';
 $table = new Ticketevolution_Db_Table_Events();
 
 // Create an object for the `tevoEventPerformers` table too
-$epTable = new Ticketevolution_Db_Table_Eventperformers();
+$epTable = new TicketEvolution_Db_Table_EventPerformers();
 
 for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) {
     /*******************************************************************************

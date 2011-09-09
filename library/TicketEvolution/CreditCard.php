@@ -13,36 +13,46 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_Webservice
- * @subpackage  Webservice
+ * @package     TicketEvolution
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: ResultSet.php 79 2011-07-05 19:12:54Z jcobb $
  */
-
-
-/**
- * @see TicketEvolution_Webservice_ResultSet_Abstract
- */
-require_once 'TicketEvolution/Webservice/ResultSet/Abstract.php';
 
 
 /**
  * @category    TicketEvolution
- * @package     TicketEvolution_Webservice
- * @subpackage  Webservice
+ * @package     TicketEvolution
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Webservice_ResultSet_ClientPhoneNumbers
-    extends TicketEvolution_Webservice_ResultSet_PhoneNumbers
+class TicketEvolution_CreditCard
 {
     /**
-     * Name of the class for the items in this set
+     * Constructs a new Ticket Evolution CreditCard
      *
-     * @var string
+     * @param  object $object
+     * @throws TicketEvolution_Exception
+     * @return TicketEvolution_CreditCard
      */
-    protected $_itemClass = 'TicketEvolution_ClientPhoneNumber';
+    public function __construct($object)
+    {
+        foreach ($object as $prop => $val) {
+            switch($prop) {
+                case 'updated_at':
+                    // This property is a date, convert it into a TicketEvolution_Date object
+                    /**
+                     * @see TicketEvolution_Date
+                     */
+                    require_once 'TicketEvolution/Date.php';
+                    
+                    $this->{$prop} = new TicketEvolution_Date($val, TicketEvolution_Date::ISO_8601);
+                    break;
+                    
+                default:
+                    $this->{$prop} = $val;
+            }
+        }
+    }
 }

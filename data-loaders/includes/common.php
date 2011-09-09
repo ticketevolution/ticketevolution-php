@@ -18,7 +18,6 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id$
  */
 
 
@@ -35,7 +34,7 @@ $validators = array(
 $GET = new Zend_Filter_Input($filters, $validators, $_GET);
 
 // Create an object for the `dataLoaderStatus` table
-$statusTable = new Ticketevolution_Db_Table_Dataloaderstatus();
+$statusTable = new TicketEvolution_Db_Table_DataLoaderStatus();
 
 // Set the date we last ran this script so we can get only entries that have
 // been added or changed since then
