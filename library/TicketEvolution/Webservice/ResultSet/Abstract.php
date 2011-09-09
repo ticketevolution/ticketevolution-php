@@ -19,7 +19,6 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: ResultSet.php 79 2011-07-05 19:12:54Z jcobb $
  */
 
 
@@ -30,7 +29,8 @@
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Webservice_ResultSet_Abstract implements SeekableIterator, Countable
+class TicketEvolution_Webservice_ResultSet_Abstract
+    implements SeekableIterator, Countable
 {
     /**
      * Name of the class for the items in this set
@@ -203,11 +203,11 @@ class TicketEvolution_Webservice_ResultSet_Abstract implements SeekableIterator,
 
     /**
      * Remove entries that are in the supplied array
-     * This is mainly used after performing a listTicketgroups() and can be used 
+     * This is mainly used after performing a listTicketGroups() and can be used 
      * to pass in an array of brokerage IDs to filter out their inventory if
      * you do not want it to show.
      *
-     * Usage: $results = $tevo->listTicketgroups($options);
+     * Usage: $results = $tevo->listTicketGroups($options);
      *        $excludeArray = array(1,3,5,7,9);
      *        $results->excludeResults($excludeArray, 'brokerage');
      *
@@ -238,10 +238,10 @@ class TicketEvolution_Webservice_ResultSet_Abstract implements SeekableIterator,
 
     /**
      * Remove entries that are NOT in the supplied array
-     * This is mainly used after performing a listTicketgroups() and can be used 
+     * This is mainly used after performing a listTicketGroups() and can be used 
      * to pass in an array of brokerage IDs to show ONLY their inventory.
      *
-     * Usage: $results = $tevo->listTicketgroups($options);
+     * Usage: $results = $tevo->listTicketGroups($options);
      *        $exclusiveArray = array(2,4,6,8,10);
      *        $results->filterResults($exclusiveArray, 'brokerage');
      *
@@ -273,7 +273,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract implements SeekableIterator,
     /**
      * Sort the resultSet.
      *
-     * Usage: $results = $tevo->listTicketgroups($options);
+     * Usage: $results = $tevo->listTicketGroups($options);
      *        $sortOptions = array('section', // Defaults to SORT_ASC
      *                             'row' => SORT_DESC,
      *                             'retail_price' => SORT_ASC);

@@ -18,7 +18,6 @@
  * @author      J Cobb <j@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Ticket Evolution INC (http://www.ticketevolution.com)
  * @license     http://code.ticketevolution.com/license/new-bsd     New BSD License
- * @version     $Id$
  */
 
 
@@ -73,7 +72,7 @@ require_once 'bootstrap.php';
 		    <p>These “DataLoader” scripts can be used to populate local database tables with a cache of the Ticket Evolution data. If you choose to do this then you should be sure to run each of these scripts at least daily. We suggest adding them to your <code>crontab</code> on your server.</p>
 
             <?php
-                $table = new Ticketevolution_Db_Table_Dataloaderstatus();
+                $table = new TicketEvolution_Db_Table_DataLoaderStatus();
                 
                 $scripts = array(
                     'brokers',

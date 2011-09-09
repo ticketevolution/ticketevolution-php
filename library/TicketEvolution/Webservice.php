@@ -18,7 +18,6 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Webservice.php 78 2011-07-02 01:12:53Z jcobb $
  */
 
 
@@ -48,6 +47,9 @@ class TicketEvolution_Webservice
 
     const EMAILADDRESS_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_EmailAddresses';
     const EMAILADDRESS_CLASS = 'TicketEvolution_EmailAddress_Client';
+
+    const CREDITCARD_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_CreditCards';
+    const CREDITCARD_CLASS = 'TicketEvolution_CreditCard_Client';
 
     const OFFICE_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Offices';
     const OFFICE_CLASS = 'TicketEvolution_Office';
@@ -115,7 +117,7 @@ class TicketEvolution_Webservice
      *
      * @var string
      */
-    protected $_baseUri = 'http://api.ticketevolution.com';
+    protected $_baseUri = 'https://api.ticketevolution.com';
 
     /**
      * API version
@@ -155,7 +157,9 @@ class TicketEvolution_Webservice
              * @see TicketEvolution_Webservice_Exception
              */
             require_once 'TicketEvolution/Webservice/Exception.php';
-            throw new TicketEvolution_Webservice_Exception('Parameters must be in an array or a Zend_Config object');
+            throw new TicketEvolution_Webservice_Exception(
+                'Parameters must be in an array or a Zend_Config object'
+            );
         }
 
         /*
@@ -166,7 +170,9 @@ class TicketEvolution_Webservice
              * @see TicketEvolution_Webservice_Exception
              */
             require_once 'TicketEvolution/Webservice/Exception.php';
-            throw new TicketEvolution_Webservice_Exception('API token must be specified in a string');
+            throw new TicketEvolution_Webservice_Exception(
+                'API token must be specified in a string'
+            );
         }
 
         /*
@@ -177,7 +183,9 @@ class TicketEvolution_Webservice
              * @see TicketEvolution_Webservice_Exception
              */
             require_once 'TicketEvolution/Webservice/Exception.php';
-            throw new TicketEvolution_Webservice_Exception('Secret key must be specified in a string');
+            throw new TicketEvolution_Webservice_Exception(
+                'Secret key must be specified in a string'
+            );
         }
 
         /*
@@ -285,6 +293,10 @@ class TicketEvolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
+            /**
+             * @see TicketEvolution_Webservice_Exception
+             */
+            require_once 'TicketEvolution/Webservice/Exception.php';
             throw new TicketEvolution_Webservice_Exception(
                 'You must provide a non-empty query string'
             );
@@ -391,6 +403,57 @@ class TicketEvolution_Webservice
         $response = $client->restGet('/' . $endPoint, $options);
 
         return $this->_postProcess($response, self::CLIENT_CLASS);
+    }
+
+
+    /**
+     * Search for client(s)
+     *
+     * @param  string $query The query string
+     * @param  array $options Options to use for the search query
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Webservice_ResultSet_Clients
+     */
+    public function searchClients($query, array $options)
+    {
+        $trimmedQuery = trim($query);
+        if (empty ($trimmedQuery)) {
+            /**
+             * @see TicketEvolution_Webservice_Exception
+             */
+            require_once 'TicketEvolution/Webservice/Exception.php';
+            throw new TicketEvolution_Webservice_Exception(
+                'You must provide a non-empty query string'
+            );
+        }
+
+        $endPoint = 'clients/search';
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $options['q'] = (string) $query;
+        $defaultOptions = array(
+            'page'  => '1',
+            'per_page' => '100'
+        );
+        $options = $this->_prepareOptions(
+            'GET',
+            $endPoint,
+            $options,
+            $defaultOptions
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restGet('/' . $endPoint, $options);
+
+        return $this->_postProcess($response, self::CLIENT_RESULTSET_CLASS);
     }
 
 
@@ -943,6 +1006,259 @@ class TicketEvolution_Webservice
 
 
     /**
+     * List Client credit cards
+     *
+     * @param  int $clientId ID of the specific client
+     * @param  array $options Options to use for the search query
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Webservice_ResultSet_CreditCards
+     */
+    public function listClientCreditCards($clientId, array $options)
+    {
+        $endPoint = 'clients/' . $clientId . '/credit_cards';
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $defaultOptions = array(
+            'page'  => '1',
+            'per_page' => '100'
+        );
+        $options = $this->_prepareOptions(
+            'GET',
+            $endPoint,
+            $options,
+            $defaultOptions
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restGet('/' . $endPoint, $options);
+
+        return $this->_postProcess($response, self::CREDITCARDS_RESULTSET_CLASS);
+    }
+
+
+    /**
+     * Get a single client credit card by Id
+     *
+     * NOTE: For PCI compliance, once you create a credit card you can NEVER 
+     * retrieve the full card number, expiration date or verification code.
+     *
+     * @param  int $clientId ID of the specific client
+     * @param  int $creditCardId ID of the specific credit card
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_EmailAddress_Client
+     */
+    public function showClientCreditCard($clientId, $creditCardId)
+    {
+        $endPoint = 'clients/' . $clientId . '/credit_cards/' . $creditCardId;
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $options = array();
+        $defaultOptions = array();
+        $options = $this->_prepareOptions(
+            'GET',
+            $endPoint,
+            $options,
+            $defaultOptions
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restGet('/' . $endPoint, $options);
+
+        return $this->_postProcess($response, self::CREDITCARD_CLASS);
+    }
+
+
+    /**
+     * Create client credit card(s)
+     *
+     *  NOTE: Currently the API only supports creating a single card at a time.
+     *        If you pass in more than one credit card to POST, it will just 
+     *        ignore everything after the first one.
+     *        This will change in a future release to allow multiples.
+     *
+     * @param  int $clientId ID of the specific client
+     * @param  array $creditCards Array of credit cards structured per API example
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Webservice_ResultSet_EmailAddresses
+     */
+    public function createClientCreditCard($clientId, $creditCards)
+    {
+        if (!$this->_usingSecureApi()) {
+            /**
+             * @see TicketEvolution_Webservice_Exception
+             */
+            require_once 'TicketEvolution/Webservice/Exception.php';
+            throw new TicketEvolution_Webservice_Exception(
+                'You must use an https URL to transmit full credit card numbers'
+            );
+        }
+        
+        $newCreditCards = new stdClass;
+        foreach ($creditCards as $creditCard) {
+            /**
+             * Strip non-numeric chars from CC number and validate it
+             */
+            $creditCard->number = $this->_cleanAndValidateCreditCardNumber(
+                $creditCard->number
+            );
+            $newCreditCards->credit_cards[] = $creditCard;
+        }
+        $options = json_encode($newCreditCards);
+        
+        $endPoint = 'clients/' . $clientId . '/credit_cards';
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri,
+            $this->_secretKey,
+            'POST',
+            $endPoint,
+            $options
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restPost('/' . $endPoint, $options);
+
+        return $this->_postProcess($response, self::CREDITCARD_RESULTSET_CLASS);
+    }
+
+
+    /**
+     * Update a single client credit card
+     *
+     * @param  int $clientId ID of the specific client
+     * @param  int $creditCardId ID of the specific email address
+     * @param  stdClass $emailAddressDetails Client data structured per API example
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_EmailAddress_Client
+     */
+    public function updateClientCreditCard($clientId, $creditCardId, $creditCardDetails)
+    {
+        if (!$this->_usingSecureApi()) {
+            /**
+             * @see TicketEvolution_Webservice_Exception
+             */
+            require_once 'TicketEvolution/Webservice/Exception.php';
+            throw new TicketEvolution_Webservice_Exception(
+                'You must use an https URL to transmit full credit card numbers'
+            );
+        }
+        
+        /**
+         * Strip non-numeric chars from CC number and validate it
+         */
+        $creditCardDetails->number = $this->_cleanAndValidateCreditCardNumber(
+            $creditCardDetails->number
+        );
+        $options = json_encode($creditCardDetails);
+
+        $endPoint = 'clients/' . $clientId . '/email_addresses/' . $creditCardId;
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri,
+            $this->_secretKey,
+            'PUT',
+            $endPoint,
+            $options
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restPut('/' . $endPoint, $options);
+
+        return $this->_postProcess($response, self::CREDITCARD_CLASS);
+    }
+
+
+    /**
+     * Remove non-numeric characters from credit card number and validate length
+     * 
+     * NOTE: This does NOT validate the card against the Luhn algorithm.
+     *
+     * @param  string $creditCardNumber 
+     * @throws TicketEvolution_Webservice_Exception
+     * @return string
+     */
+    protected function _cleanAndValidateCreditCardNumber($creditCardNumber)
+    {
+        $cleanNumber = preg_replace('/[^0-9]/', '', $creditCardNumber);
+        
+        /**
+         * @see Zend_Validate_CreditCard
+         */
+        require_once 'Zend/Validate/CreditCard.php';
+        
+        $valid = new Zend_Validate_CreditCard();
+        if ($valid->isValid($cleanNumber)) {
+            return $cleanNumber;
+        } else {
+            /**
+             * @see TicketEvolution_Webservice_Exception
+             */
+            require_once 'TicketEvolution/Webservice/Exception.php';
+            throw new TicketEvolution_Webservice_Exception(
+                'The credit card provided is not a valid credit card number'
+            );
+        }
+            
+    }
+
+
+    /**
+     * Verify that the API URL uses https to ensure we don't send any CC information
+     * over non-secure http
+     *
+     * @throws TicketEvolution_Webservice_Exception
+     */
+    protected function _usingSecureApi()
+    {
+        /**
+         * @see Zend_Uri
+         */
+        require_once 'Zend/Uri.php';
+
+        $uri = Zend_Uri::factory($this->_baseUri);
+        if ($uri->getScheme() == 'https') {
+            return true;
+        } else {
+            return false;
+        }            
+    }
+    
+    
+    /**
      * List Offices for a Brokerage
      *
      * @param  array $options Options to use
@@ -1028,6 +1344,10 @@ class TicketEvolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
+            /**
+             * @see TicketEvolution_Webservice_Exception
+             */
+            require_once 'TicketEvolution/Webservice/Exception.php';
             throw new TicketEvolution_Webservice_Exception(
                 'You must provide a non-empty query string'
             );
@@ -1149,6 +1469,10 @@ class TicketEvolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
+            /**
+             * @see TicketEvolution_Webservice_Exception
+             */
+            require_once 'TicketEvolution/Webservice/Exception.php';
             throw new TicketEvolution_Webservice_Exception(
                 'You must provide a non-empty query string'
             );
@@ -1418,6 +1742,10 @@ class TicketEvolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
+            /**
+             * @see TicketEvolution_Webservice_Exception
+             */
+            require_once 'TicketEvolution/Webservice/Exception.php';
             throw new TicketEvolution_Webservice_Exception(
                 'You must provide a non-empty query string'
             );
@@ -1467,7 +1795,13 @@ class TicketEvolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
-            throw new TicketEvolution_Webservice_Exception('You must provide a non-empty query string');
+            /**
+             * @see TicketEvolution_Webservice_Exception
+             */
+            require_once 'TicketEvolution/Webservice/Exception.php';
+            throw new TicketEvolution_Webservice_Exception(
+                'You must provide a non-empty query string'
+            );
         }
 
         $endPoint = 'search';
@@ -1586,6 +1920,10 @@ class TicketEvolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
+            /**
+             * @see TicketEvolution_Webservice_Exception
+             */
+            require_once 'TicketEvolution/Webservice/Exception.php';
             throw new TicketEvolution_Webservice_Exception(
                 'You must provide a non-empty query string'
             );
@@ -1702,7 +2040,7 @@ class TicketEvolution_Webservice
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet_TicketGroups
      */
-    public function listTicketgroups(array $options)
+    public function listTicketGroups(array $options)
     {
         if (!isset($options['event_id'])) {
             /**
@@ -1745,9 +2083,9 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Ticketgroup
+     * @return TicketEvolution_TicketGroup
      */
-    public function showTicketgroup($id)
+    public function showTicketGroup($id)
     {
         $endPoint = 'ticket_groups/' . $id;
 
@@ -1868,7 +2206,7 @@ class TicketEvolution_Webservice
         $options = json_encode($newOrders);
 
         $endPoint = 'orders';
-        if (!$fulfillment) {
+        if ($fulfillment) {
             $endPoint = 'orders/fulfillments';
         }
 
@@ -2293,6 +2631,10 @@ class TicketEvolution_Webservice
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
+            /**
+             * @see TicketEvolution_Webservice_Exception
+             */
+            require_once 'TicketEvolution/Webservice/Exception.php';
             throw new TicketEvolution_Webservice_Exception(
                 'You must provide a non-empty query string'
             );
@@ -2449,7 +2791,7 @@ class TicketEvolution_Webservice
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_EvoPayTransaction
      */
-    public function showEvopaytransactions($accountId, $transactionId)
+    public function showEvoPayTransacations($accountId, $transactionId)
     {
         $endPoint = 'accounts/' . $accountId . '/transactions/' . $transactionId;
 
@@ -2491,6 +2833,45 @@ class TicketEvolution_Webservice
              */
             require_once 'Zend/Rest/Client.php';
             $this->_rest = new Zend_Rest_Client();
+
+        
+            /**
+             * The Ticket Evolution Sandbox uses a self-signed certificate which,
+             * by default is not allowed. If we are using https in the sandbox lets
+             * tweak the options to allow this self-signed certificate.
+             *
+             * @link http://framework.zend.com/manual/en/zend.http.client.adapters.html
+             */
+            if ($this->_usingSecureApi() && strpos($this->_baseUri, 'sandbox') !== false) {
+                $options = array(
+                    'ssl' => array(
+                        // Verify server side certificate,
+                        // do not accept invalid or self-signed SSL certificates
+                        'verify_peer' => true,
+                        'allow_self_signed' => true,
+                    )
+                );
+
+                // Create an adapter object and attach it to the HTTP client
+                /**
+                 * @see Zend_Http_Client_Adapter_Socket
+                 */
+                require_once 'Zend/Http/Client/Adapter/Socket.php';
+                $adapter = new Zend_Http_Client_Adapter_Socket();
+
+                /**
+                 * @see Zend_Http_Client
+                 */
+                require_once 'Zend/Http/Client.php';
+                $client = new Zend_Http_Client();
+
+                $client->setAdapter($adapter);
+                 
+                // Pass the options array to setStreamContext()
+                $adapter->setStreamContext($options);
+
+                $this->_rest->setHttpClient($client);
+            }
         }
         return $this->_rest;
     }
@@ -2587,7 +2968,7 @@ class TicketEvolution_Webservice
      */
     static public function buildRawSignature($baseUri, $action, $endPoint, $options)
     {
-        $signature = $action . ' ' . str_replace('http://', '', $baseUri) . '/' . $endPoint . '?';
+        $signature = $action . ' ' . preg_replace('/https?:\/\//', '', $baseUri) . '/' . $endPoint . '?';
         if (!empty($options)) {
             if (is_array($options)) {
                 // Turn the $options into GET parameters
@@ -2629,7 +3010,7 @@ class TicketEvolution_Webservice
         echo PHP_EOL;
         var_dump($this->getRestClient()->getHttpClient()->getLastResponse());
         echo PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL;
-        */
+         */
 
 
         if ($response->isError()) {

@@ -19,7 +19,6 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Events.php 84 2011-07-10 08:06:54Z jcobb $
  */
 
 /**
@@ -69,7 +68,7 @@ class TicketEvolution_Db_Table_Events extends TicketEvolution_Db_Table_Abstract
      * @var array
      */
     protected $_dependentTables = array(
-        'TicketEvolution_Db_Table_Eventperformers',
+        'TicketEvolution_Db_Table_EventPerformers',
     );
     
     

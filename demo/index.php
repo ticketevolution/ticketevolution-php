@@ -18,7 +18,6 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id$
  */
 
 
@@ -62,8 +61,8 @@ $cfg['params']['secretKey'] = (string) 'YOUR_SECRET_KEY_HERE';
 $cfg['params']['apiVersion'] = (string) '8';
 $cfg['params']['buyerId'] = 'YOUR_OFFICEID_HERE';
 
-$cfg['params']['baseUri'] = (string) 'http://api.sandbox.ticketevolution.com'; // Sandbox
-//$cfg['params']['baseUri'] = (string) 'http://api.ticketevolution.com'; // Production
+$cfg['params']['baseUri'] = (string) 'https://api.sandbox.ticketevolution.com'; // Sandbox
+//$cfg['params']['baseUri'] = (string) 'https://api.ticketevolution.com'; // Production
 
 $cfg['exclude']['brokerage'] = array(
     389, // Testing only
@@ -97,6 +96,7 @@ $tevo = new TicketEvolution_Webservice($config->params);
 $options = array(
     'page' => 1,
     'per_page' => 10,
+    //'brokerage_id' => 613,
     //'updated_at.gte' => '2011-04-13',
     //'event_id' => 136957,
     //'price.gte' => 220,
@@ -148,6 +148,16 @@ if(isset($_GET['apiMethod'])) {
             'allowEmpty'        => false,
         ),
         'clientId' => array(
+            'Digits',
+            'presence'          => 'optional',
+            'allowEmpty'        => false,
+        ),
+        'addressId' => array(
+            'Digits',
+            'presence'          => 'optional',
+            'allowEmpty'        => false,
+        ),
+        'phoneNumberId' => array(
             'Digits',
             'presence'          => 'optional',
             'allowEmpty'        => false,
@@ -318,7 +328,7 @@ if(isset($_GET['apiMethod'])) {
                             break;
 
 
-                        case 'listTicketgroups' :
+                        case 'listTicketGroups' :
                             $options['event_id'] = $input->eventId;
                             unset($options['page']);
                             unset($options['per_page']);
@@ -534,6 +544,7 @@ if(isset($_GET['apiMethod'])) {
                             $address->company = 'Uncle Moe’s Family Feed-Bag';
                             $address->extended_address = 'Next to King Toot’s';
                             $address->label = 'Work (and home)';
+                            $address->name = 'Moe Szyslak';
                             
                             // Display the code
                             echo '$address = new stdClass;' . PHP_EOL
@@ -598,7 +609,7 @@ if(isset($_GET['apiMethod'])) {
                                . '$phoneNumber->extension = \'101\';' . PHP_EOL
                                . '$phoneNumber->country_code = \'+1\';' . PHP_EOL
                                . PHP_EOL
-                               . '$results = $tevo->' . $apiMethod . '($clientId, $address);' . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '($clientId, $phoneNumberId, $phoneNumber);' . PHP_EOL
                             ;
     
                             // Execute the call
@@ -658,6 +669,87 @@ if(isset($_GET['apiMethod'])) {
     
                             // Execute the call
                             $results = $tevo->$apiMethod($clientId, $emailAddressId, $emailAddress);
+                            break;
+
+
+                        case 'createClientCreditCard' :
+                            $clientId = $input->clientId;
+                            $addressId = $input->addressId;
+                            $phoneNumberId = $input->phoneNumberId;
+
+                            // Create the properly formatted client credit card
+                            $creditCard1 = new stdClass;
+                            $creditCard1->number = '4111111111111111';
+                            $creditCard1->verification_code = '666';
+                            $creditCard1->expiration_month = '12';
+                            $creditCard1->expiration_year = '2013';
+                            $creditCard1->address_id = (int) $addressId;
+                            $creditCard1->phone_number_id = (int) $phoneNumberId;
+                            $creditCard1->ip_address = "37.235.140.72";
+                            $creditCards[] = $creditCard1;
+
+                            /**
+                             * API doesn't currently support adding multiples
+                            $creditCard2 = new stdClass;
+                            $creditCard2->number = '311111111111111';
+                            $creditCard2->verification_code = '777';
+                            $creditCard2->expiration_month = '01';
+                            $creditCard2->expiration_year = '2014';
+                            $creditCard2->address_id = $addressId;
+                            $creditCard2->phone_number_id = $phoneNumberId;
+                            $creditCards[] = $creditCard2;
+                            */
+
+                            // Display the code
+                            echo '$creditCard1 = new stdClass;' . PHP_EOL
+                               . '$creditCard1->number = \'4111111111111111\';' . PHP_EOL
+                               . '$creditCard1->verification_code = \'666\';' . PHP_EOL
+                               . '$creditCard1->expiration_month = \'12\';' . PHP_EOL
+                               . '$creditCard1->expiration_year = \'2013\';' . PHP_EOL
+                               . '$creditCard1->address_id = $addressId;' . PHP_EOL
+                               . '$creditCard1->phone_number_id = $phoneNumberId;' . PHP_EOL
+                               . '$creditCards[] = $creditCard1;' . PHP_EOL
+
+                            /**
+                             * API doesn't currently support adding multiples
+                               . PHP_EOL
+                               . '$creditCard2 = new stdClass;' . PHP_EOL
+                               . '$creditCard2->number = \'311111111111111\';' . PHP_EOL
+                               . '$creditCard2->verification_code = \'777\';' . PHP_EOL
+                               . '$creditCard2->expiration_month = \'01\';' . PHP_EOL
+                               . '$creditCard2->expiration_year = \'2014\';' . PHP_EOL
+                               . '$creditCard2->address_id = $addressId;' . PHP_EOL
+                               . '$creditCard2->phone_number_id = $phoneNumberId;' . PHP_EOL
+                               . '$creditCards[] = $creditCard2;' . PHP_EOL
+                             */
+                               . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '($clientId, $creditCards);' . PHP_EOL
+                            ;
+    
+                            // Execute the call
+                            $results = $tevo->$apiMethod($clientId, $creditCards);
+                            break;
+
+
+                        case 'updateClientCreditCard' :
+                            $clientId = $input->clientId;
+                            $creditCardId = $input->creditCardId;
+
+                            // Create the properly formatted client address
+                            $creditCard = new stdClass;
+                            $creditCard->expiration_month = '08';
+                            $creditCard->expiration_year = '15';
+                            
+                            // Display the code
+                            echo '$creditCard = new stdClass;' . PHP_EOL
+                               . '$creditCard->expiration_month = \'08\'' . PHP_EOL
+                               . '$creditCard->expiration_year = \'15\';' . PHP_EOL
+                               . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '($clientId, $creditCardId, $creditCard);' . PHP_EOL
+                            ;
+    
+                            // Execute the call
+                            $results = $tevo->$apiMethod($clientId, $creditCardId, $creditCard);
                             break;
 
 
@@ -741,14 +833,18 @@ if(isset($_GET['apiMethod'])) {
                             break;
 
 
-                        case 'createOrderCustomer' :
                         case 'createFulfillmentOrder' :
+                            $fulfillment = true;
+                            // Purposely "flow" into createOrderCustomer
+                            
+                        case 'createOrderCustomer' :
+                            $fulfillment = (isset($fulfillment)) ? $fulfillment : false;
                             $clientId = $input->clientId;
 
                             // Create the proper format
                             $item = new stdClass;
                             $item->price = '295.0';
-                            $item->ticket_group_id = '5276516';
+                            $item->ticket_group_id = '2939800';
                             $item->quantity = 2;
     
                             $shippingAddress = new stdClass;
@@ -805,11 +901,11 @@ if(isset($_GET['apiMethod'])) {
                                . PHP_EOL
                                . '$orderDetails[] = $order1;' . PHP_EOL
                                . PHP_EOL
-                               . '$results = $tevo->createOrder($orderDetails);' . PHP_EOL
+                               . '$results = $tevo->createOrder($orderDetails, ' . (bool) $fulfillment . ');' . PHP_EOL
                             ;
 
                             // Execute the call
-                            $results = $tevo->createOrder($orderDetails);
+                            $results = $tevo->createOrder($orderDetails, (bool) $fulfillment);
                             break;
 
 
@@ -929,6 +1025,11 @@ if(isset($_GET['apiMethod'])) {
                             <option label="showClientEmailAddress" value="showClientEmailAddress">showClientEmailAddress</option>
                             <option label="createClientEmailAddress" value="createClientEmailAddress"<?php echo $disabled;?>>createClientEmailAddress</option>
                             <option label="updateClientEmailAddress" value="updateClientEmailAddress"<?php echo $disabled;?>>updateClientEmailAddress</option>
+
+                            <option label="listClientCreditCards" value="listClientCreditCards">listClientCreditCards</option>
+                            <option label="showClientCreditCard" value="showClientCreditCard">showClientCreditCard</option>
+                            <option label="createClientCreditCard" value="createClientCreditCard"<?php echo $disabled;?>>createClientCreditCard</option>
+                            <option label="updateClientCreditCard" value="updateClientCreditCard"<?php echo $disabled;?>>updateClientCreditCard</option>
                         </optgroup>
     
                         <optgroup label="Offices Methods">
@@ -979,8 +1080,8 @@ if(isset($_GET['apiMethod'])) {
 		            <optgroup label="Inventory Resources">
                     </optgroup>
                         <optgroup label="Ticket Groups">
-                            <option label="listTicketgroups" value="listTicketgroups">listTicketgroups</option>
-                            <option label="showTicketgroup" value="showTicketgroup">showTicketgroup</option>
+                            <option label="listTicketGroups" value="listTicketGroups">listTicketGroups</option>
+                            <option label="showTicketGroup" value="showTicketGroup">showTicketGroup</option>
                         </optgroup>
     
                         <optgroup label="Orders Methods">
@@ -1010,13 +1111,13 @@ if(isset($_GET['apiMethod'])) {
 		            <optgroup label="EvoPay Resources">
 		            </optgroup>
                         <optgroup label="Accounts Methods">
-                            <option label="listEvopayaccounts" value="listEvopayaccounts">listEvopayaccounts</option>
+                            <option label="listEvoPayAccounts" value="listEvoPayAccounts">listEvoPayAccounts</option>
                             <option label="showEvopayaccount" value="showEvopayaccount">showEvopayaccount</option>
                         </optgroup>
 
                         <optgroup label="Transactions Methods">
-                            <option label="listEvopaytransactions" value="listEvopaytransactions">listEvopaytransactions</option>
-                            <option label="showEvopaytransaction" value="showEvopaytransaction">showEvopaytransaction</option>
+                            <option label="listEvoPayTransacations" value="listEvoPayTransacations">listEvoPayTransacations</option>
+                            <option label="showEvoPayTransacation" value="showEvoPayTransacation">showEvoPayTransacation</option>
                         </optgroup>
 
 		        </select>
@@ -1054,6 +1155,20 @@ if(isset($_GET['apiMethod'])) {
                     <br />
                     <label for="accountId">Your EvoPay AccountID: </label>
                     <input name="accountId" id="accountId" type="text" value="" size="10" maxlength="7" />
+		        </div>
+
+		        <div id="addressIdOption" class="options">
+                    <br />
+                    <br />
+                    <label for="addressId">Address ID: </label>
+                    <input name="addressId" id="addressId" type="text" value="" size="10" maxlength="7" />
+		        </div>
+
+		        <div id="phoneNumberIdOption" class="options">
+                    <br />
+                    <br />
+                    <label for="phoneNumberId">Phone Number ID: </label>
+                    <input name="phoneNumberId" id="phoneNumberId" type="text" value="" size="10" maxlength="7" />
 		        </div>
 
 		        <div id="searchOption" class="options">
@@ -1111,16 +1226,19 @@ if(isset($_GET['apiMethod'])) {
 
             //alert(selValue);
             switch (selValue) {
-                case 'listTicketgroups':
+                case 'listTicketGroups':
                     $('#eventIdOption').fadeIn();
                     break;
 
-                case 'listEvopaytransactions':
+                case 'listEvoPayTransacations':
                     $('#listOptions').fadeIn();
                     $('#accountIdOption').fadeIn();
                     break;
 
                 case 'createOrderCustomer':
+                    $('#clientIdOption').fadeIn();
+                    break;
+
                 case 'createFulfillmentOrder':
                 case 'completeOrder':
                 case 'createFulfillmentOrder':
@@ -1154,12 +1272,19 @@ if(isset($_GET['apiMethod'])) {
                     $('#clientIdOption').fadeIn();
                     break;
 
+                case 'createClientCreditCard':
+                    $('#addressIdOption').fadeIn();
+                    $('#clientIdOption').fadeIn();
+                    $('#phoneNumberIdOption').fadeIn();
+                    break;
+
                 case 'showClientAddress':
                 case 'showClientPhoneNumber':
                 case 'showClientEmailAddress':
                 case 'updateClientAddress':
                 case 'updateClientPhoneNumber':
                 case 'updateClientEmailAddress':
+                case 'updateClientCreditCard':
                     $('#clientIdOption').fadeIn();
                     $('#idOption').fadeIn();
                     break;
