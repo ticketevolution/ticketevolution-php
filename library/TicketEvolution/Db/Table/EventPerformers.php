@@ -19,7 +19,6 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Eventperformers.php 80 2011-07-07 19:57:09Z jcobb $
  */
 
 /**
@@ -34,7 +33,8 @@ require_once 'TicketEvolution/Db/Table/Abstract.php';
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Db_Table_Eventperformers extends TicketEvolution_Db_Table_Abstract
+class TicketEvolution_Db_Table_EventPerformers
+    extends TicketEvolution_Db_Table_Abstract
 {
     /**
      * The table name.
