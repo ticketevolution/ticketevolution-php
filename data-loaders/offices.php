@@ -13,7 +13,7 @@ require_once './includes/common.php';
 $table = new Ticketevolution_Db_Table_Offices();
 
 // Create an object for the `tevoOfficeEmails` table too
-$eTable = new Ticketevolution_Db_Table_Officeemails();
+$eTable = new TicketEvolution_Db_Table_OfficeEmails();
 
 for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) {
     /*******************************************************************************

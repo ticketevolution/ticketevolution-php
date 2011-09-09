@@ -19,7 +19,6 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: ResultSet.php 79 2011-07-05 19:12:54Z jcobb $
  */
 
 
@@ -36,13 +35,13 @@ require_once 'TicketEvolution/Webservice/ResultSet/Abstract.php';
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Webservice_ResultSet_ClientAddresses
-    extends TicketEvolution_Webservice_ResultSet_Addresses
+class TicketEvolution_Webservice_ResultSet_CreditCards
+    extends TicketEvolution_Webservice_ResultSet_Abstract
 {
     /**
      * Name of the class for the items in this set
      *
      * @var string
      */
-    protected $_itemClass = 'TicketEvolution_ClientAddress';
+    protected $_itemClass = 'TicketEvolution_CreditCard';
 }
