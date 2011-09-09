@@ -19,7 +19,6 @@
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
- * @version     $Id: Offices.php 28 2011-05-09 22:53:01Z jcobb $
  */
 
 /**
@@ -34,7 +33,8 @@ require_once 'TicketEvolution/Db/Table/Abstract.php';
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Db_Table_Ticketgroupseats extends TicketEvolution_Db_Table_Abstract
+class TicketEvolution_Db_Table_TicketGroupSeats
+    extends TicketEvolution_Db_Table_Abstract
 {
     /**
      * The table name.
@@ -90,9 +90,9 @@ class TicketEvolution_Db_Table_Ticketgroupseats extends TicketEvolution_Db_Table
      * @var array
      */
     protected $_referenceMap    = array(
-        'Ticketgroup'       => array(
+        'TicketGroup'       => array(
             'columns'           => 'ticketGroupId',
-            'refTableClass'     => 'TicketEvolution_Db_Table_Ticketgroups',
+            'refTableClass'     => 'TicketEvolution_Db_Table_TicketGroups',
             'refColumns'        => 'ticketGroupId'
             ),
     );
