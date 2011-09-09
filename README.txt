@@ -4,6 +4,33 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+Sept 9, 2011
+** This update contains changes that are NOT backwards comaptible **
+- Added https API URL support (Switch now. http will be turned off soon)
+- Added new Client Credit Card methods (Not all are active yet)
+- Renamed some files to adjust capitalization
+    library/TicketEvolution/Db/Table/Ticketgroups.php -> library/TicketEvolution/Db/Table/TicketGroups.php
+    library/TicketEvolution/Db/Table/Ticketgroupseats.php -> library/TicketEvolution/Db/Table/TicketGroupSeats.php
+    library/TicketEvolution/Db/Table/Officeemails.php -> library/TicketEvolution/Db/Table/OfficeEmails.php
+    library/TicketEvolution/Db/Table/Eventperformers.php -> library/TicketEvolution/Db/Table/EventPerformers.php
+    library/TicketEvolution/Db/Table/Dataloaderstatus.php -> library/TicketEvolution/Db/Table/DataLoaderStatus.php
+
+- Renamed some classes to adjust capitalization (Same as above files)
+    TicketEvolution_Db_Table_Ticketgroups -> TicketEvolution_Db_Table_TicketGroups
+    TicketEvolution_Db_Table_Ticketgroupseats -> TicketEvolution_Db_Table_TicketGroupSeats
+    TicketEvolution_Db_Table_Officeemails -> TicketEvolution_Db_Table_OfficeEmails
+    TicketEvolution_Db_Table_Eventperformers -> TicketEvolution_Db_Table_EventPerformers
+    TicketEvolution_Db_Table_Dataloaderstatus -> TicketEvolution_Db_Table_DataLoaderStatus
+
+- Renamed some methods in Webservice.php to adjust capitalization
+    listTicketgroups() -> listTicketGroups()
+    showTicketgroup() -> showTicketGroup()
+    listEvopaytransactions() -> listEvoPayTransactions()
+    showEvopaytransactions() -> showEvoPayTransactions()
+
+- Removed @Version from DocBlocks
+
+
 Aug 30, 2011 Part III: Return of the RedEye
 - Cleaned up/corrected some more documentation in Webservice.php
 - Moved TicketEvolution_ClientAddress to TicketEvolution_Address_Client
