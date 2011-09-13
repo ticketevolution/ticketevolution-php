@@ -9,8 +9,8 @@ $statusData = array((string)'table' => 'users');
 
 require_once './includes/common.php';
 
-// Create the Ticketevolution_Db_Table object
-$table = new Ticketevolution_Db_Table_Users();
+// Create the TicketEvolution_Db_Table object
+$table = new TicketEvolution_Db_Table_Users();
 
 for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) {
     /*******************************************************************************
@@ -23,7 +23,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
     try{
         $results = $tevo->listUsers($options);
     } catch(Exception $e) {
-        throw new Ticketevolution_Webservice_Exception($e);
+        throw new TicketEvolution_Webservice_Exception($e);
     }
     
     // Set the correct $maxPages

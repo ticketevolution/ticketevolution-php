@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -13,8 +13,8 @@
  * obtain it through the world-wide-web, please send an email
  * to license@ticketevolution.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution
+ * @category    TicketEvolution
+ * @package     TicketEvolution
  * @author      J Cobb <j@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Ticket Evolution INC (http://www.ticketevolution.com)
  * @license     http://code.ticketevolution.com/license/new-bsd     New BSD License

@@ -1,6 +1,6 @@
 <?php
 /**
- * Ticketevolution Framework
+ * TicketEvolution Framework
  *
  * LICENSE
  *
@@ -12,8 +12,8 @@
  * obtain it through the world-wide-web, please send an email
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
- * @category    Ticketevolution
- * @package     Ticketevolution
+ * @category    TicketEvolution
+ * @package     TicketEvolution
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
@@ -55,7 +55,7 @@ if(isset($GET->lastRun)) {
         $lastRun = '2010-01-01';
     }
 }
-if(!$lastRun = new Ticketevolution_Date($lastRun, Ticketevolution_Date::ISO_8601)) {
+if(!$lastRun = new TicketEvolution_Date($lastRun, TicketEvolution_Date::ISO_8601)) {
     throw new TicketEvolution_Webservice_Exception('The $lastRun date appears to be malformed');
 }
 
@@ -63,16 +63,16 @@ if(!$lastRun = new Ticketevolution_Date($lastRun, Ticketevolution_Date::ISO_8601
 $registry = Zend_Registry::getInstance(); 
 
 // Create the TEvo object
-$tevo = new Ticketevolution_Webservice($registry->config->params);
+$tevo = new TicketEvolution_Webservice($registry->config->params);
 
 // Set the "now" time for use later
-$now = new Ticketevolution_Date();
+$now = new TicketEvolution_Date();
 
 // Set the options for the query
 $options = array(
     'page' => 1,
     'per_page' => 100,
-    'updated_at.gte' => $lastRun->get(Ticketevolution_Date::ISO_8601)
+    'updated_at.gte' => $lastRun->get(TicketEvolution_Date::ISO_8601)
 );
 
 // Because we page through the results incrementally we need to set a $maxPages
@@ -82,4 +82,4 @@ $options = array(
 $defaultMaxPages = ($options['page'] + 1);
 $maxPages = $defaultMaxPages;
 
-echo '<h1>Updating `' . $statusData['table'] . '` ' . $options['per_page'] . ' at a time with entries updated since ' . $lastRun->get(Ticketevolution_Date::DATETIME) . '</h1>' . PHP_EOL;
+echo '<h1>Updating `' . $statusData['table'] . '` ' . $options['per_page'] . ' at a time with entries updated since ' . $lastRun->get(TicketEvolution_Date::DATETIME) . '</h1>' . PHP_EOL;
