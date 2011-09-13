@@ -9,8 +9,8 @@ $statusData = array((string)'table' => 'events');
 
 require_once './includes/common.php';
 
-// Create the Ticketevolution_Db_Table object
-$table = new Ticketevolution_Db_Table_Events();
+// Create the TicketEvolution_Db_Table object
+$table = new TicketEvolution_Db_Table_Events();
 
 // Create an object for the `tevoEventPerformers` table too
 $epTable = new TicketEvolution_Db_Table_EventPerformers();
@@ -26,7 +26,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
     try{
         $results = $tevo->listEvents($options);
     } catch(Exception $e) {
-        throw new Ticketevolution_Webservice_Exception($e);
+        throw new TicketEvolution_Webservice_Exception($e);
     }
     
     // Set the correct $maxPages
