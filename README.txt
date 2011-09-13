@@ -4,6 +4,10 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+Sept 13, 2011
+Fixed some more capitalization issues.
+
+
 Sept 9, 2011
 ** This update contains changes that are NOT backwards comaptible **
 - Added https API URL support (Switch now. http will be turned off soon)
@@ -66,7 +70,7 @@ July 5, 2011
 Bug fixes.
 In the configuration data-loader the venueId column was being populated with 
 the configurationId.
-ResultSet was returning all results as Ticketevolution_Searchresults objects
+ResultSet was returning all results as TicketEvolution_Searchresults objects
 instead of teh ones specififc to their type of result.
 
 May 22, 2011
