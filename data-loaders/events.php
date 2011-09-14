@@ -67,9 +67,9 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
             $row = $table->createRow($data);
         }
         if(!$row->save()) {
-            echo '<h2 class="error">Error attempting to save ' . tohtmlentities($data['eventId'] . ': ' . $data['eventName']) . ' to `tevoEvents`</h2>' . PHP_EOL;
+            echo '<h2 class="error">Error attempting to save ' . htmlentities($data['eventId'] . ': ' . $data['eventName'], ENT_QUOTES, 'UTF-8', false) . ' to `tevoEvents`</h2>' . PHP_EOL;
         } else {
-            echo '<h2>Saved ' . tohtmlentities($data['eventId'] . ': ' . $data['eventName']) . ' to `tevoEvents`</h2>' . PHP_EOL;
+            echo '<h2>Saved ' . htmlentities($data['eventId'] . ': ' . $data['eventName'], ENT_QUOTES, 'UTF-8', false) . ' to `tevoEvents`</h2>' . PHP_EOL;
         }
         unset($data);
         unset($row);
