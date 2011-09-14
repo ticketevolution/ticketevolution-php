@@ -72,9 +72,9 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
             $row = $table->createRow($data);
         }
         if(!$row->save()) {
-            echo '<h1 class="error">Error attempting to save ' . tohtmlentities($data['officeId'] . ': ' . $data['officeName']) . ' to `tevoOffices`</h1>' . PHP_EOL;
+            echo '<h1 class="error">Error attempting to save ' . htmlentities($data['officeId'] . ': ' . $data['officeName'], ENT_QUOTES, 'UTF-8', false) . ' to `tevoOffices`</h1>' . PHP_EOL;
         } else {
-            echo '<h1>Saved ' . tohtmlentities($data['officeId'] . ': ' . $data['officeName']) . ' to `tevoOffices`</h1>' . PHP_EOL;
+            echo '<h1>Saved ' . htmlentities($data['officeId'] . ': ' . $data['officeName'], ENT_QUOTES, 'UTF-8', false) . ' to `tevoOffices`</h1>' . PHP_EOL;
         }
         unset($data);
         unset($row);

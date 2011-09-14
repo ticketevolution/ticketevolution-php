@@ -69,9 +69,9 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
             $row = $table->createRow($data);
         }
         if(!$row->save()) {
-            echo '<h1 class="error">Error attempting to save ' . tohtmlentities($data['configurationId'] . ': ' . $data['configurationName']) . ' to `tevoConfigurations`</h1>' . PHP_EOL;
+            echo '<h1 class="error">Error attempting to save ' . htmlentities($data['configurationId'] . ': ' . $data['configurationName'], ENT_QUOTES, 'UTF-8', false) . ' to `tevoConfigurations`</h1>' . PHP_EOL;
         } else {
-            echo '<h1>Saved ' . tohtmlentities($data['configurationId'] . ': ' . $data['configurationName']) . ' to `tevoConfigurations`</h1>' . PHP_EOL;
+            echo '<h1>Saved ' . htmlentities($data['configurationId'] . ': ' . $data['configurationName'], ENT_QUOTES, 'UTF-8', false) . ' to `tevoConfigurations`</h1>' . PHP_EOL;
         }
         unset($data);
         unset($row);
