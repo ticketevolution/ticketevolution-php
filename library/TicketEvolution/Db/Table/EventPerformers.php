@@ -98,11 +98,6 @@ class TicketEvolution_Db_Table_EventPerformers
             ),
         'Performer'        => array(
             'columns'           => 'performerId',
-            'refTableClass'     => 'TeamOne_Db_Table_Performers',
-            'refColumns'        => 'performerId'
-            ),
-        'tevoPerformer'        => array(
-            'columns'           => 'performerId',
             'refTableClass'     => 'TicketEvolution_Db_Table_Performers',
             'refColumns'        => 'performerId'
             ),
