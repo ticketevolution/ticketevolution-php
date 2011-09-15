@@ -91,14 +91,9 @@ class TicketEvolution_Db_Table_Events extends TicketEvolution_Db_Table_Abstract
      * @var array
      */
     protected $_referenceMap    = array(
-        'tevoVenue'             => array(
-            'columns'           => 'venueId',
-            'refTableClass'     => 'TicketEvolution_Db_Table_Venues',
-            'refColumns'        => 'venueId'
-            ),
         'Venue'             => array(
             'columns'           => 'venueId',
-            'refTableClass'     => 'TeamOne_Db_Table_Venues',
+            'refTableClass'     => 'TicketEvolution_Db_Table_Venues',
             'refColumns'        => 'venueId'
             ),
         'Configuration'     => array(
@@ -112,80 +107,4 @@ class TicketEvolution_Db_Table_Events extends TicketEvolution_Db_Table_Abstract
             'refColumns'        => 'categoryId'
             ),
     );
-    
-    
-    /**
-     * Get results via an array of parameters
-     * (Jeff): I am overriding the abstract method here because I wanted to add the getPast option
-     *
-     * @param  mixed $params Options to use for the search query or a `uid`
-     * @throws TicketEvolution_Models_Exception
-     * @return TeamOne_Db_Events
-     */
-    public function getByParameters($params, $limit=null, $orderBy=null, $getPast=false)
-    {
-        /**
-         * @see Zend_Date
-         */
-        require_once 'Zend/Date.php';
-
-        if (!is_array($params) && !is_array($this->_primary)) {
-            // Assume this is a single Id and find it
-            $row = $this->find((int)$params);
-            if (isset($row[0])) {
-                return $row[0];
-            } else {
-                return false;
-            }
-        }
-        
-        // It appears that we have an array of search options
-        $options = $this->_prepareOptions($params);
-        
-        $select = $this->select();
-        foreach ($options as $column => $value) {
-            // Some parameters may be like 'tevoPerformerId' 
-            // We need to change those to just 'performerId'
-            $column = lcfirst(preg_replace('/^tevo(\w{1})/i', "$1", $column));
-            if (is_array($value)) {
-                $select->where($column ." IN (?)", $value);
-            } elseif ($value instanceof Zend_Date) {
-                $select->where($column ." = ?", $value->get(TicketEvolution_Date::MYSQL_DATETIME));
-            } else {
-                $select->where($column ." = ?", $value);
-            }
-        }
-        
-        if (!isset($options['eventDate']) && !$getPast) {
-            $curDate = new Zend_Date();
-            $select->where("eventDate > ?", $curDate->get(TicketEvolution_Date::MYSQL_DATETIME));
-        }
-        
-        if (!is_null($orderBy)) {
-            if (is_array($orderBy)) {
-                foreach ($orderBy as $order) {
-                    $select->order($order);
-                }
-            } else {
-                $select->order($orderBy);
-            }
-        }
-        
-        if (!is_null($limit)) {
-            $select->limit($limit);
-        }
-
-        try{
-            if ($limit == 1) {
-                $results = $this->fetchRow($select);
-            } else {
-                $results = $this->fetchAll($select);
-            }
-        } catch(Exception $e) {
-            throw new TicketEvolution_Db_Table_Exception($e);
-        }
-        return $results;
-    }
-
-
 }

@@ -69,7 +69,6 @@ class TicketEvolution_Db_Table_Performers extends TicketEvolution_Db_Table_Abstr
      */
     protected $_dependentTables = array(
         'TicketEvolution_Db_Table_EventPerformers',
-        'TeamOne_Db_Table_Performers',
     );
     
     

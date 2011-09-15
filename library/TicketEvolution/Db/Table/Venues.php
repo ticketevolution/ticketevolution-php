@@ -67,7 +67,6 @@ class TicketEvolution_Db_Table_Venues extends TicketEvolution_Db_Table_Abstract
         'TicketEvolution_Db_Table_Configurations',
         'TicketEvolution_Db_Table_Events',
         'TicketEvolution_Db_Table_Performers',
-        'TeamOne_Db_Table_Venues',
     );
     
     
@@ -90,33 +89,6 @@ class TicketEvolution_Db_Table_Venues extends TicketEvolution_Db_Table_Abstract
      * @var array
      */
     protected $_referenceMap    = array(
-        'Region'            => array(
-            'columns'           => 'region',
-            'refTableClass'     => 'TeamOne_Db_Table_Addressregions',
-            'refColumns'        => 'regionCode'
-        ),
-        'Country'           => array(
-            'columns'           => 'countryCode',
-            'refTableClass'     => 'TeamOne_Db_Table_Addresscountries',
-            'refColumns'        => 'countryCode'
-        ),
     );
-
-    /*
-     * 
-     */
-    public function getVenuesNotMatchedToTeamOneVenues($limitTo = 10)
-    {
-        $subSelect = $this->select();
-        $subSelect->setIntegrityCheck(false);
-        $subSelect->from('venues', array('tevoVenueId'));
-        $subSelect->where("`venues`.`tevoVenueId` IS NOT NULL");
-        $select = $this->select();
-        $select->setIntegrityCheck(false);
-        //$select->from("tevoPerformers");
-        $select->where("venueStatus = 1 AND venueId NOT IN ?", $subSelect);
-        $select->limit($limitTo);
-        return $this->fetchAll($select);
-    }
 
 }
