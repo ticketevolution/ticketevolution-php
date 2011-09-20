@@ -4,9 +4,11 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+Sept 20, 2011
+Removed stats measurements from data-loaders.
+
 Sept 13, 2011
 Fixed some more capitalization issues.
-
 
 Sept 9, 2011
 ** This update contains changes that are NOT backwards comaptible **
