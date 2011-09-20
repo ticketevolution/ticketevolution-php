@@ -4,6 +4,9 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+Sept 20, 2011 Act the Third
+- Added payment type and some important documentation to createOrderCustomer() in the demo app. 
+
 Sept 20, 2011 Act II
 - Added name to credit card in createCreditCard case in demo app
 - Added some extra comments for createCreditCard case in demo app based upon new information from the API developers
