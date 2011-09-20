@@ -872,10 +872,20 @@ if(isset($_GET['apiMethod'])) {
                             $billingAddress->postal_code = '58008-6072';
                             $billingAddress->country_code = 'US';
                             
+                            /**
+                             * It isn't yet in the API docs but if you do not need 
+                             * to run your payments through the TEvo-provided
+                             * gateway then you can use 'offline' as the payment
+                             * type and just handle the payment stuff on your own.
+                             */
+                            $payment = new stdClass;
+                            $payment->type = 'credit_card';
+                            
                             $order1 = new stdClass;
                             $order1->items[] = $item;
                             $order1->shipping_address = $shippingAddress;
                             $order1->billing_address = $billingAddress;
+                            $order1->payments[] = $payment;
                             $order1->seller_id = $cfg['params']['buyerId'];
                             $order1->client_id = $clientId;
                             
@@ -902,10 +912,14 @@ if(isset($_GET['apiMethod'])) {
                                . '$billingAddress->postal_code = \'58008-6072\';' . PHP_EOL
                                . '$billingAddress->country_code = \'US\';' . PHP_EOL
                                . PHP_EOL
+                               . '$payment = new stdClass;' . PHP_EOL
+                               . '$payment->type = \'credit_card\';' . PHP_EOL
+                               . PHP_EOL
                                . '$order1 = new stdClass;' . PHP_EOL
                                . '$order1->items[] = $item;' . PHP_EOL
                                . '$order1->shipping_address = $shippingAddress;' . PHP_EOL
                                . '$order1->billing_address = $billingAddress;' . PHP_EOL
+                               . '$order1->payments = $payment;' . PHP_EOL
                                . '$order1->seller_id = $cfg[\'params\'][\'buyerId\'];' . PHP_EOL
                                . '$order1->client_id = $clientId;' . PHP_EOL
                                . PHP_EOL
