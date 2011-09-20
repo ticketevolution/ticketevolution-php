@@ -367,6 +367,7 @@ if(isset($_GET['apiMethod'])) {
                         case 'listClientAddresses' :
                         case 'listClientPhoneNumbers' :
                         case 'listClientEmailAddresses' :
+                        case 'listClientCreditCards' :
                             $clientId = $input->clientId;
                             
                             // Display the code
@@ -673,19 +674,28 @@ if(isset($_GET['apiMethod'])) {
 
 
                         case 'createClientCreditCard' :
+                            /**
+                             * It is not currently in the API documentation, but
+                             * a name is required in order to create a credit card.
+                             * The name can be passed as a credit card parameter
+                             * or tied to the address passed.
+                             *
+                             * @link http://api.ticketevolution.com/#credit-cards
+                             */
                             $clientId = $input->clientId;
                             $addressId = $input->addressId;
                             $phoneNumberId = $input->phoneNumberId;
 
                             // Create the properly formatted client credit card
                             $creditCard1 = new stdClass;
+                            $creditCard1->name = 'Moe Szyslak';
                             $creditCard1->number = '4111111111111111';
                             $creditCard1->verification_code = '666';
                             $creditCard1->expiration_month = '12';
                             $creditCard1->expiration_year = '2013';
                             $creditCard1->address_id = (int) $addressId;
                             $creditCard1->phone_number_id = (int) $phoneNumberId;
-                            $creditCard1->ip_address = "37.235.140.72";
+                            $creditCard1->ip_address = '37.235.140.72';
                             $creditCards[] = $creditCard1;
 
                             /**
@@ -844,7 +854,7 @@ if(isset($_GET['apiMethod'])) {
                             // Create the proper format
                             $item = new stdClass;
                             $item->price = '295.0';
-                            $item->ticket_group_id = '2939800';
+                            $item->ticket_group_id = '5276516';
                             $item->quantity = 2;
     
                             $shippingAddress = new stdClass;
@@ -1266,6 +1276,7 @@ if(isset($_GET['apiMethod'])) {
                 case 'listClientAddresses':
                 case 'listClientPhoneNumbers':
                 case 'listClientEmailAddresses':
+                case 'listClientCreditCards':
                 case 'createClientAddress':
                 case 'createClientPhoneNumber':
                 case 'createClientEmailAddress':
