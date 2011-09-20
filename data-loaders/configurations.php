@@ -31,12 +31,6 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
         $maxPages = $results->totalPages();
     }
 
-    if($showStats) {
-        $curMem = memory_get_usage(true);
-        $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
-        echo '<h1>Current memory usage after fetching page ' . $currentPage . ' of ' . $maxPages . ': ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL;
-    }
-    
     /*******************************************************************************
      * Process the API results either INSERTing or UPDATEing our table(s)
      */
@@ -77,10 +71,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
         unset($row);
         
     } // End loop through this page of results
-    if($showStats) {
-        $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
-        echo '<h1>Current memory usage after database work of page ' . $currentPage . ' of ' . $maxPages . ': ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL;
-    }
+
     echo '<h1>Done with page ' . $currentPage . '</h1>' . PHP_EOL;
     sleep(1);
 } // End looping through all pages
@@ -94,15 +85,4 @@ if(isset($statusRow)) {
 }
 $statusRow->save();
 
-
 echo '<h1>Finished updating `tevo' . $statusData['table'] . '` table</h1>' . PHP_EOL;
-
-if($showStats) {
-    $allTimer->endTimer();
-    $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
-    $peakMem = new Zend_Measure_Binary(memory_get_peak_usage(true), Zend_Measure_Binary::BYTE);
-    echo '<p class="codetimer">Time to complete everything: ' . $allTimer->getElapsedTime() . '</p>' . PHP_EOL
-       . '<h1>Current memory usage at end of script: ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL
-       . '<h1>PEAK memory usage: ' . $peakMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL
-    ;
-}
