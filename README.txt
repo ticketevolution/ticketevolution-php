@@ -4,6 +4,11 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+Sept 20, 2011 Act II
+- Added name to credit card in createCreditCard case in demo app
+- Added some extra comments for createCreditCard case in demo app based upon new information from the API developers
+- Fixed constant name used in Webservice.php when using listClientCreditCards() in demo app
+
 Sept 20, 2011
 Removed stats measurements from data-loaders.
 

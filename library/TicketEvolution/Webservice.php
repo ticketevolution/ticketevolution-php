@@ -1040,7 +1040,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CREDITCARDS_RESULTSET_CLASS);
+        return $this->_postProcess($response, self::CREDITCARD_RESULTSET_CLASS);
     }
 
 
