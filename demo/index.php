@@ -78,20 +78,20 @@ $cfg['exclusive']['brokerage'] = array(
 /**
  * You can initialize the TicketEvolution class with either a Zend_Config object
  * or with the above array.
- * 
+ *
  * Zend_Config method
  * $config = new Zend_Config($cfg);
  * $tevo = new TicketEvolution($cfg->params);
- * 
+ *
  * Array method
  * $tevo = new TicketEvolution($cfg['params']);
  */
- 
+
 // We'll use the Zend_Config method here
 $config = new Zend_Config($cfg);
 
 $tevo = new TicketEvolution_Webservice($config->params);
- 
+
 // Set up some default query options
 $options = array(
     'page' => 1,
@@ -118,7 +118,7 @@ if(isset($_GET['apiMethod'])) {
      * @see Zend_Filter_Input
      */
     require_once 'Zend/Filter/Input.php';
-    
+
     $filters = array('*' => array('StringTrim' , 'StripTags', 'StripNewlines'));
     $validators = array(
         'apiMethod' => array(
@@ -193,13 +193,13 @@ if(isset($_GET['apiMethod'])) {
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	
+
 	<title>Ticket Evolution Framework Demo for PHP with Zend Framework</title>
 	<meta name="description" content="Demonstration of the Ticket Evolution Framework for PHP with Zend Framework">
 	<meta name="author" content="J Cobb <j+ticketevolution@teamonetickets.com>">
-	
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	
+
 	<link rel="stylesheet" href="css/style.css?v=2">
 	<?php
 	    if (strpos ($cfg['params']['baseUri'], 'sandbox') === false) {
@@ -293,7 +293,7 @@ if(isset($_GET['apiMethod'])) {
 		               . ' * Below here is where all the method-specific stuff is.' . PHP_EOL
 		               . ' */' . PHP_EOL
 		            ;
-		            
+
                     /**
                      * Setup any necessary vars and execute the call
                      */
@@ -324,7 +324,7 @@ if(isset($_GET['apiMethod'])) {
 
                             // Execute the call
                             $results = $tevo->$apiMethod($options);
-                            
+
                             break;
 
 
@@ -338,7 +338,7 @@ if(isset($_GET['apiMethod'])) {
 
                             // Execute the call
                             $results = $tevo->$apiMethod($options);
-                            
+
                             // Uncomment to test filtering out brokers
                             //$results->excludeResults($cfg['exclude']['brokerage'], 'brokerage');
 
@@ -369,7 +369,7 @@ if(isset($_GET['apiMethod'])) {
                         case 'listClientEmailAddresses' :
                         case 'listClientCreditCards' :
                             $clientId = $input->clientId;
-                            
+
                             // Display the code
                             echo '$results = $tevo->' . $apiMethod . '($clientId, $options);' . PHP_EOL;
 
@@ -383,7 +383,7 @@ if(isset($_GET['apiMethod'])) {
                         case 'showClientEmailAddress' :
                             $id = $input->id;
                             $clientId = $input->clientId;
-                            
+
                             // Display the code
                             echo '$results = $tevo->' . $apiMethod . '($clientId, $id, $options);' . PHP_EOL;
 
@@ -394,7 +394,7 @@ if(isset($_GET['apiMethod'])) {
 
                         case 'listEvoPayTransactions' :
                             $evoPayAccountId = $input->accountId;
-                            
+
                             // Display the code
                             echo '$results = $tevo->' . $apiMethod . '($evoPayAccountId, $options);' . PHP_EOL;
 
@@ -439,7 +439,7 @@ if(isset($_GET['apiMethod'])) {
                         case 'searchQuotes' :
                             // Display the code
                             echo '$results = $tevo->' . $apiMethod . '((string) $input->query, $options);' . PHP_EOL;
-                            
+
                             // Execute the call
                             $results = $tevo->$apiMethod((string) $input->query, $options);
                             break;
@@ -449,14 +449,14 @@ if(isset($_GET['apiMethod'])) {
                             // Create the properly formatted client
                             $client = new stdClass;
                             $client->name = 'Morris “Moe” Szyslak';
-                            
+
                             // Display the code
                             echo '$client = new stdClass;' . PHP_EOL
                                . '$client->name = \'Morris “Moe” Szyslak\';' . PHP_EOL
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($client);' . PHP_EOL
                             ;
-    
+
                             // Execute the call
                             $results = $tevo->$apiMethod($client);
                             break;
@@ -468,14 +468,14 @@ if(isset($_GET['apiMethod'])) {
                             // Create the properly formatted client
                             $client = new stdClass;
                             $client->name = 'Momar “Moe” Szyslak';
-                            
+
                             // Display the code
                             echo '$client = new stdClass;' . PHP_EOL
                                . '$client->name = \'Momar “Moe” Szyslak\';' . PHP_EOL
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($clientId, $client);' . PHP_EOL
                             ;
-    
+
                             // Execute the call
                             $results = $tevo->$apiMethod($clientId, $client);
                             break;
@@ -493,7 +493,7 @@ if(isset($_GET['apiMethod'])) {
                             $address1->postal_code = '58008-0000';
                             $address1->country_code = 'US';
                             $address1->label = 'Work';
-                            
+
                             // Create another properly formatted client address
                             $address2 = new stdClass;
                             $address2->street_address = '744 Evergreen Terrace';
@@ -502,10 +502,10 @@ if(isset($_GET['apiMethod'])) {
                             $address2->postal_code = '58008-1111';
                             $address2->country_code = 'US';
                             $address2->label = 'Ned’s House';
-                            
+
                             $addresses[] = $address1;
                             $addresses[] = $address2;
-                            
+
                             // Display the code
                             echo '$address1 = new stdClass;' . PHP_EOL
                                . '$address1->company = \'Moe’s Tavern\';' . PHP_EOL
@@ -530,7 +530,7 @@ if(isset($_GET['apiMethod'])) {
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($clientId, $addresses);' . PHP_EOL
                             ;
-    
+
                             // Execute the call
                             $results = $tevo->$apiMethod($clientId, $addresses);
                             break;
@@ -546,7 +546,7 @@ if(isset($_GET['apiMethod'])) {
                             $address->extended_address = 'Next to King Toot’s';
                             $address->label = 'Work (and home)';
                             $address->name = 'Moe Szyslak';
-                            
+
                             // Display the code
                             echo '$address = new stdClass;' . PHP_EOL
                                . '$address->company = \'Uncle Moe’s Family Feed-Bag\';' . PHP_EOL
@@ -555,7 +555,7 @@ if(isset($_GET['apiMethod'])) {
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($clientId, $addressId, $address);' . PHP_EOL
                             ;
-    
+
                             // Execute the call
                             $results = $tevo->$apiMethod($clientId, $addressId, $address);
                             break;
@@ -568,14 +568,14 @@ if(isset($_GET['apiMethod'])) {
                             $phoneNumber1 = new stdClass;
                             $phoneNumber1->number = '243-6697';
                             $phoneNumber1->label = 'work';
-                            
+
                             $phoneNumber2 = new stdClass;
                             $phoneNumber2->number = '243-6698';
                             $phoneNumber2->label = 'work fax';
-                            
+
                             $phoneNumbers[] = $phoneNumber1;
                             $phoneNumbers[] = $phoneNumber2;
-                            
+
                             // Display the code
                             echo '$phoneNumber1 = new stdClass;' . PHP_EOL
                                . '$phoneNumber1->number = \'243-6697\';' . PHP_EOL
@@ -590,7 +590,7 @@ if(isset($_GET['apiMethod'])) {
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($clientId, $phoneNumbers);' . PHP_EOL
                             ;
-    
+
                             // Execute the call
                             $results = $tevo->$apiMethod($clientId, $phoneNumbers);
                             break;
@@ -604,7 +604,7 @@ if(isset($_GET['apiMethod'])) {
                             $phoneNumber = new stdClass;
                             $phoneNumber->extension = '101';
                             $phoneNumber->country_code = '+1';
-                            
+
                             // Display the code
                             echo '$phoneNumber = new stdClass;' . PHP_EOL
                                . '$phoneNumber->extension = \'101\';' . PHP_EOL
@@ -612,7 +612,7 @@ if(isset($_GET['apiMethod'])) {
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($clientId, $phoneNumberId, $phoneNumber);' . PHP_EOL
                             ;
-    
+
                             // Execute the call
                             $results = $tevo->$apiMethod($clientId, $phoneNumberId, $phoneNumber);
                             break;
@@ -632,7 +632,7 @@ if(isset($_GET['apiMethod'])) {
 
                             $emailAddresses[] = $emailAddress1;
                             $emailAddresses[] = $emailAddress2;
-                            
+
                             // Display the code
                             echo '$emailAddress1 = new stdClass;' . PHP_EOL
                                . '$emailAddress1->address = \'moeissexxxy69@compuserve.com\';' . PHP_EOL
@@ -647,7 +647,7 @@ if(isset($_GET['apiMethod'])) {
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($clientId, $emailAddresses);' . PHP_EOL
                             ;
-    
+
                             // Execute the call
                             $results = $tevo->$apiMethod($clientId, $emailAddresses);
                             break;
@@ -660,14 +660,14 @@ if(isset($_GET['apiMethod'])) {
                             // Create the properly formatted client address
                             $emailAddress = new stdClass;
                             $emailAddress->address = 'moethetroll@eworld.net';
-                            
+
                             // Display the code
                             echo '$emailAddress = new stdClass;' . PHP_EOL
                                . '$emailAddress->address = \'moethetroll@eworld.net\';' . PHP_EOL
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($clientId, $address);' . PHP_EOL
                             ;
-    
+
                             // Execute the call
                             $results = $tevo->$apiMethod($clientId, $emailAddressId, $emailAddress);
                             break;
@@ -735,7 +735,7 @@ if(isset($_GET['apiMethod'])) {
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($clientId, $creditCards);' . PHP_EOL
                             ;
-    
+
                             // Execute the call
                             $results = $tevo->$apiMethod($clientId, $creditCards);
                             break;
@@ -749,7 +749,7 @@ if(isset($_GET['apiMethod'])) {
                             $creditCard = new stdClass;
                             $creditCard->expiration_month = '08';
                             $creditCard->expiration_year = '15';
-                            
+
                             // Display the code
                             echo '$creditCard = new stdClass;' . PHP_EOL
                                . '$creditCard->expiration_month = \'08\'' . PHP_EOL
@@ -757,7 +757,7 @@ if(isset($_GET['apiMethod'])) {
                                . PHP_EOL
                                . '$results = $tevo->' . $apiMethod . '($clientId, $creditCardId, $creditCard);' . PHP_EOL
                             ;
-    
+
                             // Execute the call
                             $results = $tevo->$apiMethod($clientId, $creditCardId, $creditCard);
                             break;
@@ -773,16 +773,16 @@ if(isset($_GET['apiMethod'])) {
 
                             $items[] = $item1;
                             $items[] = $item2;
-                            
+
                             $shipment1 = new stdClass;
                             $shipment1->items = $items;
                             $shipment1->airbill = "JVBERi0xLjMKJcTl8uXrp/Og0MTGCjQgMCBvYmoKPDwgL0xlbmd0aCA1IDAg\nUiAvRmlsdGVyIC9GbGF0ZURlY29kZSA+PgpzdHJlYW0KeAErVAgEAAHnAOMK\nZW5kc3RyZWFtCmVuZG9iago1IDAgb2JqCjExCmVuZG9iagoyIDAgb2JqCjw8\nIC9UeXBlIC9QYWdlIC9QYXJlbnQgMyAwIFIgL1Jlc291cmNlcyA2IDAgUiAv\nQ29udGVudHMgNCAwIFIgL01lZGlhQm94IFswIDAgNjEyIDc5Ml0KPj4KZW5k\nb2JqCjYgMCBvYmoKPDwgL1Byb2NTZXQgWyAvUERGIF0gPj4KZW5kb2JqCjMg\nMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9NZWRpYUJveCBbMCAwIDYxMiA3OTJd\nIC9Db3VudCAxIC9LaWRzIFsgMiAwIFIgXSA+PgplbmRvYmoKNyAwIG9iago8\nPCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMyAwIFIgPj4KZW5kb2JqCjggMCBv\nYmoKKFVudGl0bGVkKQplbmRvYmoKOSAwIG9iagooTWFjIE9TIFggMTAuNyBR\ndWFydHogUERGQ29udGV4dCkKZW5kb2JqCjEwIDAgb2JqCihUeWxlciBIdW50\nKQplbmRvYmoKMTEgMCBvYmoKKCkKZW5kb2JqCjEyIDAgb2JqCihUZXh0RWRp\ndCkKZW5kb2JqCjEzIDAgb2JqCihEOjIwMTEwODAzMDI0NDI1WjAwJzAwJykK\nZW5kb2JqCjE0IDAgb2JqCigpCmVuZG9iagoxNSAwIG9iagpbICgpIF0KZW5k\nb2JqCjEgMCBvYmoKPDwgL1RpdGxlIDggMCBSIC9BdXRob3IgMTAgMCBSIC9T\ndWJqZWN0IDExIDAgUiAvUHJvZHVjZXIgOSAwIFIgL0NyZWF0b3IgMTIgMCBS\nCi9DcmVhdGlvbkRhdGUgMTMgMCBSIC9Nb2REYXRlIDEzIDAgUiAvS2V5d29y\nZHMgMTQgMCBSIC9BQVBMOktleXdvcmRzIDE1IDAgUgo+PgplbmRvYmoKeHJl\nZgowIDE2CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAwMDYzNCAwMDAwMCBu\nIAowMDAwMDAwMTI1IDAwMDAwIG4gCjAwMDAwMDAyNjggMDAwMDAgbiAKMDAw\nMDAwMDAyMiAwMDAwMCBuIAowMDAwMDAwMTA3IDAwMDAwIG4gCjAwMDAwMDAy\nMjkgMDAwMDAgbiAKMDAwMDAwMDM1MSAwMDAwMCBuIAowMDAwMDAwNDAwIDAw\nMDAwIG4gCjAwMDAwMDA0MjYgMDAwMDAgbiAKMDAwMDAwMDQ3NSAwMDAwMCBu\nIAowMDAwMDAwNTA0IDAwMDAwIG4gCjAwMDAwMDA1MjMgMDAwMDAgbiAKMDAw\nMDAwMDU1MCAwMDAwMCBuIAowMDAwMDAwNTkyIDAwMDAwIG4gCjAwMDAwMDA2\nMTEgMDAwMDAgbiAKdHJhaWxlcgo8PCAvU2l6ZSAxNiAvUm9vdCA3IDAgUiAv\nSW5mbyAxIDAgUiAvSUQgWyA8NTk3YjAzMWY1ZTQxNWVlY2ZiMDUxZDVhZmQz\nOTk1NDI+Cjw1OTdiMDMxZjVlNDE1ZWVjZmIwNTFkNWFmZDM5OTU0Mj4gXSA+\nPgpzdGFydHhyZWYKODA3CiUlRU9GCg==\n";
                             $shipment1->order_id = '922';
                             $shipment1->tracking_number = '7987 6668 4568';
                             $shipment1->type = 'FedEx';
-    
+
                             $shipments[] = $shipment1;
-                            
+
                             // Display the code
                             echo '$item1 = new stdClass;' . PHP_EOL
                                . '$item1->id = \'1003\';' . PHP_EOL
@@ -816,13 +816,13 @@ if(isset($_GET['apiMethod'])) {
                             $item->price = '295.0';
                             $item->ticket_group_id = '5276516';
                             $item->quantity = 2;
-    
+
                             $order1 = new stdClass;
                             $order1->items[] = $item;
                             $order1->buyer_id = $cfg['params']['buyerId'];
-                            
+
                             $orderDetails[] = $order1;
-                            
+
                             // Display the code
                             echo '$item = new stdClass;' . PHP_EOL
                                . '$item->price = \'295.00\';' . PHP_EOL
@@ -846,7 +846,7 @@ if(isset($_GET['apiMethod'])) {
                         case 'createFulfillmentOrder' :
                             $fulfillment = true;
                             // Purposely "flow" into createOrderCustomer
-                            
+
                         case 'createOrderCustomer' :
                             $fulfillment = (isset($fulfillment)) ? $fulfillment : false;
                             $clientId = $input->clientId;
@@ -856,14 +856,14 @@ if(isset($_GET['apiMethod'])) {
                             $item->price = '295.0';
                             $item->ticket_group_id = '5276516';
                             $item->quantity = 2;
-    
+
                             $shippingAddress = new stdClass;
                             $shippingAddress->street_address = '742 Evergreen Terrace';
                             $shippingAddress->locality = 'Springfield';
                             $shippingAddress->region = 'MG';
                             $shippingAddress->postal_code = '58008-6072';
                             $shippingAddress->country_code = 'US';
-                            
+
                             $billingAddress = new stdClass;
                             $billingAddress->street_address = '744 Evergreen Terrace';
                             $billingAddress->extended_address = 'Flander’s Residence';
@@ -871,16 +871,16 @@ if(isset($_GET['apiMethod'])) {
                             $billingAddress->region = 'MG';
                             $billingAddress->postal_code = '58008-6072';
                             $billingAddress->country_code = 'US';
-                            
+
                             /**
-                             * It isn't yet in the API docs but if you do not need 
+                             * It isn't yet in the API docs but if you do not need
                              * to run your payments through the TEvo-provided
                              * gateway then you can use 'offline' as the payment
                              * type and just handle the payment stuff on your own.
                              */
                             $payment = new stdClass;
                             $payment->type = 'credit_card';
-                            
+
                             $order1 = new stdClass;
                             $order1->items[] = $item;
                             $order1->shipping_address = $shippingAddress;
@@ -888,9 +888,9 @@ if(isset($_GET['apiMethod'])) {
                             $order1->payments[] = $payment;
                             $order1->seller_id = $cfg['params']['buyerId'];
                             $order1->client_id = $clientId;
-                            
+
                             $orderDetails[] = $order1;
-                            
+
                             // Display the code
                             echo '$item = new stdClass;' . PHP_EOL
                                . '$item->price = \'295.00\';' . PHP_EOL
@@ -919,7 +919,7 @@ if(isset($_GET['apiMethod'])) {
                                . '$order1->items[] = $item;' . PHP_EOL
                                . '$order1->shipping_address = $shippingAddress;' . PHP_EOL
                                . '$order1->billing_address = $billingAddress;' . PHP_EOL
-                               . '$order1->payments = $payment;' . PHP_EOL
+                               . '$order1->payments[] = $payment;' . PHP_EOL
                                . '$order1->seller_id = $cfg[\'params\'][\'buyerId\'];' . PHP_EOL
                                . '$order1->client_id = $clientId;' . PHP_EOL
                                . PHP_EOL
@@ -936,7 +936,7 @@ if(isset($_GET['apiMethod'])) {
                         case 'acceptOrder' :
                             $orderId = $input->id;
                             $userId = $input->userId;
-                            
+
                             // Display the code
                             echo '$results = $tevo->' . $apiMethod . '($orderId, $userId);' . PHP_EOL;
 
@@ -949,7 +949,7 @@ if(isset($_GET['apiMethod'])) {
                             $orderId = $input->id;
                             $userId = $input->userId;
                             $rejectionReason = $input->rejectionReason;
-                            
+
                             // Display the code
                             echo '$results = $tevo->' . $apiMethod . '($orderId, $userId, $rejectionReason);' . PHP_EOL;
 
@@ -960,7 +960,7 @@ if(isset($_GET['apiMethod'])) {
 
                         case 'completeOrder' :
                             $orderId = $input->id;
-                            
+
                             // Display the code
                             echo '$results = $tevo->' . $apiMethod . '($orderId);' . PHP_EOL;
 
@@ -974,7 +974,7 @@ if(isset($_GET['apiMethod'])) {
                     }
 
                     echo '</pre>' . PHP_EOL; // Close up the echoing of the code used
-                    
+
                     // Display the results
                     if ($apiMethod == 'acceptOrder') {
                         if ($results) {
@@ -1003,11 +1003,11 @@ if(isset($_GET['apiMethod'])) {
                             echo '</pre><br />' . PHP_EOL;
                         }
                         echo '<h2>print_r() of ' . get_class ($results) . ' result object</h2>' . PHP_EOL
-                           . '<p>This shows all the public and protected properties of the full ' 
-                           . '<strong>' . get_class ($results) . '</strong> object that is returned from the ' 
+                           . '<p>This shows all the public and protected properties of the full '
+                           . '<strong>' . get_class ($results) . '</strong> object that is returned from the '
                            . '<strong>' . $apiMethod . '()</strong> call. Each method will return different '
                            . 'types of objects depending on what the data returned is.</p>'
-                           
+
                            . '<pre>'; print_r($results); echo '</pre>' . PHP_EOL
                         ;
                     }
@@ -1028,7 +1028,7 @@ if(isset($_GET['apiMethod'])) {
                             <option label="showBroker" value="showBroker">showBroker</option>
                             <option label="searchBrokers" value="searchBrokers">searchBrokers</option>
                         </optgroup>
-    
+
                         <optgroup label="Clients Methods">
                             <option label="listClients" value="listClients">listClients</option>
                             <option label="showClient" value="showClient">showClient</option>
@@ -1055,13 +1055,13 @@ if(isset($_GET['apiMethod'])) {
                             <option label="createClientCreditCard" value="createClientCreditCard"<?php echo $disabled;?>>createClientCreditCard</option>
                             <option label="updateClientCreditCard" value="updateClientCreditCard"<?php echo $disabled;?>>updateClientCreditCard</option>
                         </optgroup>
-    
+
                         <optgroup label="Offices Methods">
                             <option label="listOffices" value="listOffices">listOffices</option>
                             <option label="showOffice" value="showOffice">showOffice</option>
                             <option label="searchOffices" value="searchOffices">searchOffices</option>
                         </optgroup>
-    
+
                         <optgroup label="Users Methods">
                             <option label="listUsers" value="listUsers">listUsers</option>
                             <option label="showUser" value="showUser">showUser</option>
@@ -1084,17 +1084,17 @@ if(isset($_GET['apiMethod'])) {
                             <option label="listEvents" value="listEvents">listEvents</option>
                             <option label="showEvent" value="showEvent">showEvent</option>
                         </optgroup>
-    
+
                         <optgroup label="Performers Methods">
                             <option label="listPerformers" value="listPerformers">listPerformers</option>
                             <option label="showPerformer" value="showPerformer">showPerformer</option>
                             <option label="searchPerformers" value="searchPerformers">searchPerformers</option>
                         </optgroup>
-    
+
                         <optgroup label="Search Methods">
                             <option label="search" value="search">Performers & Venues</option>
                         </optgroup>
-    
+
                         <optgroup label="Venues Methods">
                             <option label="listVenues" value="listVenues">listVenues</option>
                             <option label="showVenue" value="showVenue">showVenue</option>
@@ -1107,7 +1107,7 @@ if(isset($_GET['apiMethod'])) {
                             <option label="listTicketGroups" value="listTicketGroups">listTicketGroups</option>
                             <option label="showTicketGroup" value="showTicketGroup">showTicketGroup</option>
                         </optgroup>
-    
+
                         <optgroup label="Orders Methods">
                             <option label="listOrders" value="listOrders">listOrders</option>
                             <option label="showOrder" value="showOrder">showOrder</option>
@@ -1118,13 +1118,13 @@ if(isset($_GET['apiMethod'])) {
                             <option label="rejectOrder" value="rejectOrder"<?php echo $disabled;?>>rejectOrder</option>
                             <option label="completeOrder" value="completeOrder"<?php echo $disabled;?>>completeOrder</option>
                         </optgroup>
-    
+
                         <optgroup label="Quotes Methods">
                             <option label="listQuotes" value="listQuotes">listQuotes</option>
                             <option label="showQuote" value="showQuote">showQuote</option>
                             <option label="searchQuotes" value="searchQuotes">searchQuotes</option>
                         </optgroup>
-    
+
                         <optgroup label="Shipments Methods">
                             <option label="listShipments" value="listShipments">listShipments</option>
                             <option label="showShipment" value="showShipment">showShipment</option>
@@ -1145,7 +1145,7 @@ if(isset($_GET['apiMethod'])) {
                         </optgroup>
 
 		        </select>
-		        
+
 		        <div id="idOption" class="options">
                     <br />
                     <br />
@@ -1329,12 +1329,12 @@ if(isset($_GET['apiMethod'])) {
                     }
             }
         }
-        
+
         function hideAllOptions()
         {
             $('.options').fadeOut();
         }
-        
+
         function checkForm()
         {
             // Set any hidden inputs to inactive to keep them from being submitted.
