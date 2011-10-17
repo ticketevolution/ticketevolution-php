@@ -40,7 +40,6 @@ require_once 'Zend/Db/Table/Row/Abstract.php';
  */
 abstract class TicketEvolution_Db_Table_Row_Abstract
     extends Zend_Db_Table_Row_Abstract
-    implements ArrayAccess, IteratorAggregate
 {
     /**
      * Allows pre-insert logic to be applied to row.
@@ -80,7 +79,7 @@ abstract class TicketEvolution_Db_Table_Row_Abstract
      *
      * It is used here to ensure that we set the info for the modified
      * informational columns and do not mess with the created info column(s)
-     * and to ensure that all we really do is set the status of this row to 
+     * and to ensure that all we really do is set the status of this row to
      * inactive rather than actually deleting the row.
      *
      * @return void
@@ -104,9 +103,9 @@ abstract class TicketEvolution_Db_Table_Row_Abstract
     protected function _setCreatedInfo()
     {
         // Make sure we don't try and set an empty createdDate
-        // We don't need have to check if it exists because MySQL will add it 
+        // We don't need have to check if it exists because MySQL will add it
         // automatically but we will for consistency
-        if (!isset($this->_data['createdDate']) 
+        if (!isset($this->_data['createdDate'])
            || empty($this->_data['createdDate'])) {
             $this->__set('createdDate', date('c'));
         }
@@ -121,7 +120,7 @@ abstract class TicketEvolution_Db_Table_Row_Abstract
     protected function _setModificationInfo()
     {
         // Make sure we have a lastModifiedDate
-        if (!isset($this->_data['lastModifiedDate']) 
+        if (!isset($this->_data['lastModifiedDate'])
            || empty($this->_data['lastModifiedDate'])) {
             $this->__set('lastModifiedDate', date('c'));
         }
