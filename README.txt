@@ -1,11 +1,14 @@
-Welcome to the Ticket Evolution Framework for PHP! 
+Welcome to the Ticket Evolution Framework for PHP!
 
 RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+Oct 18, 2011
+- Added automatic retry capability (up to 3 attempts) to Data Loaders in case of timeout
+
 Sept 20, 2011 Act the Third
-- Added payment type and some important documentation to createOrderCustomer() in the demo app. 
+- Added payment type and some important documentation to createOrderCustomer() in the demo app.
 
 Sept 20, 2011 Act II
 - Added name to credit card in createCreditCard case in demo app
@@ -69,8 +72,8 @@ This is the big update you've been waiting for.
 - Code now passes Zend CodeSniffer tests with no errors
 
 July 25, 2011
-Fixed a bug in buildRawSignature() (in Webservices.php) in which parameter names 
-were not being urlencoded (only the values were) which resulted in 401 Unauthorized 
+Fixed a bug in buildRawSignature() (in Webservices.php) in which parameter names
+were not being urlencoded (only the values were) which resulted in 401 Unauthorized
 errors when attempting to listEvents() using 'performances[performer_id]='.
 
 Also cleaned up some of the code in Webservices.php to make it pass CodeSniffer
@@ -78,14 +81,14 @@ using the Zend sniffs.
 
 July 5, 2011
 Bug fixes.
-In the configuration data-loader the venueId column was being populated with 
+In the configuration data-loader the venueId column was being populated with
 the configurationId.
 ResultSet was returning all results as TicketEvolution_Searchresults objects
 instead of teh ones specififc to their type of result.
 
 May 22, 2011
-Added ability to store seating chart urls in the tevoConfigurations table. In 
-order to do so you will need to run the update_Tevo_tables.mysql script in 
+Added ability to store seating chart urls in the tevoConfigurations table. In
+order to do so you will need to run the update_Tevo_tables.mysql script in
 the scripts folder.
 
 
@@ -95,10 +98,10 @@ To use it you will need to run the create_tables.mysql script in scripts folder.
 
 Added sortResults() method to ResultSet to allow for sorting of results.
 
-Added exclusiveResults() and excludeResults() methods to resultSet which allow 
+Added exclusiveResults() and excludeResults() methods to resultSet which allow
 you to easily show only TicketGroups from a specified array of brokers OR to
-exclude TicketGroups from a specified array of brokers. Handy if you prefer to 
-only show your own inventory for certain events or if you wish to exclude 
+exclude TicketGroups from a specified array of brokers. Handy if you prefer to
+only show your own inventory for certain events or if you wish to exclude
 someone's inventory.
 
 Added "search" endpoint which searches venues and performers
@@ -106,7 +109,7 @@ Added "search" endpoint which searches venues and performers
 Many general improvements
 
 May 17, 2011
-Updated endpoint in Webservice.php from "ticket-groups" to "ticket_groups" 
+Updated endpoint in Webservice.php from "ticket-groups" to "ticket_groups"
 to reflect change in API.
 
 
@@ -116,7 +119,7 @@ Initial Release
 NEW FEATURES
 ------------
 
-* First release of all components, contributed by J Cobb and Jeff Churchill 
+* First release of all components, contributed by J Cobb and Jeff Churchill
   of Team One Tickets & Sports Tours, Inc.
 
 
