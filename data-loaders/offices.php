@@ -21,14 +21,41 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
      */
     // Set the current page
     $options['page'] = $currentPage;
-    
+
+    // Set the current $tryCount
+    if(!isset($tryCount)) {
+        $tryCount = 1;
+    }
+
     // Execute the request
     try{
         $results = $tevo->listOffices($options);
     } catch(Exception $e) {
-        throw new TicketEvolution_Webservice_Exception($e);
+        /**
+         * In case of API timeout we will decrement the $currentPage and then
+         * continue(1) in order to retry the current attempt.
+         * Use the $tryCount to keep track of how many attempts and only throw an
+         * exception after a total of 3 tries
+         */
+        if($e->getCode() == '1000') { // 1000 = timeout
+            $tryCount++;
+
+            if($tryCount > 3) {
+                throw new TicketEvolution_Webservice_Exception($e);
+            }
+
+            // Decrement the $currentPage as it will be incremented at the top of
+            // the loop after we continue()
+            $currentPage--;
+            continue(1);
+        } else {
+            throw new TicketEvolution_Webservice_Exception($e);
+        }
     }
-    
+
+    // unset the $tryCount
+    unset($tryCount);
+
     // Set the correct $maxPages
     if($maxPages == $defaultMaxPages) {
         $maxPages = $results->totalPages();
@@ -76,7 +103,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
         if(isset($result->email[0])) {
             // Set a list of emails we can append to
             $emailList = (string)'';
-            
+
             // Loop through the emails and add them to the `tevoOfficeEmails` table
             foreach($result->email as $email) {
                 $data = array(
@@ -85,7 +112,7 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
                     'officeEmailStatus' => (int)1,
                     'lastModifiedDate' => (string)$now->get(Zend_Date::ISO_8601)
                 );
-    
+
                 if($row = $eTable->fetchRow($eTable->select()->where("`officeId` = ?", (int)$result->id)->where("`officeEmailStatus` = ?", (int)0)->where("`email` = ?", (string)$email))) {
                     $row->setFromArray($data);
                 } else {
@@ -99,9 +126,9 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
             } // End loop through emails for this office
             echo '<p>Saved ' . substr($emailList, 0, -2) . ' to `tevoOfficeEmails` for this office</p>' . PHP_EOL;
             unset($emailList);
-            
-            // Now set `officeEmailStatus` = 0 for any `tevoOfficeEmails` entries for 
-            // this office that are not in $emailList. This will set any emails that 
+
+            // Now set `officeEmailStatus` = 0 for any `tevoOfficeEmails` entries for
+            // this office that are not in $emailList. This will set any emails that
             // were attached to this office but are no longer to false/inactive
             if(isset($emailList)) {
                 $data = array(
@@ -117,7 +144,9 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
     } // End loop through this page of results
 
     echo '<h1>Done with page ' . $currentPage . '</h1>' . PHP_EOL;
-    sleep(1);
+    @ob_end_flush();
+    @ob_flush();
+    @flush();
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
@@ -128,5 +157,6 @@ if(isset($statusRow)) {
     $statusRow = $statusTable->createRow($statusData);
 }
 $statusRow->save();
+
 
 echo '<h1>Finished updating `tevo' . $statusData['table'] . '` table</h1>' . PHP_EOL;
