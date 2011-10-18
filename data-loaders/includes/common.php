@@ -60,7 +60,7 @@ if(!$lastRun = new TicketEvolution_Date($lastRun, TicketEvolution_Date::ISO_8601
 }
 
 // Get the Zend_Config object from the registry
-$registry = Zend_Registry::getInstance(); 
+$registry = Zend_Registry::getInstance();
 
 // Create the TEvo object
 $tevo = new TicketEvolution_Webservice($registry->config->params);
@@ -71,7 +71,7 @@ $now = new TicketEvolution_Date();
 // Set the options for the query
 $options = array(
     'page' => 1,
-    'per_page' => 100,
+    'per_page' => 50,
     'updated_at.gte' => $lastRun->get(TicketEvolution_Date::ISO_8601)
 );
 
