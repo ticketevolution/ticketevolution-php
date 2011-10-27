@@ -4,6 +4,9 @@ RELEASE INFORMATION
 ---------------
 Ticket Evolution Framework for PHP.
 
+Oct 27, 2011
+- Fixed issue #30 with createShipment()
+
 Oct 18, 2011
 - Added automatic retry capability (up to 3 attempts) to Data Loaders in case of timeout
 
