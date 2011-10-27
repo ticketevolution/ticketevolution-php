@@ -112,7 +112,7 @@ class TicketEvolution_Webservice
 
     /**
      * Base URI for the REST client
-     * You should override and use the sandbox (http://api.sandbox.ticketevolution.com) 
+     * You should override and use the sandbox (http://api.sandbox.ticketevolution.com)
      * for testing and development
      *
      * @var string
@@ -469,7 +469,7 @@ class TicketEvolution_Webservice
         $newClient = new stdClass;
         $newClient->clients[] = $clientDetails;
         $options = json_encode($newClient);
-        
+
         $endPoint = 'clients';
 
         $client = $this->getRestClient();
@@ -625,7 +625,7 @@ class TicketEvolution_Webservice
             $newAddresses->addresses[] = $address;
         }
         $options = json_encode($newAddresses);
-        
+
         $endPoint = 'clients/' . $clientId . '/addresses';
 
         $client = $this->getRestClient();
@@ -782,7 +782,7 @@ class TicketEvolution_Webservice
             $newPhoneNumbers->phone_numbers[] = $phoneNumber;
         }
         $options = json_encode($newPhoneNumbers);
-        
+
         $endPoint = 'clients/' . $clientId . '/phone_numbers';
 
         $client = $this->getRestClient();
@@ -939,7 +939,7 @@ class TicketEvolution_Webservice
             $newEmailAddresses->email_addresses[] = $emailAddress;
         }
         $options = json_encode($newEmailAddresses);
-        
+
         $endPoint = 'clients/' . $clientId . '/email_addresses';
 
         $client = $this->getRestClient();
@@ -1047,7 +1047,7 @@ class TicketEvolution_Webservice
     /**
      * Get a single client credit card by Id
      *
-     * NOTE: For PCI compliance, once you create a credit card you can NEVER 
+     * NOTE: For PCI compliance, once you create a credit card you can NEVER
      * retrieve the full card number, expiration date or verification code.
      *
      * @param  int $clientId ID of the specific client
@@ -1088,7 +1088,7 @@ class TicketEvolution_Webservice
      * Create client credit card(s)
      *
      *  NOTE: Currently the API only supports creating a single card at a time.
-     *        If you pass in more than one credit card to POST, it will just 
+     *        If you pass in more than one credit card to POST, it will just
      *        ignore everything after the first one.
      *        This will change in a future release to allow multiples.
      *
@@ -1108,7 +1108,7 @@ class TicketEvolution_Webservice
                 'You must use an https URL to transmit full credit card numbers'
             );
         }
-        
+
         $newCreditCards = new stdClass;
         foreach ($creditCards as $creditCard) {
             /**
@@ -1120,7 +1120,7 @@ class TicketEvolution_Webservice
             $newCreditCards->credit_cards[] = $creditCard;
         }
         $options = json_encode($newCreditCards);
-        
+
         $endPoint = 'clients/' . $clientId . '/credit_cards';
 
         $client = $this->getRestClient();
@@ -1167,7 +1167,7 @@ class TicketEvolution_Webservice
                 'You must use an https URL to transmit full credit card numbers'
             );
         }
-        
+
         /**
          * Strip non-numeric chars from CC number and validate it
          */
@@ -1204,22 +1204,22 @@ class TicketEvolution_Webservice
 
     /**
      * Remove non-numeric characters from credit card number and validate length
-     * 
+     *
      * NOTE: This does NOT validate the card against the Luhn algorithm.
      *
-     * @param  string $creditCardNumber 
+     * @param  string $creditCardNumber
      * @throws TicketEvolution_Webservice_Exception
      * @return string
      */
     protected function _cleanAndValidateCreditCardNumber($creditCardNumber)
     {
         $cleanNumber = preg_replace('/[^0-9]/', '', $creditCardNumber);
-        
+
         /**
          * @see Zend_Validate_CreditCard
          */
         require_once 'Zend/Validate/CreditCard.php';
-        
+
         $valid = new Zend_Validate_CreditCard();
         if ($valid->isValid($cleanNumber)) {
             return $cleanNumber;
@@ -1232,7 +1232,7 @@ class TicketEvolution_Webservice
                 'The credit card provided is not a valid credit card number'
             );
         }
-            
+
     }
 
 
@@ -1254,10 +1254,10 @@ class TicketEvolution_Webservice
             return true;
         } else {
             return false;
-        }            
+        }
     }
-    
-    
+
+
     /**
      * List Offices for a Brokerage
      *
@@ -2191,7 +2191,7 @@ class TicketEvolution_Webservice
     /**
      * Create order(s)
      *
-     * @param  array $orders Multiple items per order is not currently supported 
+     * @param  array $orders Multiple items per order is not currently supported
      *      by the API.
      * @param bool $fulfillment Whether this is a fulfillment order or not
      * @throws TicketEvolution_Webservice_Exception
@@ -2493,8 +2493,9 @@ class TicketEvolution_Webservice
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
 
-        $defaultOptions = array();
-        $options = $this->_prepareOptions('POST', $endPoint, $options, $defaultOptions);
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri, $this->_secretKey, 'POST', $endPoint, $options
+        );
 
         $client->getHttpClient()->resetParameters();
         $this->_setHeaders(
@@ -2834,7 +2835,7 @@ class TicketEvolution_Webservice
             require_once 'Zend/Rest/Client.php';
             $this->_rest = new Zend_Rest_Client();
 
-        
+
             /**
              * The Ticket Evolution Sandbox uses a self-signed certificate which,
              * by default is not allowed. If we are using https in the sandbox lets
@@ -2866,7 +2867,7 @@ class TicketEvolution_Webservice
                 $client = new Zend_Http_Client();
 
                 $client->setAdapter($adapter);
-                 
+
                 // Pass the options array to setStreamContext()
                 $adapter->setStreamContext($options);
 
@@ -2951,7 +2952,7 @@ class TicketEvolution_Webservice
          * @see Zend_Crypt_Hmac
          */
         require_once 'Zend/Crypt/Hmac.php';
-        
+
         return base64_encode(
             Zend_Crypt_Hmac::compute($secretKey, 'sha256', $signature, Zend_Crypt_Hmac::BINARY)
         );
@@ -2993,7 +2994,7 @@ class TicketEvolution_Webservice
      * Subclasses may override this method.
      *
      * @param string $responseBody The response body to process
-     * @param string $returnAsClass The type of class an individual record 
+     * @param string $returnAsClass The type of class an individual record
      *     should be returned as
      * @return void
      */
@@ -3023,7 +3024,7 @@ class TicketEvolution_Webservice
                 . $response->getStatus()
             );
         }
-        
+
         $decodedJson = json_decode($response->getBody(), false);
         if (is_null($decodedJson)) {
             /**
@@ -3034,7 +3035,7 @@ class TicketEvolution_Webservice
                 'An error occurred decoding the JSON received: ' . json_last_error()
             );
         }
-        
+
         if (is_null($returnAsClass)) {
             return $decodedJson;
         } else {
@@ -3049,7 +3050,7 @@ class TicketEvolution_Webservice
                 require_once 'Zend/Loader.php';
                 Zend_Loader::loadClass($returnAsClass);
             }
-    
+
             /*
              * Create an instance of the item's class.
              */
