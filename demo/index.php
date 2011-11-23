@@ -75,23 +75,6 @@ $cfg['exclusive']['brokerage'] = array(
 );
 
 
-/**
- * You can initialize the TicketEvolution class with either a Zend_Config object
- * or with the above array.
- *
- * Zend_Config method
- * $config = new Zend_Config($cfg);
- * $tevo = new TicketEvolution($cfg->params);
- *
- * Array method
- * $tevo = new TicketEvolution($cfg['params']);
- */
-
-// We'll use the Zend_Config method here
-$config = new Zend_Config($cfg);
-
-$tevo = new TicketEvolution_Webservice($config->params);
-
 // Set up some default query options
 $options = array(
     'page' => 1,
@@ -178,6 +161,21 @@ if(isset($_GET['apiMethod'])) {
             'allowEmpty'        => false,
             'allowWhiteSpace'   => true,
         ),
+        'apiToken' => array(
+            'presence'          => 'optional',
+            'allowEmpty'        => false,
+            'allowWhiteSpace'   => false,
+        ),
+        'secretKey' => array(
+            'presence'          => 'optional',
+            'allowEmpty'        => false,
+            'allowWhiteSpace'   => false,
+        ),
+        'buyerId' => array(
+            'presence'          => 'optional',
+            'allowEmpty'        => false,
+            'allowWhiteSpace'   => false,
+        ),
     );
     $input = new Zend_Filter_Input($filters, $validators, $_GET);
     if ($input->hasInvalid() || $input->hasMissing()) {
@@ -191,6 +189,37 @@ if(isset($_GET['apiMethod'])) {
     }
 }
 
+$apiToken = $cfg['params']['apiToken'];
+if (!empty($input->apiToken)) {
+    $cfg['params']['apiToken'] = $input->apiToken;
+}
+
+$secretKey = $cfg['params']['secretKey'];
+if (!empty($input->secretKey)) {
+    $cfg['params']['secretKey'] = $input->secretKey;
+}
+
+$buyerId = $cfg['params']['buyerId'];
+if (!empty($input->buyerId)) {
+    $cfg['params']['buyerId'] = $input->buyerId;
+}
+
+/**
+ * You can initialize the TicketEvolution class with either a Zend_Config object
+ * or with the above $cfg array.
+ *
+ * Zend_Config method
+ * $config = new Zend_Config($cfg);
+ * $tevo = new TicketEvolution($cfg->params);
+ *
+ * Array method
+ * $tevo = new TicketEvolution($cfg['params']);
+ */
+
+// We'll use the Zend_Config method here
+$config = new Zend_Config($cfg);
+
+$tevo = new TicketEvolution_Webservice($config->params);
 ?>
 
 <!DOCTYPE html>
@@ -1025,7 +1054,27 @@ if(isset($_GET['apiMethod'])) {
 		    <form action="index.php" method="get" target="_top" id="APItest" onsubmit="checkForm();">
 		        <fieldset>
 		        <legend>Ticket Evolution Framework Demo</legend>
-		        <label for="apiMethod" accesskey="m">Framework Method</label>
+
+                <label for="apiToken">API Token: </label>
+                <br />
+                <input name="apiToken" id="apiToken" type="text" value="<?php echo $cfg['params']['apiToken']; ?>" size="40" maxlength="40" />
+
+                <br />
+                <br />
+                <label for="secretKey">API Secret: </label>
+                <br />
+                <input name="secretKey" id="secretKey" type="text" value="<?php echo $cfg['params']['secretKey']; ?>" size="50" maxlength="40" />
+
+                <br />
+                <br />
+                <label for="buyerId">Buyer ID (a/k/a officeId): </label>
+                <br />
+                <input name="buyerId" id="buyerId" type="text" value="<?php echo $cfg['params']['buyerId']; ?>" size="6" maxlength="5" />
+
+                <br />
+                <br />
+		        <label for="apiMethod" accesskey="m">Framework Method: </label>
+                <br />
 		        <select id="apiMethod" name="apiMethod" size="1" onchange="toggleOptions();">
 		            <option label="Select a method&#8230;" value="">Select a method&#8230;</option>
 
