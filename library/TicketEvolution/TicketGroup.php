@@ -47,10 +47,10 @@ class TicketEvolution_TicketGroup
                      * @see TicketEvolution_Date
                      */
                     require_once 'TicketEvolution/Date.php';
-                    
+
                     $this->{$prop} = new TicketEvolution_Date($val, TicketEvolution_Date::ISO_8601);
                     break;
-                    
+
                 case 'retail_price':
                 case 'wholesale_price':
                     // This property is a currency, convert it into a Zend_Currency object
@@ -58,10 +58,16 @@ class TicketEvolution_TicketGroup
                      * @see Zend_Currency
                      */
                     require_once 'Zend/Currency.php';
-                    
-                    $this->{$prop} = new Zend_Currency(array('value' => $val));
+
+                    $this->{$prop} = new Zend_Currency(
+                        array(
+                            'value'     => $val,
+                            'currency'  => 'USD',
+                            'locale'    => 'en_US',
+                        )
+                    );
                     break;
-                    
+
                 default:
                     $this->{$prop} = $val;
             }
