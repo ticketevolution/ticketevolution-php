@@ -24,9 +24,15 @@
 /**
  * This file is just some code that was common to all the data-cachers
  */
+$startTime = new TicketEvolution_Date();
+
 $filters = array('*' => array('StringTrim' , 'StripTags', 'StripNewlines'));
 $validators = array(
     'lastRun' => array(
+        'presence'      => 'optional',
+        'allowEmpty'    => false
+    ),
+    'startPage' => array(
         'presence'      => 'optional',
         'allowEmpty'    => false
     ),
@@ -36,26 +42,28 @@ $GET = new Zend_Filter_Input($filters, $validators, $_GET);
 // Create an object for the `dataLoaderStatus` table
 $statusTable = new TicketEvolution_Db_Table_DataLoaderStatus();
 
-// Set the date we last ran this script so we can get only entries that have
-// been added or changed since then
-// See if a lastRun date was specified to override what is stored in `dataLoaderStatus`
-if(isset($GET->lastRun)) {
-    $lastRun = $GET->lastRun;
-    $statusRow = $statusTable->fetchRow($statusTable->select()->where("`table` = ?", $statusData['table']));
-    if(!isset($statusRow->lastRun)) {
-        // We didn't get a row from the table so unset this
-        unset($statusRow);
-    }
+/**
+ * Set the date we last ran this script so we can get only entries that have
+ * been added or changed since then
+ */
+//Set a default lastRun date
+$lastRun = '2010-01-01';
+
+// See if we have a lastRun stored in the `dataLoaderStatus` table
+$statusRow = $statusTable->find($statusData['table'], $statusData['type'])->current();
+if (empty($statusRow)) {
+    // We didn't get a row from the table so unset this
+    unset($statusRow);
 } else {
-    // Get the lastRun date from `dataLoaderStatus` of when this script last completed
-    if($statusRow = $statusTable->fetchRow($statusTable->select()->where("`table` = ?", $statusData['table']))) {
-        $lastRun = $statusRow->lastRun;
-    } else {
-        // No entry in table. This is odd OR the first run. Make up a date.
-        $lastRun = '2010-01-01';
-    }
+    $lastRun = $statusRow->lastRun;
 }
-if(!$lastRun = new TicketEvolution_Date($lastRun, TicketEvolution_Date::ISO_8601)) {
+
+// If a lastRun was passed as a GET var then use it instead of either of the above
+if (isset($GET->lastRun)) {
+    $lastRun = $GET->lastRun;
+}
+
+if (!$lastRun = new TicketEvolution_Date($lastRun, TicketEvolution_Date::ISO_8601)) {
     throw new TicketEvolution_Webservice_Exception('The $lastRun date appears to be malformed');
 }
 
@@ -65,15 +73,15 @@ $registry = Zend_Registry::getInstance();
 // Create the TEvo object
 $tevo = new TicketEvolution_Webservice($registry->config->params);
 
-// Set the "now" time for use later
-$now = new TicketEvolution_Date();
-
 // Set the options for the query
 $options = array(
     'page' => 1,
-    'per_page' => 50,
+    'per_page' => 100,
     'updated_at.gte' => $lastRun->get(TicketEvolution_Date::ISO_8601)
 );
+if (!empty($GET->startPage)) {
+    $options['page'] = $GET->startPage;
+}
 
 // Because we page through the results incrementally we need to set a $maxPages
 // to go to. We don't actually know what this number really is until we've made

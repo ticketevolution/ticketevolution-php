@@ -46,18 +46,23 @@ $autoloader->setFallbackAutoloader(true);
  *
  * @link http://exchange.ticketevolution.com/brokerage/credentials
  */
-$cfg['params']['apiToken'] = (string) 'YOUR_API_TOKEN_HERE';
-$cfg['params']['secretKey'] = (string) 'YOUR_SECRET_KEY_HERE';
+$cfg['params']['apiToken']      = (string) 'YOUR_API_TOKEN_HERE';
+$cfg['params']['secretKey']     = (string) 'YOUR_SECRET_KEY_HERE';
+$cfg['params']['buyerId']       = (string) 'YOUR_OFFICEID_HERE';
+$cfg['params']['apiVersion']    = (string) '8';
+$cfg['params']['usePersistentConnections'] = (bool) true;
 
-//$cfg['params']['baseUri'] = (string) 'http://api.sandbox.ticketevolution.com'; // Sandbox
-$cfg['params']['baseUri'] = (string) 'http://api.ticketevolution.com'; // Production
+//$cfg['params']['baseUri'] = (string) 'https://api.sandbox.ticketevolution.com'; // Sandbox
+$cfg['params']['baseUri'] = (string) 'https://api.ticketevolution.com'; // Production
+
 
 
 /**
  * Database setup
  * Make sure you have created the database using the script
  * provided in scripts/create_tables.mysql
- * 
+ * as well as applying any updates in chronological order
+ *
  */
 $cfg['database']['adapter']             = 'Mysqli';
 $cfg['database']['params']['host']      = 'YOUR_MYSQL_HOST';
@@ -65,18 +70,19 @@ $cfg['database']['params']['dbname']    = 'YOUR_DATABASE_NAME';
 $cfg['database']['params']['username']  = 'YOUR_DATABASE_USER';
 $cfg['database']['params']['password']  = 'YOUR_DATABASE_PASSWORD';
 
+
 /**
  * Put cfg data into registry
  */
 $config = new Zend_Config($cfg, true);
-$registry = Zend_Registry::getInstance(); 
+$registry = Zend_Registry::getInstance();
 $registry->set('config', $config);
 
 /**
  * Set up Db adapter
  */
 $regConfig = $registry->get('config');
-$dbConfig = $regConfig->database;    
+$dbConfig = $regConfig->database;
 $db = Zend_Db::factory( $dbConfig );
 Zend_Db_Table::setDefaultAdapter( $db );
 

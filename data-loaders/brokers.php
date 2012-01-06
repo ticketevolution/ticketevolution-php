@@ -2,17 +2,20 @@
 
 require_once 'bootstrap.php';
 error_reporting (E_ALL);
-ini_set('max_execution_time', 1200);
+ini_set('max_execution_time', 2400);
 
 // Set some status data for use in querying/updating the `tevoDataLoaderStatus` table
-$statusData = array((string)'table' => 'brokers');
+$statusData = array(
+    'table' => 'brokers',
+    'type'  => 'active',
+);
 
 require_once './includes/common.php';
 
 // Create the TicketEvolution_Db_Table object
 $table = new TicketEvolution_Db_Table_Brokers();
 
-for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) {
+for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) {
     /*******************************************************************************
      * Fetch the JSON to process
      */
@@ -20,12 +23,12 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
     $options['page'] = $currentPage;
 
     // Set the current $tryCount
-    if(!isset($tryCount)) {
+    if (!isset($tryCount)) {
         $tryCount = 1;
     }
 
     // Execute the request
-    try{
+    try {
         $results = $tevo->listBrokers($options);
     } catch(Exception $e) {
         /**
@@ -34,10 +37,10 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
          * Use the $tryCount to keep track of how many attempts and only throw an
          * exception after a total of 3 tries
          */
-        if($e->getCode() == '1000') { // 1000 = timeout
+        if ($e->getCode() == '1000') { // 1000 = timeout
             $tryCount++;
 
-            if($tryCount > 3) {
+            if ($tryCount > 3) {
                 throw new TicketEvolution_Webservice_Exception($e);
             }
 
@@ -54,35 +57,45 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
     unset($tryCount);
 
     // Set the correct $maxPages
-    if($maxPages == $defaultMaxPages) {
+    if ($maxPages == $defaultMaxPages) {
         $maxPages = $results->totalPages();
     }
 
     /*******************************************************************************
      * Process the API results either INSERTing or UPDATEing our table(s)
      */
-    foreach($results AS $result) {
+    foreach ($results AS $result) {
         $data = array(
-            'brokerId' => (int)$result->id,
-            'brokerName' => (string)$result->name,
-            'brokerAbbreviation' => (string)$result->abbreviation,
-            'natbMember' => (int)$result->natb_member,
-            'brokerUrl' => (string)$result->url,
-            'updated_at' => (string)$result->updated_at->get(Zend_Date::ISO_8601),
-            'brokerStatus' => (int)1,
-            'lastModifiedDate' => (string)$now->get(Zend_Date::ISO_8601),
+            'brokerId'              => (int)    $result->id,
+            'brokerName'            => (string) $result->name,
+            'brokerAbbreviation'    => (string) $result->abbreviation,
+            'natbMember'            => (int)    $result->natb_member,
+            'brokerUrl'             => (string) $result->url,
+            'updated_at'            => (string) $result->updated_at->get(Zend_Date::ISO_8601),
+            'brokerStatus'          => (int)    1,
+            'lastModifiedDate'      => (string) $startTime->get(TicketEvolution_Date::ISO_8601),
         );
 
-        if($row = $table->fetchRow($table->select()->where('`brokerId` = ?', $data['brokerId']))) {
+        if ($row = $table->find((int) $result->id)->current()) {
             $row->setFromArray($data);
+            $action = 'UPDATE';
         } else {
             $row = $table->createRow($data);
+            $action = 'INSERT';
         }
-        if(!$row->save()) {
-            echo '<h1 class="error">Error attempting to save ' . htmlentities($data['brokerId'] . ': ' . $data['brokerName'], ENT_QUOTES, 'UTF-8', false) . ' to `tevoBrokers`</h1>' . PHP_EOL;
+
+        if (!$row->save()) {
+            echo '<h1 class="error">'
+               . htmlentities('Error attempting to ' . $action . ' ' . $result->id . ': ' . $result->name . ' to `tevoBrokers`', ENT_QUOTES, 'UTF-8', false)
+               . '</h1>' . PHP_EOL
+            ;
         } else {
-            echo '<h1>Saved ' . htmlentities($data['brokerId'] . ': ' . $data['brokerName'], ENT_QUOTES, 'UTF-8', false) . ' to `tevoBrokers`</h1>' . PHP_EOL;
+            echo '<h1>'
+               . htmlentities('Successful ' . $action . ' of ' . $result->id . ': ' . $result->name . ' to `tevoBrokers`', ENT_QUOTES, 'UTF-8', false)
+               . '</h1>' . PHP_EOL
+            ;
         }
+        unset($action);
         unset($data);
         unset($row);
 
@@ -95,8 +108,8 @@ for($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) 
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string)$now->get(Zend_Date::ISO_8601);
-if(isset($statusRow)) {
+$statusData['lastRun'] = (string) $startTime->get(Zend_Date::ISO_8601);
+if (isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {
     $statusRow = $statusTable->createRow($statusData);

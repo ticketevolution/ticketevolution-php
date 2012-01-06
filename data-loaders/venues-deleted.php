@@ -6,14 +6,14 @@ ini_set('max_execution_time', 2400);
 
 // Set some status data for use in querying/updating the `tevoDataLoaderStatus` table
 $statusData = array(
-    'table' => 'users',
-    'type'  => 'active',
+    'table' => 'venues',
+    'type'  => 'deleted',
 );
 
 require_once './includes/common.php';
 
 // Create the TicketEvolution_Db_Table object
-$table = new TicketEvolution_Db_Table_Users();
+$table = new TicketEvolution_Db_Table_Venues();
 
 for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) {
     /*******************************************************************************
@@ -29,7 +29,8 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 
     // Execute the request
     try {
-        $results = $tevo->listUsers($options);
+        echo '<p>Trying page: ' . $options['page'] . ' for the ' . $tryCount . ' time.</p>' . PHP_EOL;
+        $results = $tevo->listVenuesDeleted($options);
     } catch(Exception $e) {
         /**
          * In case of API timeout we will decrement the $currentPage and then
@@ -61,25 +62,23 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         $maxPages = $results->totalPages();
     }
 
+    // Set the current URL
+    $currentUrl = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . '?lastRun=' . urlencode($lastRun->get(TicketEvolution_Date::ISO_8601)) . '&startPage=' . $currentPage;
+
     /*******************************************************************************
      * Process the API results either INSERTing or UPDATEing our table(s)
      */
     foreach ($results AS $result) {
         $data = array(
-            'userId'                => (int) $result->id,
-            'brokerId'              => (int) $result->office->brokerage->id,
-            'officeId'              => (int) $result->office->id,
-            'userName'              => (string) $result->name,
-            'userPhone'             => (string) $result->phone->number,
-            'userPhoneExtension'    => (string) $result->phone->extension,
-            'userEmail'             => strtolower((string)$result->email),
-            'userUrl'               => (string) $result->url,
-            'updated_at'            => (string) $result->updated_at->get(TicketEvolution_Date::ISO_8601),
-            'userStatus'            => (int) 1,
-            'lastModifiedDate'      => (string) $startTime->get(TicketEvolution_Date::ISO_8601)
+            'updated_at'        => (string) $result->updated_at->get(TicketEvolution_Date::ISO_8601),
+            'deleted_at'        => (string) $result->deleted_at->get(TicketEvolution_Date::ISO_8601),
+            'eventStatus'       => (int)    0,
+            'lastModifiedDate'  => (string) $startTime->get(TicketEvolution_Date::ISO_8601),
         );
 
         if ($row = $table->find((int) $result->id)->current()) {
+            $data['venueName'] = $row->venueName . '***';
+            $data['venueIdent'] = $row->venueIdent . '---';
             $row->setFromArray($data);
             $action = 'UPDATE';
         } else {
@@ -89,19 +88,18 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 
         if (!$row->save()) {
             echo '<h1 class="error">'
-               . htmlentities('Error attempting to ' . $action . ' ' . $result->id . ': ' . $result->name . ' to `tevoUsers`', ENT_QUOTES, 'UTF-8', false)
+               . htmlentities('Error attempting to ' . $action . ' ' . $result->id . ': ' . $result->name . ' as deleted to `tevoVenues`', ENT_QUOTES, 'UTF-8', false)
                . '</h1>' . PHP_EOL
             ;
         } else {
             echo '<h1>'
-               . htmlentities('Successful ' . $action . ' of ' . $result->id . ': ' . $result->name . ' to `tevoUsers`', ENT_QUOTES, 'UTF-8', false)
+               . htmlentities('Successful ' . $action . ' of ' . $result->id . ': ' . $result->name . ' as deleted to `tevoVenues`', ENT_QUOTES, 'UTF-8', false)
                . '</h1>' . PHP_EOL
             ;
         }
         unset($action);
         unset($data);
         unset($row);
-
     } // End loop through this page of results
 
     echo '<h1>Done with page ' . $currentPage . '</h1>' . PHP_EOL;

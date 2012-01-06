@@ -29,11 +29,11 @@ require_once 'bootstrap.php';
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	
+
 	<title>Ticket Evolution DataLoaders</title>
 	<meta name="description" content="Ticket Evolution DataLoaders">
 	<meta name="author" content="J Cobb <j+ticketevolution@teamonetickets.com>">
-	
+
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style type="text/css">
         table {
@@ -73,43 +73,77 @@ require_once 'bootstrap.php';
 
             <?php
                 $table = new TicketEvolution_Db_Table_DataLoaderStatus();
-                
+
                 $scripts = array(
-                    'brokers',
-                    'categories',
-                    'configurations',
-                    'events',
-                    'offices',
-                    'performers',
-                    'users',
-                    'venues'
+                    'brokers'        => array(
+                        'active',
+                    ),
+                    'categories'        => array(
+                        'active',
+                        'deleted',
+                    ),
+                    'configurations'        => array(
+                        'active',
+                    ),
+                    'events'        => array(
+                        'active',
+                        'deleted',
+                    ),
+                    'offices'        => array(
+                        'active',
+                    ),
+                    'performers'        => array(
+                        'active',
+                        'deleted',
+                    ),
+                    'users'        => array(
+                        'active',
+                    ),
+                    'venues'        => array(
+                        'active',
+                        'deleted',
+                    ),
                 );
                 echo '<h2>Status of scripts run based upon <i>updated_at</i> date</h1>' . PHP_EOL
                    . '<table summary="Status of scripts run based upon updated_at date" style="border: 1 px solid grey;">' . PHP_EOL
                    . '<tr>' . PHP_EOL
                    . '<th>Script</th>' . PHP_EOL
+                   . '<th>Type</th>' . PHP_EOL
                    . '<th>Last Run</th>' . PHP_EOL
                    . '<th>Run Now</th>' . PHP_EOL
                    . '</tr>' . PHP_EOL
                 ;
-                foreach($scripts as $script) {
+                foreach ($scripts as $script => $types) {
                     // See if we have an entry in `tevoDataLoaderStatus` for this script
-                    $row = $table->find($script);
-                    
+
                     echo '<tr>' . PHP_EOL
-                       . '<td>' . ucwords($script) . '</td>' . PHP_EOL
-                       . '<td>'
+                       . '<td rowspan="' . count($types) . '">' . ucwords($script) . '</td>' . PHP_EOL
                     ;
-                    if(isset($row[0])) {
-                        $dateLastRun = new Zend_Date($row[0]->lastRun, Zend_Date::ISO_8601);
-                        echo $dateLastRun->get(Zend_Date::DATE_FULL . ' ' . Zend_Date::TIMES);
-                    } else {
-                        echo 'Not yet run';
+                    foreach ($types as $type) {
+                        $row = $table->find($script, $type)->current();
+
+                        $file = strtolower($script);
+                        if ($type != 'active') {
+                            $file .= '-' . $type;
+                        }
+                        $file .= '.php';
+
+                        echo '<td>' . ucwords($type) . '</td>' . PHP_EOL
+                           . '<td>'
+                        ;
+                        if (!empty($row)) {
+                            $dateLastRun = new Zend_Date($row->lastRun, Zend_Date::ISO_8601);
+                            echo $dateLastRun->get(Zend_Date::DATE_FULL . ' ' . Zend_Date::TIMES);
+                        } else {
+                            echo 'Not yet run';
+                        }
+                        echo '</td>' . PHP_EOL
+                           . '<td><a href="' . $file . '">Run Now</a></td>' . PHP_EOL
+                           . '</tr>' . PHP_EOL
+                        ;
+
+                        unset($row);
                     }
-                    echo '</td>' . PHP_EOL
-                       . '<td><a href="' . $script . '.php">Run Now</a></td>' . PHP_EOL
-                       . '</tr>' . PHP_EOL
-                    ;
                 }
                 echo '</table>' . PHP_EOL;
             ?>
