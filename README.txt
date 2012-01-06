@@ -36,7 +36,6 @@
 
 ### Sept 9, 2011
 *This update contains changes that are NOT backwards compatible*
-
 - Added https API URL support (Switch now. http will be turned off soon)
 - Added new Client Credit Card methods (Not all are active yet)
 - Renamed some files to adjust capitalization
@@ -45,20 +44,17 @@
     - `library/TicketEvolution/Db/Table/Officeemails.php` -> `library/TicketEvolution/Db/Table/OfficeEmails.php`
     - `library/TicketEvolution/Db/Table/Eventperformers.php` -> `library/TicketEvolution/Db/Table/EventPerformers.php`
     - `library/TicketEvolution/Db/Table/Dataloaderstatus.php` -> `library/TicketEvolution/Db/Table/DataLoaderStatus.php`
-
 - Renamed some classes to adjust capitalization (Same as above files)
-     - `TicketEvolution_Db_Table_Ticketgroups` -> `TicketEvolution_Db_Table_TicketGroups`
+    - `TicketEvolution_Db_Table_Ticketgroups` -> `TicketEvolution_Db_Table_TicketGroups`
     - `TicketEvolution_Db_Table_Ticketgroupseats` -> `TicketEvolution_Db_Table_TicketGroupSeats`
     - `TicketEvolution_Db_Table_Officeemails` -> `TicketEvolution_Db_Table_OfficeEmails`
     - `TicketEvolution_Db_Table_Eventperformers` -> `TicketEvolution_Db_Table_EventPerformers`
     - `TicketEvolution_Db_Table_Dataloaderstatus` -> `TicketEvolution_Db_Table_DataLoaderStatus`
-
 - Renamed some methods in `Webservice.php` to adjust capitalization
     - `listTicketgroups()` -> `listTicketGroups()`
     - `showTicketgroup()` -> `showTicketGroup()`
     - `listEvopaytransactions()` -> `listEvoPayTransactions()`
-     - `showEvopaytransactions()` -> `showEvoPayTransactions()`
-
+    - `showEvopaytransactions()` -> `showEvoPayTransactions()`
 - Removed `@version` from DocBlocks
 
 
@@ -67,54 +63,38 @@
 - Moved `TicketEvolution_ClientAddress` to `TicketEvolution_Address_Client`
 - Moved `TicketEvolution_ClientEmailAddress` to `TicketEvolution_EmailAddress_Client`
 - Moved `TicketEvolution_ClientPhoneNumber` to `TicketEvolution_PhoneNumber_Client`
-- Corrected some documentation. You can create multiple client addresses/emails/phone numbers
-  in a single API call
+- Corrected some documentation. You can create multiple client addresses/emails/phone numbers in a single API call
 - Corrected demo app to show example of creating two client addresses at once
 - Added new API features through v8 including client and order methods
 - Much improved "Demo App"
     - Now shows exact PHP code used
     - Method selector re-ordered to match API documentation
     - Methods that affect data are disabled if you do not use the Sandbox API
-- Much easier to override how the data is returned from API calls. Specify your
-  own ResultSet and Result classes if you like as well as and "Post-Processing"
-  of the JSON returned
+- Much easier to override how the data is returned from API calls. Specify your own ResultSet and Result classes if you like as well as and "Post-Processing" of the JSON returned
 - Code now passes Zend CodeSniffer tests with no errors
 
 ### July 25, 2011
-- Fixed a bug in `buildRawSignature()` (in `Webservices.php`) in which parameter names
-were not being urlencoded (only the values were) which resulted in 401 Unauthorized
-errors when attempting to `listEvents()` using `'performances[performer_id]='`.
-- Cleaned up some of the code in `Webservices.php` to make it pass CodeSniffer
-using the Zend sniffs.
+- Fixed a bug in `buildRawSignature()` (in `Webservices.php`) in which parameter names were not being urlencoded (only the values were) which resulted in `401 Unauthorized` errors when attempting to `listEvents()` using `'performances[performer_id]='`.
+- Cleaned up some of the code in `Webservices.php` to make it pass CodeSniffer using the Zend sniffs.
 
 ### July 5, 2011
 *Bug fixes*
-- In the configuration data-loader the `venueId` column was being populated with
-the `configurationId`.
-- `ResultSet` was returning all results as `TicketEvolution_Searchresults` objects
-instead of the ones specific to their type of result.
+- In the configuration data-loader the `venueId` column was being populated with the `configurationId`.
+- `ResultSet` was returning all results as `TicketEvolution_Searchresults` objects instead of the ones specific to their type of result.
 
 ### May 22, 2011
-- Added ability to store seating chart URls in the `tevoConfigurations` table. In
-order to do so you will need to run the `update_Tevo_tables.mysql` script in
-the scripts folder.
+- Added ability to store seating chart URls in the `tevoConfigurations` table. In order to do so you will need to run the `update_Tevo_tables.mysql` script in the scripts folder.
 
 
 ### May 20, 2011
-- Added data-loaders which is a handy app for caching the data locally in MySQL.
-To use it you will need to run the `create_tables.mysql` script in scripts folder.
+- Added data-loaders which is a handy app for caching the data locally in MySQL. To use it you will need to run the `create_tables.mysql` script in scripts folder.
 - Added `sortResults()` method to `ResultSet` to allow for sorting of results.
-- Added `exclusiveResults()` and `excludeResults()` methods to `ResultSet` which allow
-you to easily show only TicketGroups from a specified array of brokers OR to
-exclude TicketGroups from a specified array of brokers. Handy if you prefer to
-only show your own inventory for certain events or if you wish to exclude
-someone's inventory.
+- Added `exclusiveResults()` and `excludeResults()` methods to `ResultSet` which allow you to easily show only TicketGroups from a specified array of brokers OR to exclude TicketGroups from a specified array of brokers. Handy if you prefer to only show your own inventory for certain events or if you wish to exclude someone's inventory.
 - Added `search()` endpoint which searches venues and performers
 - Many general improvements
 
 ### May 17, 2011
-- Updated endpoint in `Webservice.php` from `ticket-groups` to `ticket_groups`
-to reflect change in API.
+- Updated endpoint in `Webservice.php` from `ticket-groups` to `ticket_groups` to reflect change in API.
 
 
 ### May 9, 2011.
@@ -123,7 +103,6 @@ Initial Release
 ----
 
 ## SYSTEM REQUIREMENTS
-
 Ticket Evolution Framework for PHP *requires PHP 5.3 or later* and Zend Framework. If you are using PHP 5.2 you should realize that it is no longer supported by The PHP Group and you should update your server or switch to a host that uses current, secure versions.
 
 Please see [the wiki](https://github.com/ticketevolution/ticketevolution-php/wiki) for more detailed system requirements:
