@@ -6,14 +6,18 @@ ini_set('max_execution_time', 2400);
 
 // Set some status data for use in querying/updating the `tevoDataLoaderStatus` table
 $statusData = array(
-    'table' => 'users',
-    'type'  => 'active',
+    'table' => 'events',
+    'type'  => 'deleted',
 );
 
 require_once './includes/common.php';
 
 // Create the TicketEvolution_Db_Table object
-$table = new TicketEvolution_Db_Table_Users();
+$table = new TicketEvolution_Db_Table_Events();
+
+// Create an object for the `tevoEventPerformers` table too
+$epTable = new TicketEvolution_Db_Table_EventPerformers();
+
 
 for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++) {
     /*******************************************************************************
@@ -29,7 +33,8 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 
     // Execute the request
     try {
-        $results = $tevo->listUsers($options);
+        echo '<p>Trying page: ' . $options['page'] . ' for the ' . $tryCount . ' time.</p>' . PHP_EOL;
+        $results = $tevo->listEventsDeleted($options);
     } catch(Exception $e) {
         /**
          * In case of API timeout we will decrement the $currentPage and then
@@ -61,22 +66,21 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         $maxPages = $results->totalPages();
     }
 
+    if ($showStats) {
+        $curMem = memory_get_usage(true);
+        $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
+        echo '<h2>Current memory usage after fetching page ' . $currentPage . ' of ' . $maxPages . ': ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h2>' . PHP_EOL;
+    }
+
     /*******************************************************************************
      * Process the API results either INSERTing or UPDATEing our table(s)
      */
     foreach ($results AS $result) {
         $data = array(
-            'userId'                => (int) $result->id,
-            'brokerId'              => (int) $result->office->brokerage->id,
-            'officeId'              => (int) $result->office->id,
-            'userName'              => (string) $result->name,
-            'userPhone'             => (string) $result->phone->number,
-            'userPhoneExtension'    => (string) $result->phone->extension,
-            'userEmail'             => strtolower((string)$result->email),
-            'userUrl'               => (string) $result->url,
-            'updated_at'            => (string) $result->updated_at->get(TicketEvolution_Date::ISO_8601),
-            'userStatus'            => (int) 1,
-            'lastModifiedDate'      => (string) $startTime->get(TicketEvolution_Date::ISO_8601)
+            'updated_at'        => (string) $result->updated_at->get(TicketEvolution_Date::ISO_8601),
+            'deleted_at'        => (string) $result->deleted_at->get(TicketEvolution_Date::ISO_8601),
+            'eventStatus'       => (int)    0,
+            'lastModifiedDate'  => (string) $startTime->get(TicketEvolution_Date::ISO_8601),
         );
 
         if ($row = $table->find((int) $result->id)->current()) {
@@ -89,18 +93,43 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 
         if (!$row->save()) {
             echo '<h1 class="error">'
-               . htmlentities('Error attempting to ' . $action . ' ' . $result->id . ': ' . $result->name . ' to `tevoUsers`', ENT_QUOTES, 'UTF-8', false)
+               . htmlentities('Error attempting to ' . $action . ' ' . $result->id . ': ' . $result->name . ' as deleted to `tevoEvents`', ENT_QUOTES, 'UTF-8', false)
                . '</h1>' . PHP_EOL
             ;
         } else {
             echo '<h1>'
-               . htmlentities('Successful ' . $action . ' of ' . $result->id . ': ' . $result->name . ' to `tevoUsers`', ENT_QUOTES, 'UTF-8', false)
+               . htmlentities('Successful ' . $action . ' of ' . $result->id . ': ' . $result->name . ' as deleted to `tevoEvents`', ENT_QUOTES, 'UTF-8', false)
+               . '</h1>' . PHP_EOL
+            ;
+        }
+
+        /**
+         * The easiest way to set the tevoPerformers for this event to inactive
+         * is to delete() this event and let the operation cascade to the
+         * tevoEventPerformers.
+         *
+         * NOTE: delete() is overridden in TicketEvolution_Db_Table_Abstract to
+         * only toggle the status to inactive, but it still cascades doing the same.
+         *
+         * So, although it is kind of redundant to delete() since we just save()ed
+         * as inactive we'll still do it since delete() does not allow us to
+         * set properties such as 'deleted_at' at the same time.
+         */
+        if (!$row->save()) {
+            echo '<h1 class="error">'
+               . htmlentities('Error attempting to delete() ' . $result->id . ': ' . $result->name . ' to `tevoEvents` and related `tevoEventPerformers`', ENT_QUOTES, 'UTF-8', false)
+               . '</h1>' . PHP_EOL
+            ;
+        } else {
+            echo '<h1>'
+               . htmlentities('Successful delete() of ' . $result->id . ': ' . $result->name . ' as deleted to `tevoEvents` and related `tevoEventPerformers`', ENT_QUOTES, 'UTF-8', false)
                . '</h1>' . PHP_EOL
             ;
         }
         unset($action);
         unset($data);
         unset($row);
+
 
     } // End loop through this page of results
 
@@ -111,7 +140,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string) $startTime->get(TicketEvolution_Date::ISO_8601);
+$statusData['lastRun'] = (string) $startTime->get(Zend_Date::ISO_8601);
 if (isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {

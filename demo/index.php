@@ -56,12 +56,13 @@ $autoloader->setFallbackAutoloader(true);
  *
  * @link http://exchange.ticketevolution.com/brokerage/credentials
  */
-$cfg['params']['apiToken'] = (string) 'YOUR_API_TOKEN_HERE';
-$cfg['params']['secretKey'] = (string) 'YOUR_SECRET_KEY_HERE';
-$cfg['params']['apiVersion'] = (string) '8';
-$cfg['params']['buyerId'] = 'YOUR_OFFICEID_HERE';
+$cfg['params']['apiToken']      = (string) 'YOUR_API_TOKEN_HERE';
+$cfg['params']['secretKey']     = (string) 'YOUR_SECRET_KEY_HERE';
+$cfg['params']['apiVersion']    = (string) '8';
+$cfg['params']['buyerId']       = 'YOUR_OFFICEID_HERE';
+$cfg['params']['usePersistentConnections'] = true;
 
-$cfg['params']['baseUri'] = (string) 'https://api.sandbox.ticketevolution.com'; // Sandbox
+$cfg['params']['baseUri']   = (string) 'https://api.sandbox.ticketevolution.com'; // Sandbox
 //$cfg['params']['baseUri'] = (string) 'https://api.ticketevolution.com'; // Production
 
 $cfg['exclude']['brokerage'] = array(
@@ -86,7 +87,7 @@ $options = array(
     //'price.lte' => 500,
     //'name' => 'Main Office',
     //'address[locality]' => 'Scottsdale',
-    //'performances[performer_id]' => 15532,
+    //'performances[performer_id]' => 15045,
 );
 
 
@@ -151,7 +152,6 @@ if(isset($_GET['apiMethod'])) {
             'allowEmpty'        => false,
         ),
         'query' => array(
-            'Alnum',
             'presence'          => 'optional',
             'allowEmpty'        => false,
             'allowWhiteSpace'   => true,
@@ -332,17 +332,22 @@ $tevo = new TicketEvolution_Webservice($config->params);
                      * Setup any necessary vars and execute the call
                      */
                     switch ($apiMethod) {
+                        case 'listOrders' :
+                            $options['state'] = 'pending';
                         case 'listBrokers' :
                         case 'listClients' :
                         case 'listOffices' :
                         case 'listUsers' :
                         case 'listCategories' :
+                        case 'listCategoriesDeleted' :
                         case 'listConfigurations' :
                         case 'listEvents' :
+                        case 'listEventsDeleted' :
                         case 'listPerformers' :
+                        case 'listPerformersDeleted' :
                         case 'listSearch' :
                         case 'listVenues' :
-                        case 'listOrders' :
+                        case 'listVenuesDeleted' :
                         case 'listQuotes' :
                         case 'listShipments' :
                         case 'listEvoPayAccounts' :
@@ -368,7 +373,12 @@ $tevo = new TicketEvolution_Webservice($config->params);
                             unset($options['per_page']);
 
                             // Display the code
-                            echo '$results = $tevo->' . $apiMethod . '($options);' . PHP_EOL;
+                            echo '$options = array(' . PHP_EOL;
+                            foreach( $options as $key => $val) {
+                                echo '    \'' . $key . '\' => ' . $val . ',' . PHP_EOL;
+                            }
+                            echo ');' . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '($options);' . PHP_EOL;
 
                             // Execute the call
                             $results = $tevo->$apiMethod($options);
@@ -891,7 +901,7 @@ $tevo = new TicketEvolution_Webservice($config->params);
                             // Create the proper format
                             $item = new stdClass;
                             $item->price = '295.0';
-                            $item->ticket_group_id = '5276516';
+                            $item->ticket_group_id = '8709003';
                             $item->quantity = 2;
 
                             $shippingAddress = new stdClass;
@@ -916,7 +926,7 @@ $tevo = new TicketEvolution_Webservice($config->params);
                              * type and just handle the payment stuff on your own.
                              */
                             $payment = new stdClass;
-                            $payment->type = 'credit_card';
+                            $payment->type = 'offline';
 
                             $order1 = new stdClass;
                             $order1->items[] = $item;
@@ -950,7 +960,7 @@ $tevo = new TicketEvolution_Webservice($config->params);
                                . '$billingAddress->country_code = \'US\';' . PHP_EOL
                                . PHP_EOL
                                . '$payment = new stdClass;' . PHP_EOL
-                               . '$payment->type = \'credit_card\';' . PHP_EOL
+                               . '$payment->type = \'offline\';' . PHP_EOL
                                . PHP_EOL
                                . '$order1 = new stdClass;' . PHP_EOL
                                . '$order1->items[] = $item;' . PHP_EOL
@@ -1026,6 +1036,16 @@ $tevo = new TicketEvolution_Webservice($config->params);
                             echo '<h2>Error Confirming Order</h2>' . PHP_EOL;
                         }
                     } else {
+                        echo '<h2>Actual request for ' . $apiMethod . '() method</h2>' . PHP_EOL;
+                        echo '<pre>';
+                        print_r ($tevo->getRestClient()->getHttpClient()->getLastRequest());
+                        echo '</pre><br />' . PHP_EOL;
+
+                        echo '<h2>Actual response for ' . $apiMethod . '() method</h2>' . PHP_EOL;
+                        echo '<pre>';
+                        print_r ($tevo->getRestClient()->getHttpClient()->getLastResponse());
+                        echo '</pre><br />' . PHP_EOL;
+
                         echo '<h2>Results of ' . $apiMethod . '() method</h2>' . PHP_EOL;
                         if($results instanceof Countable) {
                             echo '<p>There are ' . count($results) . ' results available.</p>' . PHP_EOL;
@@ -1129,6 +1149,7 @@ $tevo = new TicketEvolution_Webservice($config->params);
                     </optgroup>
                         <optgroup label="Categories Methods">
                             <option label="listCategories" value="listCategories">listCategories</option>
+                            <option label="listCategoriesDeleted" value="listCategoriesDeleted">listCategoriesDeleted</option>
                             <option label="showCategory" value="showCategory">showCategory</option>
                         </optgroup>
 
@@ -1139,11 +1160,13 @@ $tevo = new TicketEvolution_Webservice($config->params);
 
                         <optgroup label="Events Methods">
                             <option label="listEvents" value="listEvents">listEvents</option>
+                            <option label="listEventsDeleted" value="listEventsDeleted">listEventsDeleted</option>
                             <option label="showEvent" value="showEvent">showEvent</option>
                         </optgroup>
 
                         <optgroup label="Performers Methods">
                             <option label="listPerformers" value="listPerformers">listPerformers</option>
+                            <option label="listPerformersDeleted" value="listPerformersDeleted">listPerformersDeleted</option>
                             <option label="showPerformer" value="showPerformer">showPerformer</option>
                             <option label="searchPerformers" value="searchPerformers">searchPerformers</option>
                         </optgroup>
@@ -1154,6 +1177,7 @@ $tevo = new TicketEvolution_Webservice($config->params);
 
                         <optgroup label="Venues Methods">
                             <option label="listVenues" value="listVenues">listVenues</option>
+                            <option label="listVenuesDeleted" value="listVenuesDeleted">listVenuesDeleted</option>
                             <option label="showVenue" value="showVenue">showVenue</option>
                             <option label="searchVenues" value="searchVenues">searchVenues</option>
                         </optgroup>
