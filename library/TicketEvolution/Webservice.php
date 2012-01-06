@@ -137,6 +137,14 @@ class TicketEvolution_Webservice
 
 
     /**
+     * Whether or not to use persistent connections.
+     *
+     * @var bool
+     */
+    protected $_usePersistentConnections = true;
+
+
+    /**
      * Constructs a new Ticket Evolution Web Services Client
      *
      * @param  mixed $config  An array or Zend_Config object with adapter parameters.
@@ -191,15 +199,22 @@ class TicketEvolution_Webservice
         /*
          * See if we need to override the API version.
          */
-        if (isset($config['apiVersion']) && !empty($config['apiVersion'])) {
+        if (!empty($config['apiVersion'])) {
             $this->_apiVersion = (string) $config['apiVersion'];
         }
 
         /*
          * See if we need to override the base URI.
          */
-        if (isset($config['baseUri']) && !empty($config['baseUri'])) {
+        if (!empty($config['baseUri'])) {
             $this->_baseUri = (string) $config['baseUri'];
+        }
+
+        /*
+         * See if we need to override the _usePersistentConnections.
+         */
+        if (isset($config['usePersistentConnections'])) {
+            $this->_usePersistentConnections = (bool) $config['usePersistentConnections'];
         }
 
         $this->apiToken = (string) $config['apiToken'];
@@ -1099,16 +1114,6 @@ class TicketEvolution_Webservice
      */
     public function createClientCreditCard($clientId, $creditCards)
     {
-        if (!$this->_usingSecureApi()) {
-            /**
-             * @see TicketEvolution_Webservice_Exception
-             */
-            require_once 'TicketEvolution/Webservice/Exception.php';
-            throw new TicketEvolution_Webservice_Exception(
-                'You must use an https URL to transmit full credit card numbers'
-            );
-        }
-
         $newCreditCards = new stdClass;
         foreach ($creditCards as $creditCard) {
             /**
@@ -1158,16 +1163,6 @@ class TicketEvolution_Webservice
      */
     public function updateClientCreditCard($clientId, $creditCardId, $creditCardDetails)
     {
-        if (!$this->_usingSecureApi()) {
-            /**
-             * @see TicketEvolution_Webservice_Exception
-             */
-            require_once 'TicketEvolution/Webservice/Exception.php';
-            throw new TicketEvolution_Webservice_Exception(
-                'You must use an https URL to transmit full credit card numbers'
-            );
-        }
-
         /**
          * Strip non-numeric chars from CC number and validate it
          */
@@ -1233,28 +1228,6 @@ class TicketEvolution_Webservice
             );
         }
 
-    }
-
-
-    /**
-     * Verify that the API URL uses https to ensure we don't send any CC information
-     * over non-secure http
-     *
-     * @throws TicketEvolution_Webservice_Exception
-     */
-    protected function _usingSecureApi()
-    {
-        /**
-         * @see Zend_Uri
-         */
-        require_once 'Zend/Uri.php';
-
-        $uri = Zend_Uri::factory($this->_baseUri);
-        if ($uri->getScheme() == 'https') {
-            return true;
-        } else {
-            return false;
-        }
     }
 
 
@@ -1547,6 +1520,44 @@ class TicketEvolution_Webservice
 
 
     /**
+     * List Categories that have been deleted
+     *
+     * @param  array $options Options to use for the search query
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Webservice_ResultSet_Categories
+     */
+    public function listCategoriesDeleted(array $options)
+    {
+        $endPoint = 'categories/deleted';
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $defaultOptions = array(
+            'page'  => '1',
+            'per_page' => '100'
+        );
+        $options = $this->_prepareOptions(
+            'GET',
+            $endPoint,
+            $options,
+            $defaultOptions
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restGet('/' . $endPoint, $options);
+
+        return $this->_postProcess($response, self::CATEGORY_RESULTSET_CLASS);
+    }
+
+
+    /**
      * Get a single category by Id
      *
      * @param  int $id
@@ -1621,6 +1632,44 @@ class TicketEvolution_Webservice
 
 
     /**
+     * List Events that have been deleted
+     *
+     * @param  array $options Options to use for the search query
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Webservice_ResultSet_Events
+     */
+    public function listEventsDeleted(array $options)
+    {
+        $endPoint = 'events/deleted';
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $defaultOptions = array(
+            'page'  => '1',
+            'per_page' => '100'
+        );
+        $options = $this->_prepareOptions(
+            'GET',
+            $endPoint,
+            $options,
+            $defaultOptions
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restGet('/' . $endPoint, $options);
+
+        return $this->_postProcess($response, self::EVENT_RESULTSET_CLASS);
+    }
+
+
+    /**
      * Get a single event by Id
      *
      * @param  int $id
@@ -1666,6 +1715,44 @@ class TicketEvolution_Webservice
     public function listPerformers(array $options)
     {
         $endPoint = 'performers';
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $defaultOptions = array(
+            'page'  => '1',
+            'per_page' => '100'
+        );
+        $options = $this->_prepareOptions(
+            'GET',
+            $endPoint,
+            $options,
+            $defaultOptions
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restGet('/' . $endPoint, $options);
+
+        return $this->_postProcess($response, self::PERFORMER_RESULTSET_CLASS);
+    }
+
+
+    /**
+     * List Performers that have been deleted
+     *
+     * @param  array $options Options to use for the search query
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Webservice_ResultSet_Performers
+     */
+    public function listPerformersDeleted(array $options)
+    {
+        $endPoint = 'performers/deleted';
 
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
@@ -1844,6 +1931,44 @@ class TicketEvolution_Webservice
     public function listVenues(array $options)
     {
         $endPoint = 'venues';
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $defaultOptions = array(
+            'page'  => '1',
+            'per_page' => '100'
+        );
+        $options = $this->_prepareOptions(
+            'GET',
+            $endPoint,
+            $options,
+            $defaultOptions
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restGet('/' . $endPoint, $options);
+
+        return $this->_postProcess($response, self::VENUE_RESULTSET_CLASS);
+    }
+
+
+    /**
+     * List Venues that have been deleted
+     *
+     * @param  array $options Options to use for the search query
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Webservice_ResultSet_Venues
+     */
+    public function listVenuesDeleted(array $options)
+    {
+        $endPoint = 'venues/deleted';
 
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
@@ -2835,47 +2960,61 @@ class TicketEvolution_Webservice
             require_once 'Zend/Rest/Client.php';
             $this->_rest = new Zend_Rest_Client();
 
+            /**
+             * @see Zend_Http_Client
+             */
+            require_once 'Zend/Http/Client.php';
+            $httpClient = new Zend_Http_Client(
+                $this->_baseUri,
+                array(
+                    'keepalive' => $this->_usePersistentConnections
+                )
+            );
+
 
             /**
              * The Ticket Evolution Sandbox uses a self-signed certificate which,
              * by default is not allowed. If we are using https in the sandbox lets
              * tweak the options to allow this self-signed certificate.
              *
-             * @link http://framework.zend.com/manual/en/zend.http.client.adapters.html
+             * @link http://framework.zend.com/manual/en/zend.http.client.adapters.html Example 2
              */
-            if ($this->_usingSecureApi() && strpos($this->_baseUri, 'sandbox') !== false) {
-                $options = array(
+            if (strpos($this->_baseUri, 'sandbox') !== false) {
+                $streamOptions = array(
+                    // Verify server side certificate,
+                    // Accept self-signed SSL certificate
                     'ssl' => array(
-                        // Verify server side certificate,
-                        // do not accept invalid or self-signed SSL certificates
-                        'verify_peer' => true,
+                        //'verify_peer' => true,
                         'allow_self_signed' => true,
                     )
                 );
-
-                // Create an adapter object and attach it to the HTTP client
-                /**
-                 * @see Zend_Http_Client_Adapter_Socket
-                 */
-                require_once 'Zend/Http/Client/Adapter/Socket.php';
-                $adapter = new Zend_Http_Client_Adapter_Socket();
-
-                /**
-                 * @see Zend_Http_Client
-                 */
-                require_once 'Zend/Http/Client.php';
-                $client = new Zend_Http_Client();
-
-                $client->setAdapter($adapter);
-
-                // Pass the options array to setStreamContext()
-                $adapter->setStreamContext($options);
-
-                $this->_rest->setHttpClient($client);
+            } else {
+                $streamOptions = array();
             }
+
+            /**
+             * Create an adapter object and attach it to the HTTP client
+             *
+             * @see Zend_Http_Client_Adapter_Socket
+             */
+            require_once 'Zend/Http/Client/Adapter/Socket.php';
+            $adapter = new Zend_Http_Client_Adapter_Socket();
+
+            $adapterConfig = array (
+                'persistent'    => $this->_usePersistentConnections,
+            );
+            $adapter->setConfig($adapterConfig);
+
+            $httpClient->setAdapter($adapter);
+
+            // Pass the streamOptions array to setStreamContext()
+            $adapter->setStreamContext($streamOptions);
+
+            $this->_rest->setHttpClient($httpClient);
         }
         return $this->_rest;
     }
+
 
     /**
      * Set REST client
@@ -2969,7 +3108,7 @@ class TicketEvolution_Webservice
      */
     static public function buildRawSignature($baseUri, $action, $endPoint, $options)
     {
-        $signature = $action . ' ' . preg_replace('/https?:\/\//', '', $baseUri) . '/' . $endPoint . '?';
+        $signature = $action . ' ' . preg_replace('/https?:\/\//', '', $baseUri) . '/' . $endPoint;
         if (!empty($options)) {
             if (is_array($options)) {
                 // Turn the $options into GET parameters
@@ -2980,9 +3119,9 @@ class TicketEvolution_Webservice
                     $params[] = urlencode($k) . '=' . urlencode($v);
                     //$params[] = $k . '=' . $v;
                 }
-                $signature .= implode('&', $params);
+                $signature .= '?' . implode('&', $params);
             } else {
-                $signature .= (string)$options;
+                $signature .= '?' . (string) $options;
             }
         }
         return $signature;
@@ -3003,6 +3142,9 @@ class TicketEvolution_Webservice
 
         /**
          * Uncomment for debugging to see the actual request and response
+         * or in your code use
+         * $tevo->getRestClient()->getHttpClient()->getLastRequest() and
+         * $tevo->getRestClient()->getHttpClient()->getLastResponse()
          */
         /**
         echo PHP_EOL;

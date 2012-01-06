@@ -51,8 +51,8 @@ class TicketEvolution_Db_Table_DataLoaderStatus
      *
      * @var mixed
      */
-    protected $_primary   = 'table';
-    
+    protected $_primary   = array('table', 'type');
+
     /**
      * Simple array of class names of tables that are "children" of the current
      * table, in other words tables that contain a foreign key to this one.
@@ -62,8 +62,8 @@ class TicketEvolution_Db_Table_DataLoaderStatus
      * @var array
      */
     protected $_dependentTables = array();
-    
-    
+
+
     /**
      * Associative array map of declarative referential integrity rules.
      * This array has one entry per foreign key in the current table.
