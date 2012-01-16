@@ -14,7 +14,7 @@
 - Markdown-ified the README
 
 #### Data Loaders
-- Can now pass `?lastPage=xx` to URLs to start at a specific page of the loop
+- Can now pass `?startPage=xx` to URLs to start at a specific page of the loop
 - Support and scripts for new `deleted` endpoints
 - Be sure to run the newest SQL update script in `scripts` first
 
