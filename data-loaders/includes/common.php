@@ -66,6 +66,12 @@ if (isset($GET->lastRun)) {
 if (!$lastRun = new TicketEvolution_Date($lastRun, TicketEvolution_Date::ISO_8601)) {
     throw new TicketEvolution_Webservice_Exception('The $lastRun date appears to be malformed');
 }
+/**
+ * Convert $lastRun to UTC because the API currently ignores the time if it is
+ * not specified as UTC. This is not expected behavior and it will be fixed soon.
+ */
+$lastRun->setTimezone('UTC');
+
 
 // Get the Zend_Config object from the registry
 $registry = Zend_Registry::getInstance();
