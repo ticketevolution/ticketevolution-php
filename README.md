@@ -2,6 +2,13 @@
 
 ## RELEASE INFORMATION
 
+### Feb 9, 2012
+- Improvements to API demo app:
+    - If an exception is thrown the actual request and response will be output for debugging purposes
+    - Made it easier to switch between API environments (Sandbox|Production)
+    - Changes reflect new changes to API
+- In the data-loaders change the `$lastUpdated` timezone to UTC before using it with `updated_at.gte` to account for a bug in the API that currently ignores the datetime portion if it is not specified as UTC.
+
 ### Jan 5, 2012
 - Added support for new “deleted” endpoints:
     - `/events/deleted`
