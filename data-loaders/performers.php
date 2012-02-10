@@ -99,39 +99,6 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         }
         if (!empty($row)) {
             // This means there was an existing row and therefore, this is an UPDATE
-
-            /**
-             * Do not overwrite the performerName nor our performerIdent
-             * Which can differ from `performerNameTicketEvolution` if Team One
-             * has altered it. Also do not overwrite the other performerNames
-             */
-            unset($data['performerName']);
-            unset($data['performerIdent']);
-            unset($data['performerNameEventInventory']);
-            unset($data['performerNameRazorgator']);
-            unset($data['performerNameSeatGeek']);
-            unset($data['performerNameStubHub']);
-            unset($data['performerNameTicketCity']);
-            unset($data['performerNameTicketNetwork']);
-            unset($data['performerNameTicketTechnology']);
-            unset($data['performerNameViagogo']);
-            unset($data['performerNameVividSeats']);
-
-            /**
-             * See if the performerNameTicketEvolution has changed from what it was.
-             *
-             * @todo Do we update other system's names? Decision was made for now not to.
-             *       Eventually, the correct route may be to have the other systems name
-             *       columns NULL until we find a reason to make an entry.
-             */
-            $rename = false;
-            if ($data['performerNameTicketEvolution'] != $row->performerNameTicketEvolution) {
-                $rename = true;
-                $originalPerformerNameTicketEvolution = $row->performerNameTicketEvolution;
-                $newPerformerNameTicketEvolution = $data['performerNameTicketEvolution'];
-
-            }
-
             $row->setFromArray($data);
             $action = 'UPDATE';
         } else {
@@ -142,11 +109,11 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         try {
             $row->save();
             echo '<h1>'
-               . htmlentities('Successful ' . $action . ' of ' . $data['performerId'] . ': ' . $data['performerNameTicketEvolution'] . ' to `tevoPerformers`', ENT_QUOTES, 'UTF-8', false)
+               . htmlentities('Successful ' . $action . ' of ' . $data['performerId'] . ': ' . $data['performerName'] . ' to `tevoPerformers`', ENT_QUOTES, 'UTF-8', false)
                . '</h1>' . PHP_EOL
             ;
         } catch(Exception $e) {
-            $message = 'Error attempting to ' . $action . ' ' . $data['performerId'] . ': ' . $data['performerNameTicketEvolution'] . ' to `tevoPerformers`';
+            $message = 'Error attempting to ' . $action . ' ' . $data['performerId'] . ': ' . $data['performerName'] . ' to `tevoPerformers`';
 
             echo '<h1 class="error">'
                . htmlentities($message, ENT_QUOTES, 'UTF-8', false)

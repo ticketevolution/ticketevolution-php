@@ -107,12 +107,12 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         try {
             $row->save();
             echo '<h1>'
-               . htmlentities('Successful ' . $action . ' of ' . $data['venueId'] . ': ' . $data['venueNameTicketEvolution'] . ' to `tevoVenues`', ENT_QUOTES, 'UTF-8', false)
+               . htmlentities('Successful ' . $action . ' of ' . $data['venueId'] . ': ' . $data['venueName'] . ' to `tevoVenues`', ENT_QUOTES, 'UTF-8', false)
                . '</h1>' . PHP_EOL
             ;
 
         } catch (Exception $e) {
-            $message = 'Error attempting to ' . $action . ' ' . $data['venueId'] . ': ' . $data['venueNameTicketEvolution'] . ' to `tevoVenues`';
+            $message = 'Error attempting to ' . $action . ' ' . $data['venueId'] . ': ' . $data['venueName'] . ' to `tevoVenues`';
 
             echo '<h1 class="error">'
                . htmlentities($message, ENT_QUOTES, 'UTF-8', false)
