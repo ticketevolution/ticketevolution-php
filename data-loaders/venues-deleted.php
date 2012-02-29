@@ -81,6 +81,12 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
     // Set the current URL
     $currentUrl = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . '?lastRun=' . urlencode($lastRun->get(TicketEvolution_Date::ISO_8601)) . '&startPage=' . $currentPage;
 
+    if ($showStats) {
+        $curMem = memory_get_usage(true);
+        $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
+        echo '<h1>Current memory usage after fetching page ' . $currentPage . ' of ' . $maxPages . ': ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL;
+    }
+
     /*******************************************************************************
      * Process the API results either INSERTing or UPDATEing our table(s)
      */
@@ -117,7 +123,10 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         unset($data);
         unset($row);
     } // End loop through this page of results
-
+    if ($showStats) {
+        $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
+        echo '<h1>Current memory usage after database work of page ' . $currentPage . ' of ' . $maxPages . ': ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL;
+    }
     echo '<h1>Done with page ' . $currentPage . '</h1>' . PHP_EOL;
     @ob_end_flush();
     @ob_flush();
@@ -135,3 +144,11 @@ $statusRow->save();
 
 
 echo '<h1>Finished updating `tevo' . $statusData['table'] . '` table</h1>' . PHP_EOL;
+
+if ($showStats) {
+    $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
+    $peakMem = new Zend_Measure_Binary(memory_get_peak_usage(true), Zend_Measure_Binary::BYTE);
+    echo '<h1>Current memory usage at end of script: ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL
+       . '<h1>PEAK memory usage: ' . $peakMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL
+    ;
+}
