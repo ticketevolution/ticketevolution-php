@@ -14,18 +14,29 @@
  *
  * @category    TicketEvolution
  * @package     TicketEvolution
- * @author      J Cobb <j@teamonetickets.com>
- * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
 
 /**
- * Make sure the Zend Framework library is in your include_path
- * You may need to uncomment and adjust this.
+ * Display errors
  */
-set_include_path (get_include_path() . PATH_SEPARATOR . '../library');
+error_reporting (E_ALL);
+
+
+/**
+ * Increase the max_execution_time because some of these can take a while to run
+ */
+ini_set('max_execution_time', 2400);
+
+
+/**
+ * Get the configuration
+ * Be sure to copy config.sample.php to config.php and enter your own information.
+ */
+require_once 'config.php';
+
 
 /**
  * Set up autoloading
@@ -38,62 +49,17 @@ $autoloader->setFallbackAutoloader(true);
 
 
 /**
- * Set your Ticket Evolution API information.
- * This is available from your account under Brokerage->API Keys
- *
- * NOTE: These are exclusive to your company and should NEVER be shared with
- *       anyone else. These should be protected just like your bank password.
- *
- * @link http://exchange.ticketevolution.com/brokerage/credentials
+ * Put the config data into registry
  */
-$cfg['params']['apiToken']      = (string) 'YOUR_API_TOKEN_HERE';
-$cfg['params']['secretKey']     = (string) 'YOUR_SECRET_KEY_HERE';
-$cfg['params']['buyerId']       = (string) 'YOUR_OFFICEID_HERE';
-$cfg['params']['apiVersion']    = (string) '8';
-$cfg['params']['usePersistentConnections'] = (bool) true;
-
-//$cfg['params']['baseUri'] = (string) 'https://api.sandbox.ticketevolution.com'; // Sandbox
-$cfg['params']['baseUri'] = (string) 'https://api.ticketevolution.com'; // Production
-
-
-
-/**
- * Database setup
- * Make sure you have created the database using the script
- * provided in scripts/create_tables.mysql
- * as well as applying any updates in chronological order
- *
- */
-$cfg['database']['adapter']             = 'Mysqli';
-$cfg['database']['params']['host']      = 'YOUR_MYSQL_HOST';
-$cfg['database']['params']['dbname']    = 'YOUR_DATABASE_NAME';
-$cfg['database']['params']['username']  = 'YOUR_DATABASE_USER';
-$cfg['database']['params']['password']  = 'YOUR_DATABASE_PASSWORD';
-
-
-/**
- * Put cfg data into registry
- */
-$config = new Zend_Config($cfg, true);
+$config = new Zend_Config($dlConfig, true);
 $registry = Zend_Registry::getInstance();
 $registry->set('config', $config);
 
+
 /**
- * Set up Db adapter
+ * Set up the Db adapter
  */
 $regConfig = $registry->get('config');
 $dbConfig = $regConfig->database;
-$db = Zend_Db::factory( $dbConfig );
-Zend_Db_Table::setDefaultAdapter( $db );
-
-
-/**
- * LOCALE SETTINGS
- * If this isn't set in your php.ini set it here.
- * @link http://www.php.net/manual/en/timezones.america.php
- */
-//date_default_timezone_set('America/Phoenix');
-
-Zend_Locale::setDefault('en_US');
-
-
+$db = Zend_Db::factory($dbConfig);
+Zend_Db_Table::setDefaultAdapter($db);

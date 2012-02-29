@@ -41,21 +41,22 @@ class TicketEvolution_Performer
     {
         foreach ($object as $prop => $val) {
             switch($prop) {
+                case 'deleted_at':
                 case 'updated_at':
                     // This property is a date, convert it into a TicketEvolution_Date object
                     /**
                      * @see TicketEvolution_Date
                      */
                     require_once 'TicketEvolution/Date.php';
-                    
+
                     $this->{$prop} = new TicketEvolution_Date($val, TicketEvolution_Date::ISO_8601);
                     break;
-                    
+
                 default:
                     $this->{$prop} = $val;
             }
         }
-        
+
         // Loop above only catches dates at the root level. Set these too.
         if (!empty($object->upcoming_events->first)) {
             $this->upcoming_events->first = new TicketEvolution_Date(

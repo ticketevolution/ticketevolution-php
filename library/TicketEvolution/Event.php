@@ -40,6 +40,7 @@ class TicketEvolution_Event
     {
         foreach ($object as $prop => $val) {
             switch($prop) {
+                case 'deleted_at':
                 case 'updated_at':
                 case 'occurs_at':
                     // This property is a date, convert it into a TicketEvolution_Date object
@@ -47,10 +48,10 @@ class TicketEvolution_Event
                      * @see TicketEvolution_Date
                      */
                     require_once 'TicketEvolution/Date.php';
-                    
+
                     $this->{$prop} = new TicketEvolution_Date($val, TicketEvolution_Date::ISO_8601);
                     break;
-                    
+
                 default:
                     $this->{$prop} = $val;
             }

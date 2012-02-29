@@ -4,3 +4,4 @@ library/Onyx
 library/Zend
 
 demo/config.php
+data-loaders/config.php
