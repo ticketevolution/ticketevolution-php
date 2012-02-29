@@ -180,4 +180,115 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
         return parent::update($data, $where);
     }
 
+    /**
+     * Get results via an array of parameters
+     *
+     * @param  mixed $params Options to use for the search query or a `uid`
+     * @throws TicketEvolution_Models_Exception
+     * @return TeamOne_Db_Events
+     */
+    public function getByParameters($params, $limit=null, $orderBy=null)
+    {
+        /**
+         * @see Zend_Date
+         */
+        require_once 'Zend/Date.php';
+
+        if (!is_array($params) && !is_array($this->_primary)) {
+            // Assume this is a single Id and find it
+            $row = $this->find((int)$params);
+            if (isset($row[0])) {
+                return $row[0];
+            } else {
+                return false;
+            }
+        }
+
+        // It appears that we have an array of search options
+        $options = $this->_prepareOptions($params);
+
+        $select = $this->select();
+        foreach ($options as $column => $value) {
+            // Some parameters may be like 'tevoPerformerId'
+            // We need to change those to just 'performerId'
+            $column = lcfirst(preg_replace('/^tevo(\w{1})/i', "$1", $column));
+            if (is_array($value)) {
+                $select->where($column ." IN (?)", $value);
+            } elseif ($value instanceof Zend_Date) {
+                $select->where($column ." = ?", $value->get(TicketEvolution_Date::MYSQL_DATETIME));
+            } else {
+                $select->where($column ." = ?", $value);
+            }
+        }
+
+        if (!is_null($orderBy)) {
+            if (is_array($orderBy)) {
+                foreach ($orderBy as $order) {
+                    $select->order($order);
+                }
+            } else {
+                $select->order($orderBy);
+            }
+        }
+
+        if (!is_null($limit)) {
+            $select->limit($limit);
+        }
+        //dump($select->__toString());
+        try{
+            if ($limit == 1) {
+                $results = $this->fetchRow($select);
+            } else {
+                $results = $this->fetchAll($select);
+            }
+        } catch(Exception $e) {
+            throw new TicketEvolution_Db_Table_Exception($e);
+        }
+        return $results;
+    }
+
+
+    /**
+     * Prepare options for queries
+     * Mostly just make sure if we passed a Zend_Date object that it gets converted to a string
+     *
+     * @param  array $params Parameters to use for the search query
+     * @return array
+     */
+    protected function _prepareOptions(array $params)
+    {
+        // Verify that parameters are in an array.
+        if (!is_array($params)) {
+            /**
+             * @see TicketEvolution_Db_Exception
+             */
+            require_once 'TicketEvolution/Db/Exception.php';
+            throw new TicketEvolution_Db_Exception('Query parameters must be in an array');
+        }
+
+        /**
+         * Commented out because I decided to do the conversion in getByParameters() for now
+         // Set an array of parameters that might be Zend_Date objects
+        $possibleDateFields = array(
+            'eventDate',
+            'updated_at',
+            'createdDate',
+            'lastModifiedDate');
+
+        // If any of our $params might be date objects convert them to strings
+        $dateFieldsUsed = array_intersect(array_keys($params), array_values($possibleDateFields));
+        //dump($dateFieldsUsed);
+        $options = array();
+        foreach ($dateFieldsUsed as $dateField) {
+            if ($params[$dateField] instanceof Zend_Date) {
+                //$options[$dateField] = $params[$dateField]->get(Zend_Date::DATETIME);
+            }
+        }
+        //dump($options);
+        //dump($params);
+        $cleanOptions = array_merge($params, $options);
+        return $cleanOptions;
+        */
+        return $params;
+    }
 }

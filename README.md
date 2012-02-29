@@ -2,6 +2,9 @@
 
 ## RELEASE INFORMATION
 
+### Feb 28, 2012
+- Added a database searching method "getByParameters()" to DB/Table/Abstract
+
 ### Feb 9, 2012
 - Improvements to API demo app:
     - If an exception is thrown the actual request and response will be output for debugging purposes
