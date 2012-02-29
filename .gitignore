@@ -2,3 +2,5 @@
 library/Onyx
 
 library/Zend
+
+demo/config.php
