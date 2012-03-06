@@ -1,8 +1,23 @@
 <?php
+/**
+ * TicketEvolution Framework
+ *
+ * LICENSE
+ *
+ * This source file is subject to the new BSD license that is bundled
+ * with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@teamonetickets.com so we can send you a copy immediately.
+ *
+ * @category    TicketEvolution
+ * @package     TicketEvolution
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
+ */
 
-require_once 'bootstrap.php';
-error_reporting (E_ALL);
-ini_set('max_execution_time', 2400);
 
 // Set some status data for use in querying/updating the `tevoDataLoaderStatus` table
 $statusData = array(
@@ -10,7 +25,8 @@ $statusData = array(
     'type'  => 'deleted',
 );
 
-require_once './includes/common.php';
+require_once 'bootstrap.php';
+require_once 'includes/common.php';
 
 // Create the TicketEvolution_Db_Table object
 $table = new TicketEvolution_Db_Table_Categories();
@@ -62,6 +78,12 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         $maxPages = $results->totalPages();
     }
 
+    if ($showStats) {
+        $curMem = memory_get_usage(true);
+        $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
+        echo '<h1>Current memory usage after fetching page ' . $currentPage . ' of ' . $maxPages . ': ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL;
+    }
+
     /*******************************************************************************
      * Process the API results either INSERTing or UPDATEing our table(s)
      */
@@ -97,7 +119,10 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         unset($row);
 
     } // End loop through this page of results
-
+    if ($showStats) {
+        $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
+        echo '<h1>Current memory usage after database work of page ' . $currentPage . ' of ' . $maxPages . ': ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL;
+    }
     echo '<h1>Done with page ' . $currentPage . '</h1>' . PHP_EOL;
     @ob_end_flush();
     @ob_flush();
@@ -115,3 +140,11 @@ $statusRow->save();
 
 
 echo '<h1>Finished updating `tevo' . $statusData['table'] . '` table</h1>' . PHP_EOL;
+
+if ($showStats) {
+    $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
+    $peakMem = new Zend_Measure_Binary(memory_get_peak_usage(true), Zend_Measure_Binary::BYTE);
+    echo '<h1>Current memory usage at end of script: ' . $curMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL
+       . '<h1>PEAK memory usage: ' . $peakMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL
+    ;
+}

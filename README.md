@@ -2,6 +2,12 @@
 
 ## RELEASE INFORMATION
 
+### Feb 29, 2012
+*This update contains changes that are NOT backwards compatible*
+
+- Updated things to work with API v9. API versions <9 will not work with this release
+- Both data-loaders and the demo now require the user to copy `config.sample.php` to `config.php` and set your credentials there
+
 ### Feb 28, 2012
 - Added a database searching method "getByParameters()" to DB/Table/Abstract
 

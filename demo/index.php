@@ -22,10 +22,11 @@
 
 
 /**
- * Make sure the Zend Framework library is in your include_path
- * You may need to uncomment and adjust this.
+ * Get the configuration
+ * Be sure to copy config.sample.php to config.php and enter your own information.
  */
-set_include_path (get_include_path() . PATH_SEPARATOR . '../library');
+require_once 'config.php';
+
 
 /**
  * @see Zend_Config
@@ -45,43 +46,6 @@ $autoloader->registerNamespace('Zend_');
 $autoloader->registerNamespace('TicketEvolution_');
 $autoloader->setFallbackAutoloader(true);
  */
-
-
-/**
- * Set your Ticket Evolution API information.
- * This is available from your account under Brokerage->API Keys
- *
- * NOTE: These are exclusive to your company and should NEVER be shared with
- *       anyone else. These should be protected just like your bank password.
- *
- * @link https://settings.sandbox.ticketevolution.com/brokerage/credentials Sandbox Credentials
- * @link https://settings.staging.ticketevolution.com/brokerage/credentials Staging Credentials
- * @link https://settings.ticketevolution.com/brokerage/credentials Production Credentials
- */
-$sandbox['apiToken']        = (string) 'YOUR_API_TOKEN_HERE';
-$sandbox['secretKey']       = (string) 'YOUR_SECRET_KEY_HERE';
-$sandbox['buyerId']         = 'YOUR_OFFICEID_HERE';
-$sandbox['usePersistentConnections'] = true;
-
-$staging['apiToken']        = (string) 'YOUR_API_TOKEN_HERE';
-$staging['secretKey']       = (string) 'YOUR_SECRET_KEY_HERE';
-$staging['buyerId']         = 'YOUR_OFFICEID_HERE';
-$staging['usePersistentConnections'] = true;
-
-$production['apiToken']     = (string) 'YOUR_API_TOKEN_HERE';
-$production['secretKey']    = (string) 'YOUR_SECRET_KEY_HERE';
-$production['buyerId']      = 'YOUR_OFFICEID_HERE';
-$production['usePersistentConnections'] = true;
-
-$cfg['exclude']['brokerage'] = array(
-    389, // Testing only
-    691, // Testing only
-    117, // Testing only
-);
-$cfg['exclusive']['brokerage'] = array(
-    223, // Testing only
-    154, // Testing only
-);
 
 
 // Set up some default query options
@@ -594,7 +558,6 @@ if(isset($_GET['apiMethod'])) {
 
                             /**
                              * Test code for creating client with ALL data
-                             */
                             // Create the properly formatted client address
                             $address1 = new stdClass;
                             $address1->company = 'Moe’s Tavern';
@@ -661,6 +624,7 @@ if(isset($_GET['apiMethod'])) {
 
                             $client->email_addresses[] = $emailAddress1;
                             $client->email_addresses[] = $emailAddress2;
+                             */
 
                             // Execute the call
                             try {
@@ -725,7 +689,7 @@ if(isset($_GET['apiMethod'])) {
                             $address2->label = 'Ned’s House';
 
                             $addresses[] = $address1;
-                            $addresses[] = $address2;
+                            //$addresses[] = $address2;
 
                             // Display the code
                             echo '$address1 = new stdClass;' . PHP_EOL
@@ -1190,7 +1154,7 @@ if(isset($_GET['apiMethod'])) {
                             // Create the proper format
                             $item = new stdClass;
                             $item->price = '31.32';
-                            $item->ticket_group_id = '9514168';
+                            $item->ticket_group_id = '10145892';
                             $item->quantity = 2;
 
                             $shippingAddress = new stdClass;
@@ -1215,32 +1179,33 @@ if(isset($_GET['apiMethod'])) {
                              * type and just handle the payment stuff on your own.
                              */
                             $payment = new stdClass;
-                            $payment->type = 'offline';
-/**
                             $payment->type = 'credit_card';
+
                             // 'credit_card_id' is now required if you use
                             // 'credit_card' and don't specify all info
                             $payment->credit_card_id = '111';
 
-                            $credit_card = new stdClass;
-                            $credit_card->number = '4111111111111111';
-                            $credit_card->verification_code = '666';
-                            $credit_card->expiration_month = '12';
-                            $credit_card->expiration_year = '2013';
-                            //$credit_card->ip_address = '37.235.140.72';
-                            //$credit_card->phone_number_id = 205;
-                            $credit_card->name = 'A. Card';
-                            $payment->credit_card = $credit_card;
+//                             $credit_card = new stdClass;
+//                             $credit_card->number = '4111111111111111';
+//                             $credit_card->verification_code = '666';
+//                             $credit_card->expiration_month = '12';
+//                             $credit_card->expiration_year = '2013';
+//                             $credit_card->ip_address = '37.235.140.72';
+//                             $credit_card->phone_number_id = 528;
+//                             $credit_card->name = 'A. Card';
+//                             $credit_card->address_id = 123;
+//                             $payment->credit_card = $credit_card;
 
- */
 
                             $order1 = new stdClass;
                             $order1->items[] = $item;
-                            $order1->shipping_address = $shippingAddress;
-                            $order1->billing_address = $billingAddress;
+                            //$order1->shipping_address = $shippingAddress;
+                            //$order1->billing_address = $billingAddress;
                             $order1->payments[] = $payment;
                             $order1->seller_id = $cfg['params']['buyerId'];
                             $order1->client_id = $clientId;
+                            $order1->billing_address_id = 46645;
+                            $order1->shipping_address_id = 46645;
 
                             $orderDetails[] = $order1;
 
@@ -1266,7 +1231,8 @@ if(isset($_GET['apiMethod'])) {
                                . '$billingAddress->country_code = \'US\';' . PHP_EOL
                                . PHP_EOL
                                . '$payment = new stdClass;' . PHP_EOL
-                               . '$payment->type = \'offline\';' . PHP_EOL
+                               . '$payment->type = \'credit_card\';' . PHP_EOL
+                               . '$payment->credit_card_id = \'1\';' . PHP_EOL
                                . PHP_EOL
                                . '$order1 = new stdClass;' . PHP_EOL
                                . '$order1->items[] = $item;' . PHP_EOL
@@ -1418,7 +1384,7 @@ if(isset($_GET['apiMethod'])) {
                     <br />
                     <label for="apiToken">API Version: </label>
                     <br />
-                    <input name="apiVersion" id="apiVersion" type="text" value="8" size="2" maxlength="2" readonly="readonly" />
+                    <input name="apiVersion" id="apiVersion" type="text" value="9" size="2" maxlength="2" readonly="readonly" />
 
                     <br />
                     <br />

@@ -125,7 +125,7 @@ class TicketEvolution_Webservice
      * @var string
      * @link http://api.ticketevolution.com/ Find the current version
      */
-    protected $_apiVersion = '8';
+    protected $_apiVersion = '9';
 
 
     /**
@@ -219,6 +219,8 @@ class TicketEvolution_Webservice
 
         $this->apiToken = (string) $config['apiToken'];
         $this->_secretKey = (string) $config['secretKey'];
+
+        $this->_apiPrefix = '/v' . $this->_apiVersion . '/';
     }
 
 
@@ -254,7 +256,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::BROKER_RESULTSET_CLASS);
     }
@@ -290,7 +292,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::BROKER_CLASS);
     }
@@ -341,7 +343,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::BROKER_RESULTSET_CLASS);
     }
@@ -379,7 +381,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CLIENT_RESULTSET_CLASS);
     }
@@ -415,7 +417,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CLIENT_CLASS);
     }
@@ -466,7 +468,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CLIENT_RESULTSET_CLASS);
     }
@@ -582,7 +584,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::ADDRESS_RESULTSET_CLASS);
     }
@@ -619,7 +621,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::ADDRESS_CLASS);
     }
@@ -739,7 +741,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::PHONENUMBER_RESULTSET_CLASS);
     }
@@ -776,7 +778,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::PHONENUMBER_CLASS);
     }
@@ -896,7 +898,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::EMAILADDRESS_RESULTSET_CLASS);
     }
@@ -933,7 +935,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::EMAILADDRESS_CLASS);
     }
@@ -1053,7 +1055,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CREDITCARD_RESULTSET_CLASS);
     }
@@ -1093,7 +1095,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CREDITCARD_CLASS);
     }
@@ -1263,7 +1265,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::OFFICE_RESULTSET_CLASS);
     }
@@ -1299,7 +1301,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::OFFICE_CLASS);
     }
@@ -1350,7 +1352,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::OFFICE_RESULTSET_CLASS);
     }
@@ -1388,7 +1390,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::USER_RESULTSET_CLASS);
     }
@@ -1424,7 +1426,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::USER_CLASS);
     }
@@ -1475,7 +1477,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::USER_RESULTSET_CLASS);
     }
@@ -1513,7 +1515,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CATEGORY_RESULTSET_CLASS);
     }
@@ -1551,7 +1553,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CATEGORY_RESULTSET_CLASS);
     }
@@ -1587,7 +1589,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CATEGORY_CLASS);
     }
@@ -1625,7 +1627,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::EVENT_RESULTSET_CLASS);
     }
@@ -1663,7 +1665,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::EVENT_RESULTSET_CLASS);
     }
@@ -1699,7 +1701,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::EVENT_CLASS);
     }
@@ -1737,7 +1739,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::PERFORMER_RESULTSET_CLASS);
     }
@@ -1775,7 +1777,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::PERFORMER_RESULTSET_CLASS);
     }
@@ -1811,7 +1813,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::PERFORMER_CLASS);
     }
@@ -1862,7 +1864,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::PERFORMER_RESULTSET_CLASS);
     }
@@ -1915,7 +1917,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::SEARCH_RESULTSET_CLASS);
     }
@@ -1953,7 +1955,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::VENUE_RESULTSET_CLASS);
     }
@@ -1991,7 +1993,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::VENUE_RESULTSET_CLASS);
     }
@@ -2027,7 +2029,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::VENUE_CLASS);
     }
@@ -2078,7 +2080,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::VENUE_RESULTSET_CLASS);
     }
@@ -2116,7 +2118,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CONFIGURATION_RESULTSET_CLASS);
     }
@@ -2152,7 +2154,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CONFIGURATION_CLASS);
     }
@@ -2197,7 +2199,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::TICKETGROUP_RESULTSET_CLASS);
     }
@@ -2233,7 +2235,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::TICKETGROUP_CLASS);
     }
@@ -2271,7 +2273,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::ORDER_RESULTSET_CLASS);
     }
@@ -2307,7 +2309,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::ORDER_CLASS);
     }
@@ -2326,7 +2328,7 @@ class TicketEvolution_Webservice
     {
         $newOrders = new stdClass;
         foreach ($orders as $order) {
-            $newOrders->orders = $orders;
+            $newOrders->orders = $order;
         }
         $options = json_encode($newOrders);
 
@@ -2556,7 +2558,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::SHIPMENT_RESULTSET_CLASS);
     }
@@ -2592,7 +2594,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::SHIPMENT_CLASS);
     }
@@ -2703,7 +2705,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::QUOTE_RESULTSET_CLASS);
     }
@@ -2739,7 +2741,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::QUOTE_CLASS);
     }
@@ -2790,7 +2792,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::QUOTE_RESULTSET_CLASS);
     }
@@ -2828,7 +2830,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::EVOPAYACCOUNT_RESULTSET_CLASS);
     }
@@ -2864,7 +2866,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::EVOPAY_ACCOUNT_CLASS);
     }
@@ -2940,7 +2942,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restGet('/' . $endPoint, $options);
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::EVOPAY_TRANSACTION_CLASS);
     }
@@ -3042,7 +3044,7 @@ class TicketEvolution_Webservice
         $headers = array(
             'User-Agent' => 'TicketEvolution_Webservice',
             'X-Token'   => (string)$apiToken,
-            'Accept'    => (string)'application/vnd.ticketevolution.api+json; version=' . $apiVersion
+            'Accept'    => (string)'application/json',
         );
         if (!empty($requestSignature)) {
             $headers['X-Signature'] = (string)$requestSignature;
@@ -3067,7 +3069,11 @@ class TicketEvolution_Webservice
 
         if ($this->_secretKey !== null) {
             $this->_requestSignature = self::computeSignature(
-                $this->_baseUri, $this->_secretKey, (string)$action, (string)$endPoint, $options
+                $this->_baseUri . $this->_apiPrefix,
+                $this->_secretKey,
+                (string)$action,
+                (string)$endPoint,
+                $options
             );
         }
         return $options;
@@ -3108,7 +3114,7 @@ class TicketEvolution_Webservice
      */
     static public function buildRawSignature($baseUri, $action, $endPoint, $options)
     {
-        $signature = $action . ' ' . preg_replace('/https?:\/\//', '', $baseUri) . '/' . $endPoint;
+        $signature = $action . ' ' . preg_replace('/https:\/\//', '', $baseUri) . $endPoint . '?';
         if (!empty($options)) {
             if (is_array($options)) {
                 // Turn the $options into GET parameters
@@ -3119,9 +3125,9 @@ class TicketEvolution_Webservice
                     $params[] = urlencode($k) . '=' . urlencode($v);
                     //$params[] = $k . '=' . $v;
                 }
-                $signature .= '?' . implode('&', $params);
+                $signature .= implode('&', $params);
             } else {
-                $signature .= '?' . (string) $options;
+                $signature .= (string) $options;
             }
         }
         return $signature;
