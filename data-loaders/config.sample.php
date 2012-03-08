@@ -68,6 +68,7 @@ $dlConfig['database']['params']['password']     = 'YOUR_DATABASE_PASSWORD';
  * @link http://www.php.net/manual/en/timezones.america.php
  */
 //date_default_timezone_set('America/Phoenix');
+require_once 'Zend/Locale.php';
 Zend_Locale::setDefault('en_US');
 
 
