@@ -96,8 +96,6 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         );
 
         if ($row = $table->find((int) $result->id)->current()) {
-            $data['performerName'] = $row->performerName . '***';
-            $data['performerIdent'] = $row->performerIdent . '---';
             $row->setFromArray($data);
             $action = 'UPDATE';
         } else {
