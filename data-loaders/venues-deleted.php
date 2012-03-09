@@ -78,9 +78,6 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         $maxPages = $results->totalPages();
     }
 
-    // Set the current URL
-    $currentUrl = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'] . '?lastRun=' . urlencode($lastRun->get(TicketEvolution_Date::ISO_8601)) . '&startPage=' . $currentPage;
-
     if ($showStats) {
         $curMem = memory_get_usage(true);
         $curMem = new Zend_Measure_Binary(memory_get_usage(true), Zend_Measure_Binary::BYTE);
@@ -99,8 +96,6 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         );
 
         if ($row = $table->find((int) $result->id)->current()) {
-            $data['venueName'] = $row->venueName . '***';
-            $data['venueIdent'] = $row->venueIdent . '---';
             $row->setFromArray($data);
             $action = 'UPDATE';
         } else {
