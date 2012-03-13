@@ -33,25 +33,11 @@ class TicketEvolution_Webservice_ResultSet_Abstract
     implements SeekableIterator, Countable
 {
     /**
-     * Name of the class for the items in this set
-     *
-     * @var string
-     */
-    protected $_itemClass = 'stdClass';
-
-    /**
      * An array of objects
      *
      * @var array
      */
     protected $_results = null;
-
-    /**
-     * An object that has a single element which is an array of other objects
-     *
-     * @var stdObject
-     */
-    protected $_result;
 
     /**
      * Current index for SeekableIterator
@@ -67,19 +53,16 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      * @param  object $result
      * @return void
      */
-    public function __construct($result, $itemClass=null)
+    public function __construct($result)
     {
-        $this->_result = $result;
-        
-        if (!is_null($itemClass)) {
-            $this->_itemClass = $itemClass;
-        }
-        
+        $this->total_entries = $result->total_entries;
+        $this->per_page = $result->per_page;
+
         // Find the property that is an array
         // There will only be one
-        foreach ($result as $property => $val) {
-            if (is_array($val)) {
-                $this->_results =  $val;
+        foreach ($result as $key) {
+            if (is_array($key)) {
+                $this->_results =  $key;
                 break; // Break out of looping to find the array
             }
         }
@@ -102,7 +85,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      */
     public function totalResults()
     {
-        return (int) $this->_result->total_entries;
+        return (int) $this->total_entries;
     }
 
     /**
@@ -112,7 +95,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      */
     public function totalPages()
     {
-        $totalPages = ceil($this->totalResults() / $this->_result->per_page);
+        $totalPages = ceil($this->totalResults() / $this->per_page);
         return (int) $totalPages;
     }
 
@@ -123,24 +106,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      */
     public function current()
     {
-        $className = $this->_itemClass;
-
-        /*
-         * Load the item's class.  This throws an exception
-         * if the specified class cannot be loaded.
-         */
-        if (!class_exists($this->_itemClass)) {
-            /**
-             * @see Zend_Loader
-             */
-            require_once 'Zend/Loader.php';
-            Zend_Loader::loadClass($className);
-        }
-
-        /*
-         * Create an instance of the item's class.
-         */
-        return new $className($this->_results[$this->_currentIndex]);
+        return $this->_results[$this->_currentIndex];
     }
 
     /**
@@ -203,7 +169,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
 
     /**
      * Remove entries that are in the supplied array
-     * This is mainly used after performing a listTicketGroups() and can be used 
+     * This is mainly used after performing a listTicketGroups() and can be used
      * to pass in an array of brokerage IDs to filter out their inventory if
      * you do not want it to show.
      *
@@ -238,7 +204,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
 
     /**
      * Remove entries that are NOT in the supplied array
-     * This is mainly used after performing a listTicketGroups() and can be used 
+     * This is mainly used after performing a listTicketGroups() and can be used
      * to pass in an array of brokerage IDs to show ONLY their inventory.
      *
      * Usage: $results = $tevo->listTicketGroups($options);

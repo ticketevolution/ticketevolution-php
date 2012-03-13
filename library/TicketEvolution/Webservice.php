@@ -30,71 +30,6 @@
 class TicketEvolution_Webservice
 {
     /**
-     * For methods that return data these constants define what class results
-     * of each type are passed to.
-     */
-    const BROKER_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Brokerages';
-    const BROKER_CLASS = 'TicketEvolution_Brokerage';
-
-    const CLIENT_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Clients';
-    const CLIENT_CLASS = 'TicketEvolution_Client';
-
-    const ADDRESS_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Addresses';
-    const ADDRESS_CLASS = 'TicketEvolution_Address_Client';
-
-    const PHONENUMBER_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_PhoneNumbers';
-    const PHONENUMBER_CLASS = 'TicketEvolution_PhoneNumber_Client';
-
-    const EMAILADDRESS_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_EmailAddresses';
-    const EMAILADDRESS_CLASS = 'TicketEvolution_EmailAddress_Client';
-
-    const CREDITCARD_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_CreditCards';
-    const CREDITCARD_CLASS = 'TicketEvolution_CreditCard_Client';
-
-    const OFFICE_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Offices';
-    const OFFICE_CLASS = 'TicketEvolution_Office';
-
-    const USER_RESULTSET_CLASS   = 'TicketEvolution_Webservice_ResultSet_Users';
-    const USER_CLASS   = 'TicketEvolution_User';
-
-    const CATEGORY_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Categories';
-    const CATEGORY_CLASS = 'TicketEvolution_Category';
-
-    const CONFIGURATION_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Configurations';
-    const CONFIGURATION_CLASS = 'TicketEvolution_Configuration';
-
-    const EVENT_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Events';
-    const EVENT_CLASS = 'TicketEvolution_Event';
-
-    const PERFORMER_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Performers';
-    const PERFORMER_CLASS = 'TicketEvolution_Performer';
-
-    const SEARCH_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_SearchResults';
-    const SEARCH_CLASS = 'TicketEvolution_SearchRsult';
-
-    const VENUE_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Venues';
-    const VENUE_CLASS = 'TicketEvolution_Venue';
-
-    const TICKETGROUP_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_TicketGroups';
-    const TICKETGROUP_CLASS = 'TicketEvolution_TicketGroup';
-
-    const ORDER_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Orders';
-    const ORDER_CLASS = 'TicketEvolution_Order';
-
-    const QUOTE_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Quotes';
-    const QUOTE_CLASS = 'TicketEvolution_Quote';
-
-    const SHIPMENT_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_Shipments';
-    const SHIPMENT_CLASS = 'TicketEvolution_Shipment';
-
-    const EVOPAYACCOUNT_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_EvoPayAccounts';
-    const EVOPAYACCOUNT_CLASS = 'TicketEvolution_EvoPayAccount';
-
-    const EVOPAYTRANSACTION_RESULTSET_CLASS = 'TicketEvolution_Webservice_ResultSet_EvoPayTransactions';
-    const EVOPAYTRANSACTION_CLASS = 'TicketEvolution_EvoPayTransaction';
-
-
-    /**
      * Ticket Evolution API Token
      *
      * @var string
@@ -142,6 +77,17 @@ class TicketEvolution_Webservice
      * @var bool
      */
     protected $_usePersistentConnections = true;
+
+
+    /**
+     * Defines how the data is returned.
+     *  resultset   = Default. An iterable TicketEvolution_Webservice_Resultset object
+     *  json        = The JSON received with no conversion
+     *  decodedjson = First performs a decode_json()
+     *
+     * @var string [resultset,json,decodedjson]
+     */
+    public $resultType = 'resultset';
 
 
     /**
@@ -258,7 +204,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::BROKER_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -294,7 +240,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::BROKER_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -345,7 +291,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::BROKER_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -383,7 +329,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CLIENT_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -419,7 +365,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CLIENT_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -470,7 +416,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CLIENT_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -509,7 +455,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPost('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CLIENT_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -547,7 +493,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPut('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CLIENT_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -586,7 +532,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::ADDRESS_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -623,7 +569,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::ADDRESS_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -665,7 +611,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPost('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::ADDRESS_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -704,7 +650,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPut('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::ADDRESS_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -743,7 +689,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::PHONENUMBER_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -780,7 +726,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::PHONENUMBER_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -822,7 +768,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPost('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::PHONENUMBER_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -861,7 +807,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPut('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::PHONENUMBER_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -900,7 +846,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::EMAILADDRESS_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -937,7 +883,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::EMAILADDRESS_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -979,7 +925,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPost('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::EMAILADDRESS_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1018,7 +964,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPut('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::EMAILADDRESS_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1057,7 +1003,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CREDITCARD_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1097,7 +1043,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CREDITCARD_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1150,7 +1096,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPost('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CREDITCARD_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1195,7 +1141,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPut('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CREDITCARD_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1267,7 +1213,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::OFFICE_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1303,7 +1249,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::OFFICE_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1354,7 +1300,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::OFFICE_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1392,7 +1338,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::USER_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1428,7 +1374,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::USER_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1479,7 +1425,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::USER_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1517,7 +1463,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CATEGORY_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1555,7 +1501,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CATEGORY_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1591,7 +1537,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CATEGORY_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1629,7 +1575,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::EVENT_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1667,7 +1613,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::EVENT_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1703,7 +1649,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::EVENT_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1741,7 +1687,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::PERFORMER_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1779,7 +1725,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::PERFORMER_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1815,7 +1761,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::PERFORMER_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1866,7 +1812,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::PERFORMER_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1919,7 +1865,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::SEARCH_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1957,7 +1903,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::VENUE_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -1995,7 +1941,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::VENUE_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2031,7 +1977,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::VENUE_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2082,7 +2028,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::VENUE_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2120,7 +2066,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CONFIGURATION_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2156,7 +2102,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::CONFIGURATION_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2201,7 +2147,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::TICKETGROUP_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2237,7 +2183,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::TICKETGROUP_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2275,7 +2221,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::ORDER_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2311,7 +2257,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::ORDER_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2353,7 +2299,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPost('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::ORDER_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2560,7 +2506,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::SHIPMENT_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2596,7 +2542,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::SHIPMENT_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2633,7 +2579,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPost('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::SHIPMENT_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2669,7 +2615,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restPut('/' . $endPoint, $options);
 
-        return $this->_postProcess($response, self::SHIPMENT_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2707,7 +2653,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::QUOTE_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2743,7 +2689,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::QUOTE_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2794,7 +2740,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::QUOTE_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2832,7 +2778,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::EVOPAYACCOUNT_RESULTSET_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2868,7 +2814,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::EVOPAY_ACCOUNT_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2907,7 +2853,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($endPoint, $options);
 
-        return $this->_postProcess($response, self::EVOPAYTRANSACTION_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -2944,7 +2890,7 @@ class TicketEvolution_Webservice
 
         $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
 
-        return $this->_postProcess($response, self::EVOPAY_TRANSACTION_CLASS);
+        return $this->_postProcess($response);
     }
 
 
@@ -3143,7 +3089,7 @@ class TicketEvolution_Webservice
      *     should be returned as
      * @return void
      */
-    protected function _postProcess($response, $returnAsClass=null)
+    protected function _postProcess($response)
     {
 
         /**
@@ -3173,7 +3119,43 @@ class TicketEvolution_Webservice
             );
         }
 
-        $decodedJson = json_decode($response->getBody(), false);
+
+        switch ($this->resultType) {
+            case 'json':
+                return $response->getBody();
+                break;
+
+            case 'decodedjson':
+                $decodedJson = self::json_decode($response->getBody());
+                return $decodedJson;
+                break;
+
+            case 'resultset':
+            default:
+                $decodedJson = self::json_decode($response->getBody());
+
+                /**
+                 * @see TicketEvolution_Webservice_ResultSet
+                 */
+                require_once 'TicketEvolution/Webservice/ResultSet.php';
+                return new TicketEvolution_Webservice_ResultSet($decodedJson);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Utility method used to catch problems decoding the JSON.
+     *
+     * @param string $string
+     * @return mixed
+     * @link http://php.net/manual/en/function.json-decode.php
+     */
+    public static function json_decode($string)
+    {
+        $decodedJson = json_decode($string);
+
         if (is_null($decodedJson)) {
             /**
              * @see TicketEvolution_Webservice_Exception
@@ -3184,26 +3166,7 @@ class TicketEvolution_Webservice
             );
         }
 
-        if (is_null($returnAsClass)) {
-            return $decodedJson;
-        } else {
-            /*
-             * Load $returnAsClass. This throws an exception if the specified
-             * class cannot be loaded.
-             */
-            if (!class_exists($returnAsClass)) {
-                /**
-                 * @see Zend_Loader
-                 */
-                require_once 'Zend/Loader.php';
-                Zend_Loader::loadClass($returnAsClass);
-            }
-
-            /*
-             * Create an instance of the item's class.
-             */
-            return new $returnAsClass($decodedJson);
-        }
+        return $decodedJson;
     }
 
 
