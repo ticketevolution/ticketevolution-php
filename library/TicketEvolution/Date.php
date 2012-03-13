@@ -29,7 +29,7 @@ require_once 'Zend/Date.php';
 /**
  * Extends Zend_Date with some handy constants and also allows for easy handling
  * of "TBA" event times.
- * 
+ *
  * @category    TicketEvolution
  * @package     TicketEvolution_Date
  * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
@@ -59,22 +59,6 @@ class TicketEvolution_Date extends Zend_Date
     const TBA_DISPLAY = 'TBA';
 
     /**
-     * The following are private and therefore we can't access the Zend_Date
-     * versions here
-     */
-    private $_locale = null;
-    // Fractional second variables
-    private $_fractional = 0;
-    private $_precision = 3;
-    private static $_options = array(
-        'format_type' => 'iso', // format for date strings 'iso' or 'php'
-        'fix_dst' => true, // fix dst on summer/winter time change
-        'extend_month' => false, // false - addMonth like SQL, true like excel
-        'cache' => null, // cache to set
-        'timesync' => null        // timesync server to set
-    );
-
-    /**
      * Does exactly what Zend_Date does except that after setting the intial date/time
      * we check to see if it contains times that are known to be "TBA" for events
      * such as Event Inventory's '23:59:20' and '23:59:59' and if so it resets
@@ -91,8 +75,9 @@ class TicketEvolution_Date extends Zend_Date
     {
         parent::__construct($date, $part, $locale);
 
-        if ($this->get('HH:mm') === '23:59') {
-            // This is an EventInventory TBA time
+        if ($this->get('HH:mm') === '23:59' || $this->get('HH:mm') === '03:30') {
+            // 23:59 is an EventInventory TBA time
+            // 03:30 is a TicketNetwork TBA time
             // Set the time to '00:00:00'
             $this->set($this->get(self::DATES));
         }
@@ -100,7 +85,7 @@ class TicketEvolution_Date extends Zend_Date
 
     /**
      * A "replacement" for the standard "get()" method that attempts to strip
-     * time information from the requested format if the time appears to be for 
+     * time information from the requested format if the time appears to be for
      * a TBA event and replace it with a 'TBA' string
      *
      * @param  string              $part    OPTIONAL Part of the date to return, if null the timestamp is returned
@@ -138,9 +123,9 @@ class TicketEvolution_Date extends Zend_Date
 
     /**
      * get count of days between dates, ignores time values
-     * 
+     *
      * @param Zend_Date $date
-     * @return int 
+     * @return int
      */
     public function getDaysBetween(Zend_Date $date)
     {
