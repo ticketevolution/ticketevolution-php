@@ -58,6 +58,9 @@ require_once 'bootstrap.php';
             border-color: gray;
             background-color: #dcf3f8;
         }
+        .time {
+        	font-variant: small-caps;
+        }
     </style>
 
 </head>
@@ -132,8 +135,8 @@ require_once 'bootstrap.php';
                            . '<td>'
                         ;
                         if (!empty($row)) {
-                            $dateLastRun = new Zend_Date($row->lastRun, Zend_Date::ISO_8601);
-                            echo $dateLastRun->get(Zend_Date::DATE_FULL . ' ' . Zend_Date::TIMES);
+                            $dateLastRun = new DateTime($row->lastRun);
+                            echo '<span class="date">' . $dateLastRun->format(Onyx_DateTime::DATE_FULL_US) . '</span> <span class="time">' . $dateLastRun->format('g:i:s a') . '</span>';
                         } else {
                             echo 'Not yet run';
                         }
