@@ -136,7 +136,7 @@ require_once 'bootstrap.php';
                         ;
                         if (!empty($row)) {
                             $dateLastRun = new DateTime($row->lastRun);
-                            echo '<span class="date">' . $dateLastRun->format(Onyx_DateTime::DATE_FULL_US) . '</span> <span class="time">' . $dateLastRun->format('g:i:s a') . '</span>';
+                            echo '<span class="date">' . $dateLastRun->format(TicketEvolution_DateTime::DATE_FULL_US) . '</span> <span class="time">' . $dateLastRun->format('g:i:s a') . '</span>';
                         } else {
                             echo 'Not yet run';
                         }
