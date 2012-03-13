@@ -55,9 +55,6 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      */
     public function __construct($result)
     {
-        $this->total_entries = $result->total_entries;
-        $this->per_page = $result->per_page;
-
         // Find the property that is an array
         // There will only be one
         foreach ($result as $key) {
@@ -66,6 +63,17 @@ class TicketEvolution_Webservice_ResultSet_Abstract
                 break; // Break out of looping to find the array
             }
         }
+
+        if (isset($result->total_entries)) {
+            $this->_total_entries = (int) $result->total_entries;
+        }
+
+        if (isset($result->per_page)) {
+            $this->_per_page = (int) $result->per_page;
+        } else {
+            $this->_per_page = $this->_total_entries;
+        }
+
     }
 
     /**
@@ -85,7 +93,13 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      */
     public function totalResults()
     {
-        return (int) $this->total_entries;
+        if (!is_null($this->_total_entries)) {
+            return (int) $this->_total_entries;
+        } else {
+            // total_entries was not passed in the JSON
+            // This happens when using listTicketGroups()
+            return $this->count();
+        }
     }
 
     /**
@@ -95,7 +109,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      */
     public function totalPages()
     {
-        $totalPages = ceil($this->totalResults() / $this->per_page);
+        $totalPages = ceil($this->totalResults() / $this->_per_page);
         return (int) $totalPages;
     }
 
@@ -297,5 +311,25 @@ class TicketEvolution_Webservice_ResultSet_Abstract
         };
     }
 
+
+    /**
+     * Returns the entire $_results array as an array.
+     *
+     * Tests show that when looping through all the results, such as when
+     * displaying all the TicketGroups on your website you can actually loop
+     * over the array returned by this faster than you can loop over the entire
+     * object.
+     *
+     * In one test looping through 400 items went from .03 seconds down to .013.
+     *
+     * If you want the ultimate in over-optimization you can use this. Make sure
+     * you use sortResults(), excludeResults() or exclusiveResults() first, as
+     * they obviously will not be available in the array returned by this method.
+     *
+     * @return array
+     */
+    public function getResultsAsArray() {
+        return $this->_results;
+    }
 
 }
