@@ -203,10 +203,16 @@ class TicketEvolution_Webservice_ResultSet_Abstract
                     return !in_array($v->office->$type->id, $exclude);
                 }
             );
+        } elseif ($type == 'office') {
+            $this->_results = array_filter(
+                $this->_results, function($v) use($exclude, $type) {
+                    return !in_array($v->office->id, $exclude);
+                }
+            );
         } else {
             $this->_results = array_filter(
                 $this->_results, function($v) use($exclude, $type) {
-                    return !in_array($v->$type->id, $exclude);
+                    return !in_array($v->$type, $exclude);
                 }
             );
         }
@@ -237,10 +243,16 @@ class TicketEvolution_Webservice_ResultSet_Abstract
                     return in_array($v->office->$type->id, $exclusive);
                 }
             );
+        } elseif ($type == 'office') {
+            $this->_results = array_filter(
+                $this->_results, function($v) use($exclusive, $type) {
+                    return in_array($v->office->id, $exclusive);
+                }
+            );
         } else {
             $this->_results = array_filter(
                 $this->_results, function($v) use($exclusive, $type) {
-                    return in_array($v->$type->id, $exclusive);
+                    return in_array($v->$type, $exclusive);
                 }
             );
         }
