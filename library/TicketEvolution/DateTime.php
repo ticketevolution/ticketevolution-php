@@ -102,16 +102,21 @@ class TicketEvolution_DateTime extends DateTime
      * @param bool $absolute Whether to return absolute difference.
      * @return Onyx_DateInterval
      */
-    public function diff($datetime2, $absolute=false) {
-        /**
-         * @see TicketEvolution_DateInterval
-         */
-        require_once 'TicketEvolution/DateInterval.php';
-
-        $diff = TicketEvolution_DateInterval::createFromDateInterval(parent::diff($datetime2, $absolute));
-
-        return $diff;
-    }
+//     public function diff($datetime2, $absolute=false) {
+//
+//         $diff = self::getTimestamp() - $datetime2->getTimestamp();
+//         var_dump($diff);
+//
+//
+//         /**
+//          * @see TicketEvolution_DateInterval
+//          */
+//         require_once 'TicketEvolution/DateInterval.php';
+//
+//         $diff = new TicketEvolution_DateInterval(parent::diff($datetime2, $absolute));
+//
+//         return $diff;
+//     }
 
 
     /**
