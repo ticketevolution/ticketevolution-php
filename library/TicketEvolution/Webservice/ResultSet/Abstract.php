@@ -76,6 +76,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
 
     }
 
+
     /**
      * Number of results returned in this ResultSet
      *
@@ -85,6 +86,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
     {
         return (int) count($this->_results);
     }
+
 
     /**
      * Total Number of results available
@@ -102,6 +104,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
         }
     }
 
+
     /**
      * Total Number of pages returned
      *
@@ -113,6 +116,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
         return (int) $totalPages;
     }
 
+
     /**
      * Implement SeekableIterator::current()
      *
@@ -122,6 +126,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
     {
         return $this->_results[$this->_currentIndex];
     }
+
 
     /**
      * Implement SeekableIterator::key()
@@ -133,6 +138,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
         return $this->_currentIndex;
     }
 
+
     /**
      * Implement SeekableIterator::next()
      *
@@ -143,6 +149,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
         $this->_currentIndex += 1;
     }
 
+
     /**
      * Implement SeekableIterator::rewind()
      *
@@ -152,6 +159,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
     {
         $this->_currentIndex = 0;
     }
+
 
     /**
      * Implement SeekableIterator::seek()
@@ -169,6 +177,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
             throw new OutOfBoundsException("Illegal index '$index'");
         }
     }
+
 
     /**
      * Implement SeekableIterator::valid()
@@ -203,10 +212,16 @@ class TicketEvolution_Webservice_ResultSet_Abstract
                     return !in_array($v->office->$type->id, $exclude);
                 }
             );
+        } elseif ($type == 'office') {
+            $this->_results = array_filter(
+                $this->_results, function($v) use($exclude, $type) {
+                    return !in_array($v->office->id, $exclude);
+                }
+            );
         } else {
             $this->_results = array_filter(
                 $this->_results, function($v) use($exclude, $type) {
-                    return !in_array($v->$type->id, $exclude);
+                    return !in_array($v->$type, $exclude);
                 }
             );
         }
@@ -237,10 +252,16 @@ class TicketEvolution_Webservice_ResultSet_Abstract
                     return in_array($v->office->$type->id, $exclusive);
                 }
             );
+        } elseif ($type == 'office') {
+            $this->_results = array_filter(
+                $this->_results, function($v) use($exclusive, $type) {
+                    return in_array($v->office->id, $exclusive);
+                }
+            );
         } else {
             $this->_results = array_filter(
                 $this->_results, function($v) use($exclusive, $type) {
-                    return in_array($v->$type->id, $exclusive);
+                    return in_array($v->$type, $exclusive);
                 }
             );
         }

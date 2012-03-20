@@ -33,48 +33,48 @@ class TicketEvolution_DateInterval extends DateInterval
      * Creates a TicketEvolution_DateInterval from a DateInterval instance.
      * Makes it easy to pass in a standard PHP DateInterval to create an TicketEvolution_DateInterval
      *
+     * NOTE: Even if the $dateInterval you pass in has the 'days' property set
+     *       it will be set to boolean false. Apparently you cannot extend
+     *       DateInterval and still use the 'days' property. This also means
+     *       that you cannot use format('%a') as it will return '(unknown)'
+     *
      * @param DateInterval The DateInterval to create from
      * @return Onyx_DateInterval
      */
-    public static function createFromDateInterval($dateInterval) {
-        if (!$dateInterval InstanceOf DateInterval) {
-            throw new TicketEvolution_Exception(
-                '$dateInterval is not an instance of DateInterval'
-            );
-        }
+    public function __construct($dateInterval) {
+        if ($dateInterval InstanceOf DateInterval) {
+            $period = 'P';
+            $time = 'T';
 
-        $period = 'P';
-        $time = 'T';
+            if ($dateInterval->y > 0) {
+                $period .= $dateInterval->y . 'Y';
+            }
+            if ($dateInterval->m > 0) {
+                $period .= $dateInterval->m . 'M';
+            }
+            if ($dateInterval->d > 0) {
+                $period .= $dateInterval->d . 'D';
+            }
+            if ($dateInterval->h > 0) {
+                $time .= $dateInterval->h . 'H';
+            }
+            if ($dateInterval->i > 0) {
+                $time .= $dateInterval->i . 'M';
+            }
+            if ($dateInterval->s > 0) {
+                $time .= $dateInterval->s . 'S';
+            }
 
-        if ($dateInterval->y > 0) {
-            $period .= $dateInterval->y . 'Y';
-        }
-        if ($dateInterval->m > 0) {
-            $period .= $dateInterval->m . 'M';
-        }
-        if ($dateInterval->d > 0) {
-            $period .= $dateInterval->d . 'D';
-        }
-        if ($dateInterval->h > 0) {
-            $time .= $dateInterval->h . 'H';
-        }
-        if ($dateInterval->i > 0) {
-            $time .= $dateInterval->i . 'M';
-        }
-        if ($dateInterval->s > 0) {
-            $time .= $dateInterval->s . 'S';
-        }
+            if ($time != 'T') {
+                $period .= $time;
+            }
 
-        if ($time != 'T') {
-            $period .= $time;
+            parent::__construct($period);
+            $this->invert = $dateInterval->invert;
+            //$this->days = $dateInterval->days;
+        } else {
+            parent::__construct($dateInterval);
         }
-
-        $newInterval = new TicketEvolution_DateInterval($period);
-        $newInterval->invert = $dateInterval->invert;
-
-        return $newInterval;
-
-
     }
 
 
