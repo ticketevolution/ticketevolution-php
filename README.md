@@ -6,6 +6,7 @@
 *This update contains changes that are NOT backwards compatible*
 
 - Huge improvements in both speed and memory usage. See [Issue #46](https://github.com/ticketevolution/ticketevolution-php/issues/46) for some details.
+- Also added some new filters that can be used to filter ticket groups when displaying a list of them. Look for updates in [the Wiki](https://github.com/ticketevolution/ticketevolution-php/wiki) soon explaining how to use these.
 
 ### Feb 29, 2012
 *This update contains changes that are NOT backwards compatible*
