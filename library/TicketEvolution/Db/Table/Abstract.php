@@ -41,7 +41,7 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
      * @var string
      */
     protected $_statusColumn   = 'status';
-    
+
     /**
      * Classname for row
      *
@@ -60,14 +60,14 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
         if (isset($this->_statusColumn)) {
             return $this->_statusColumn;
         }
-        
+
         // If _statusColumn is not set find a column with 'status' in the name
         foreach ($this->_getCols() as $column) {
             if (stripos($column, 'status') !== false) {
                 return $column;
             }
         }
-        
+
         return false;
     }
 
@@ -86,7 +86,7 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
 
     /**
      * Uses the table metadata to see which fields are NULLable and if the value
-     * for that field is currently empty it will change it from an 
+     * for that field is currently empty it will change it from an
      * empty string '' to NULL
      *
      * @param array $data
@@ -123,9 +123,9 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
     {
         $this->_trimAllFields($data);
         $this->_setEmptyFieldsToNull($data);
-        
+
         // Make sure we don't try and set an empty createdDate
-        // We don't need have to check if it exists because MySQL will add it 
+        // We don't need have to check if it exists because MySQL will add it
         // automatically but we will for consistency
         if (!isset($data['createdDate']) || empty($data['createdDate'])) {
             $data['createdDate'] = date('c');
@@ -159,7 +159,7 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
         if (!isset($data['lastModifiedDate']) || empty($data['lastModifiedDate'])) {
             $data['lastModifiedDate'] = date('c');
         }
-        
+
         return parent::update($data, $where);
     }
 
@@ -176,7 +176,7 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
         if (!isset($data['lastModifiedDate']) || empty($data['lastModifiedDate'])) {
             $data['lastModifiedDate'] = date('c');
         }
-        
+
         return parent::update($data, $where);
     }
 
@@ -184,8 +184,8 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
      * Get results via an array of parameters
      *
      * @param  mixed $params Options to use for the search query or a `uid`
-     * @throws TicketEvolution_Models_Exception
-     * @return TeamOne_Db_Events
+     * @throws TicketEvolution_Db_Table_Exception
+     * @return mixed
      */
     public function getByParameters($params, $limit=null, $orderBy=null)
     {
@@ -242,6 +242,7 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
                 $results = $this->fetchAll($select);
             }
         } catch(Exception $e) {
+            require_once 'TicketEvolution/Db/Table/Exception.php';
             throw new TicketEvolution_Db_Table_Exception($e);
         }
         return $results;
@@ -262,8 +263,8 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
             /**
              * @see TicketEvolution_Db_Exception
              */
-            require_once 'TicketEvolution/Db/Exception.php';
-            throw new TicketEvolution_Db_Exception('Query parameters must be in an array');
+            require_once 'TicketEvolution/Db/Table/Exception.php';
+            throw new TicketEvolution_Db_Table_Exception('Query parameters must be in an array');
         }
 
         /**
