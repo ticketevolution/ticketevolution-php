@@ -496,7 +496,7 @@ class TicketEvolution_Webservice
             $this->_baseUri,
             $this->_secretKey,
             'POST',
-            $endPoint,
+            $this->_apiPrefix . $endPoint,
             $options
         );
 
@@ -507,7 +507,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPost('/' . $endPoint, $options);
+        $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CLIENT_CLASS);
     }
@@ -534,7 +534,7 @@ class TicketEvolution_Webservice
             $this->_baseUri,
             $this->_secretKey,
             'PUT',
-            $endPoint,
+            $this->_apiPrefix . $endPoint,
             $options
         );
 
@@ -545,7 +545,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPut('/' . $endPoint, $options);
+        $response = $client->restPut($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CLIENT_CLASS);
     }
@@ -652,7 +652,7 @@ class TicketEvolution_Webservice
             $this->_baseUri,
             $this->_secretKey,
             'POST',
-            $endPoint,
+            $this->_apiPrefix . $endPoint,
             $options
         );
 
@@ -663,7 +663,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPost('/' . $endPoint, $options);
+        $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::ADDRESS_RESULTSET_CLASS);
     }
@@ -691,7 +691,7 @@ class TicketEvolution_Webservice
             $this->_baseUri,
             $this->_secretKey,
             'PUT',
-            $endPoint,
+            $this->_apiPrefix . $endPoint,
             $options
         );
 
@@ -702,7 +702,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPut('/' . $endPoint, $options);
+        $response = $client->restPut($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::ADDRESS_CLASS);
     }
@@ -809,7 +809,7 @@ class TicketEvolution_Webservice
             $this->_baseUri,
             $this->_secretKey,
             'POST',
-            $endPoint,
+            $this->_apiPrefix . $endPoint,
             $options
         );
 
@@ -820,7 +820,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPost('/' . $endPoint, $options);
+        $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::PHONENUMBER_RESULTSET_CLASS);
     }
@@ -848,7 +848,7 @@ class TicketEvolution_Webservice
             $this->_baseUri,
             $this->_secretKey,
             'PUT',
-            $endPoint,
+            $this->_apiPrefix . $endPoint,
             $options
         );
 
@@ -859,7 +859,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPut('/' . $endPoint, $options);
+        $response = $client->restPut($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::PHONENUMBER_CLASS);
     }
@@ -966,7 +966,7 @@ class TicketEvolution_Webservice
             $this->_baseUri,
             $this->_secretKey,
             'POST',
-            $endPoint,
+            $this->_apiPrefix . $endPoint,
             $options
         );
 
@@ -977,7 +977,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPost('/' . $endPoint, $options);
+        $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::EMAILADDRESS_RESULTSET_CLASS);
     }
@@ -1005,7 +1005,7 @@ class TicketEvolution_Webservice
             $this->_baseUri,
             $this->_secretKey,
             'PUT',
-            $endPoint,
+            $this->_apiPrefix . $endPoint,
             $options
         );
 
@@ -1016,7 +1016,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPut('/' . $endPoint, $options);
+        $response = $client->restPut($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::EMAILADDRESS_CLASS);
     }
@@ -1137,7 +1137,7 @@ class TicketEvolution_Webservice
             $this->_baseUri,
             $this->_secretKey,
             'POST',
-            $endPoint,
+            $this->_apiPrefix . $endPoint,
             $options
         );
 
@@ -1148,7 +1148,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPost('/' . $endPoint, $options);
+        $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CREDITCARD_RESULTSET_CLASS);
     }
@@ -1182,7 +1182,7 @@ class TicketEvolution_Webservice
             $this->_baseUri,
             $this->_secretKey,
             'PUT',
-            $endPoint,
+            $this->_apiPrefix . $endPoint,
             $options
         );
 
@@ -1193,7 +1193,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPut('/' . $endPoint, $options);
+        $response = $client->restPut($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::CREDITCARD_CLASS);
     }
@@ -2341,7 +2341,11 @@ class TicketEvolution_Webservice
         $client->setUri($this->_baseUri);
 
         $this->_requestSignature = self::computeSignature(
-            $this->_baseUri, $this->_secretKey, 'POST', $endPoint, $options
+            $this->_baseUri,
+            $this->_secretKey,
+            'POST',
+            $this->_apiPrefix . $endPoint,
+            $options
         );
 
         $client->getHttpClient()->resetParameters();
@@ -2351,7 +2355,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPost('/' . $endPoint, $options);
+        $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::ORDER_RESULTSET_CLASS);
     }
@@ -2393,7 +2397,11 @@ class TicketEvolution_Webservice
         $client->setUri($this->_baseUri);
 
         $this->_requestSignature = self::computeSignature(
-            $this->_baseUri, $this->_secretKey, 'POST', $endPoint, $options
+            $this->_baseUri,
+            $this->_secretKey,
+            'POST',
+            $this->_apiPrefix . $endPoint,
+            $options
         );
 
         $client->getHttpClient()->resetParameters();
@@ -2403,7 +2411,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPost('/' . $endPoint, $options);
+        $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
 
         if ($response->isError()) {
             /**
@@ -2455,7 +2463,11 @@ class TicketEvolution_Webservice
         $client->setUri($this->_baseUri);
 
         $this->_requestSignature = self::computeSignature(
-            $this->_baseUri, $this->_secretKey, 'POST', $endPoint, $options
+            $this->_baseUri,
+            $this->_secretKey,
+            'POST',
+            $this->_apiPrefix . $endPoint,
+            $options
         );
 
         $client->getHttpClient()->resetParameters();
@@ -2465,7 +2477,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPost('/' . $endPoint, $options);
+        $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
 
         if ($response->isError()) {
             /**
@@ -2499,7 +2511,11 @@ class TicketEvolution_Webservice
 
         $options = array();
         $this->_requestSignature = self::computeSignature(
-            $this->_baseUri, $this->_secretKey, 'POST', $endPoint, $options
+            $this->_baseUri,
+            $this->_secretKey,
+            'POST',
+            $this->_apiPrefix . $endPoint,
+            $options
         );
 
         $client->getHttpClient()->resetParameters();
@@ -2509,7 +2525,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPost('/' . $endPoint, $options);
+        $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
 
         if ($response->isError()) {
             /**
@@ -2621,7 +2637,11 @@ class TicketEvolution_Webservice
         $client->setUri($this->_baseUri);
 
         $this->_requestSignature = self::computeSignature(
-            $this->_baseUri, $this->_secretKey, 'POST', $endPoint, $options
+            $this->_baseUri,
+            $this->_secretKey,
+            'POST',
+            $this->_apiPrefix . $endPoint,
+            $options
         );
 
         $client->getHttpClient()->resetParameters();
@@ -2631,7 +2651,7 @@ class TicketEvolution_Webservice
             $this->_requestSignature
         );
 
-        $response = $client->restPost('/' . $endPoint, $options);
+        $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
 
         return $this->_postProcess($response, self::SHIPMENT_RESULTSET_CLASS);
     }
@@ -3071,8 +3091,8 @@ class TicketEvolution_Webservice
             $this->_requestSignature = self::computeSignature(
                 $this->_baseUri . $this->_apiPrefix,
                 $this->_secretKey,
-                (string)$action,
-                (string)$endPoint,
+                $action,
+                $endPoint,
                 $options
             );
         }
