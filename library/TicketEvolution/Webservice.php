@@ -3154,6 +3154,11 @@ class TicketEvolution_Webservice
             default:
                 $decodedJson = self::json_decode($response->getBody());
 
+                // There is a single item, so no need to return a ResultSet
+                if (!isset($decodedJson->total_entries)) {
+                    return $decodedJson;
+                }
+
                 /**
                  * @see TicketEvolution_Webservice_ResultSet
                  */
