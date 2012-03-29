@@ -92,18 +92,18 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
             'performerId'                   => (int)    $result->id,
             'performerName'                 => (string) $result->name,
             'performerUrl'                  => (string) $result->url,
-            'updated_at'                    => (string) $result->updated_at->get(TicketEvolution_Date::ISO_8601),
+            'updated_at'                    => (string) $result->updated_at,
             'performerStatus'               => (int)    1,
-            'lastModifiedDate'              => (string) $startTime->get(TicketEvolution_Date::ISO_8601)
+            'lastModifiedDate'              => (string) $startTime->format('c'),
         );
         if (isset($result->venue->id)) {
             $data['venueId'] = (int) $result->venue->id;
         }
         if (!empty($result->upcoming_events->first)) {
-            $data['upcomingEventFirst'] = (string) $result->upcoming_events->first->get(TicketEvolution_Date::ISO_8601);
+            $data['upcomingEventFirst'] = (string) $result->upcoming_events->first;
         }
         if (!empty($result->upcoming_events->last)) {
-            $data['upcomingEventLast'] = (string) $result->upcoming_events->last->get(TicketEvolution_Date::ISO_8601);
+            $data['upcomingEventLast'] = (string) $result->upcoming_events->last;
         }
         if (isset($result->category->id)) {
             $data['categoryId'] = (int) $result->category->id;
@@ -161,7 +161,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string) $startTime->get(TicketEvolution_Date::ISO_8601);
+$statusData['lastRun'] = (string) $startTime->format('c');;
 if (isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {

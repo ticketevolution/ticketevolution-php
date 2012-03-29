@@ -13,33 +13,34 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution
+ * @package     TicketEvolution_Webservice_ResultSet
+ * @subpackage  Filter
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
 
 /**
  * @category    TicketEvolution
- * @package     TicketEvolution
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @package     TicketEvolution_Webservice
+ * @subpackage  Filter
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_TicketGroupSeat
+class TicketEvolution_Webservice_ResultSet_Filter_TicketGroups_Event
+    extends TicketEvolution_Webservice_ResultSet_Filter_Abstract
 {
     /**
-     * Constructs a new Ticket Evolution TicketGroupSeat
-     *
-     * @param  object $object
-     * @throws TicketEvolution_Exception
-     * @return TicketEvolution_TicketGroupSeat
+     * Specifies that we only return ticketGroups that are for events.
      */
-    public function __construct($object)
+    public function accept()
     {
-        foreach ($object as $prop => $val) {
-            $this->{$prop} = $val;
+        if (parent::current()->type == 'event') {
+            return true;
         }
+
+        return false;
     }
 }

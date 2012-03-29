@@ -94,9 +94,9 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
             'brokerAbbreviation'    => (string) $result->abbreviation,
             'natbMember'            => (int)    $result->natb_member,
             'brokerUrl'             => (string) $result->url,
-            'updated_at'            => (string) $result->updated_at->get(Zend_Date::ISO_8601),
+            'updated_at'            => (string) $result->updated_at,
             'brokerStatus'          => (int)    1,
-            'lastModifiedDate'      => (string) $startTime->get(TicketEvolution_Date::ISO_8601),
+            'lastModifiedDate'      => (string) $startTime->format('c'),
         );
 
         if ($row = $table->find((int) $result->id)->current()) {
@@ -134,7 +134,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string) $startTime->get(Zend_Date::ISO_8601);
+$statusData['lastRun'] = (string) $startTime->format('c');
 if (isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {
@@ -152,3 +152,4 @@ if ($showStats) {
        . '<h1>PEAK memory usage: ' . $peakMem->convertTo(Zend_Measure_Binary::MEGABYTE) . '</h1>' . PHP_EOL
     ;
 }
+

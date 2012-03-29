@@ -100,9 +100,9 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
             'timezone'          => (string) $result->time_zone,
             'isMain'            => (int)    $result->main,
             'officeUrl'         => (string) $result->url,
-            'updated_at'        => (string) $result->updated_at->get(TicketEvolution_Date::ISO_8601),
+            'updated_at'        => (string) $result->updated_at,
             'officeStatus'      => (int)    1,
-            'lastModifiedDate'  => (string) $startTime->get(TicketEvolution_Date::ISO_8601)
+            'lastModifiedDate'  => (string) $startTime->format('c'),
         );
         if (isset($result->address)) {
             $data['streetAddress']      = (string) $result->address->street_address;
@@ -148,7 +148,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
                     'officeId'          => (int)    $result->id,
                     'email'             => strtolower((string)$email),
                     'officeEmailStatus' => (int)    1,
-                    'lastModifiedDate'  => (string) $startTime->get(TicketEvolution_Date::ISO_8601)
+                    'lastModifiedDate'  => (string) $startTime->format('c'),
                 );
 
                 if ($row = $emailsTable->fetchRow($emailsTable->select()->where("`officeId` = ?", $data['officeId'])->where("`officeEmailStatus` = ?", (int) 0)->where("`email` = ?", $data['email']))) {
@@ -169,7 +169,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
             if (isset($emailArray)) {
                 $data = array(
                     'officeEmailStatus' => (int)    0,
-                    'lastModifiedDate'  => (string) $startTime->get(TicketEvolution_Date::ISO_8601),
+                    'lastModifiedDate'  => (string) $startTime->format('c'),
                 );
                 $where = $emailsTable->getAdapter()->quoteInto("`officeId` = ?", $result->id);
                 $where .= $emailsTable->getAdapter()->quoteInto(" AND `officeEmailStatus` = ?", (int) 1);
@@ -192,7 +192,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string) $startTime->get(Zend_Date::ISO_8601);
+$statusData['lastRun'] = (string) $startTime->format('c');
 if (isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {

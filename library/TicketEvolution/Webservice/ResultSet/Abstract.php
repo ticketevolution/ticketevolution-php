@@ -33,25 +33,11 @@ class TicketEvolution_Webservice_ResultSet_Abstract
     implements SeekableIterator, Countable
 {
     /**
-     * Name of the class for the items in this set
-     *
-     * @var string
-     */
-    protected $_itemClass = 'stdClass';
-
-    /**
      * An array of objects
      *
      * @var array
      */
     protected $_results = null;
-
-    /**
-     * An object that has a single element which is an array of other objects
-     *
-     * @var stdObject
-     */
-    protected $_result;
 
     /**
      * Current index for SeekableIterator
@@ -67,23 +53,19 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      * @param  object $result
      * @return void
      */
-    public function __construct($result, $itemClass=null)
+    public function __construct($result)
     {
-        $this->_result = $result;
-        
-        if (!is_null($itemClass)) {
-            $this->_itemClass = $itemClass;
-        }
-        
         // Find the property that is an array
         // There will only be one
-        foreach ($result as $property => $val) {
-            if (is_array($val)) {
-                $this->_results =  $val;
+        foreach ($result as $key) {
+            if (is_array($key)) {
+                $this->_results =  $key;
                 break; // Break out of looping to find the array
             }
         }
+
     }
+
 
     /**
      * Number of results returned in this ResultSet
@@ -95,6 +77,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
         return (int) count($this->_results);
     }
 
+
     /**
      * Total Number of results available
      *
@@ -102,8 +85,15 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      */
     public function totalResults()
     {
-        return (int) $this->_result->total_entries;
+        if (!is_null($this->_total_entries)) {
+            return (int) $this->_total_entries;
+        } else {
+            // total_entries was not passed in the JSON
+            // This happens when using listTicketGroups()
+            return $this->count();
+        }
     }
+
 
     /**
      * Total Number of pages returned
@@ -112,9 +102,10 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      */
     public function totalPages()
     {
-        $totalPages = ceil($this->totalResults() / $this->_result->per_page);
+        $totalPages = ceil($this->totalResults() / $this->_per_page);
         return (int) $totalPages;
     }
+
 
     /**
      * Implement SeekableIterator::current()
@@ -123,25 +114,9 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      */
     public function current()
     {
-        $className = $this->_itemClass;
-
-        /*
-         * Load the item's class.  This throws an exception
-         * if the specified class cannot be loaded.
-         */
-        if (!class_exists($this->_itemClass)) {
-            /**
-             * @see Zend_Loader
-             */
-            require_once 'Zend/Loader.php';
-            Zend_Loader::loadClass($className);
-        }
-
-        /*
-         * Create an instance of the item's class.
-         */
-        return new $className($this->_results[$this->_currentIndex]);
+        return $this->_results[$this->_currentIndex];
     }
+
 
     /**
      * Implement SeekableIterator::key()
@@ -153,6 +128,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
         return $this->_currentIndex;
     }
 
+
     /**
      * Implement SeekableIterator::next()
      *
@@ -163,6 +139,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
         $this->_currentIndex += 1;
     }
 
+
     /**
      * Implement SeekableIterator::rewind()
      *
@@ -172,6 +149,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
     {
         $this->_currentIndex = 0;
     }
+
 
     /**
      * Implement SeekableIterator::seek()
@@ -190,6 +168,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
         }
     }
 
+
     /**
      * Implement SeekableIterator::valid()
      *
@@ -203,7 +182,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
 
     /**
      * Remove entries that are in the supplied array
-     * This is mainly used after performing a listTicketGroups() and can be used 
+     * This is mainly used after performing a listTicketGroups() and can be used
      * to pass in an array of brokerage IDs to filter out their inventory if
      * you do not want it to show.
      *
@@ -223,10 +202,16 @@ class TicketEvolution_Webservice_ResultSet_Abstract
                     return !in_array($v->office->$type->id, $exclude);
                 }
             );
+        } elseif ($type == 'office') {
+            $this->_results = array_filter(
+                $this->_results, function($v) use($exclude, $type) {
+                    return !in_array($v->office->id, $exclude);
+                }
+            );
         } else {
             $this->_results = array_filter(
                 $this->_results, function($v) use($exclude, $type) {
-                    return !in_array($v->$type->id, $exclude);
+                    return !in_array($v->$type, $exclude);
                 }
             );
         }
@@ -238,7 +223,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
 
     /**
      * Remove entries that are NOT in the supplied array
-     * This is mainly used after performing a listTicketGroups() and can be used 
+     * This is mainly used after performing a listTicketGroups() and can be used
      * to pass in an array of brokerage IDs to show ONLY their inventory.
      *
      * Usage: $results = $tevo->listTicketGroups($options);
@@ -257,10 +242,16 @@ class TicketEvolution_Webservice_ResultSet_Abstract
                     return in_array($v->office->$type->id, $exclusive);
                 }
             );
+        } elseif ($type == 'office') {
+            $this->_results = array_filter(
+                $this->_results, function($v) use($exclusive, $type) {
+                    return in_array($v->office->id, $exclusive);
+                }
+            );
         } else {
             $this->_results = array_filter(
                 $this->_results, function($v) use($exclusive, $type) {
-                    return in_array($v->$type->id, $exclusive);
+                    return in_array($v->$type, $exclusive);
                 }
             );
         }
@@ -331,5 +322,25 @@ class TicketEvolution_Webservice_ResultSet_Abstract
         };
     }
 
+
+    /**
+     * Returns the entire $_results array as an array.
+     *
+     * Tests show that when looping through all the results, such as when
+     * displaying all the TicketGroups on your website you can actually loop
+     * over the array returned by this faster than you can loop over the entire
+     * object.
+     *
+     * In one test looping through 400 items went from .03 seconds down to .013.
+     *
+     * If you want the ultimate in over-optimization you can use this. Make sure
+     * you use sortResults(), excludeResults() or exclusiveResults() first, as
+     * they obviously will not be available in the array returned by this method.
+     *
+     * @return array
+     */
+    public function getResultsAsArray() {
+        return $this->_results;
+    }
 
 }

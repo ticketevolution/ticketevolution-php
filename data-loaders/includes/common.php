@@ -31,7 +31,7 @@
  * will be stored in the appropriate row of `dataLoaderStatus` so we know what
  * time to use the next time this script runs
  */
-$startTime = new TicketEvolution_Date();
+$startTime = new DateTime();
 
 
 /**
@@ -107,14 +107,14 @@ if (isset($GET->lastRun)) {
     $lastRun = $GET->lastRun;
 }
 
-if (!$lastRun = new TicketEvolution_Date($lastRun, TicketEvolution_Date::ISO_8601)) {
+if (!$lastRun = new DateTime($lastRun)) {
     throw new TicketEvolution_Webservice_Exception('The $lastRun date appears to be malformed');
 }
 /**
  * Convert $lastRun to UTC because the API currently ignores the time if it is
  * not specified as UTC. This is not expected behavior and it will be fixed soon.
  */
-$lastRun->setTimezone('UTC');
+$lastRun->setTimezone(new DateTimeZone('UTC'));
 
 
 /**
@@ -134,7 +134,7 @@ $tevo = new TicketEvolution_Webservice($registry->config->params);
 $options = array(
     'page' => 1,
     'per_page' => 100,
-    'updated_at.gte' => $lastRun->get(TicketEvolution_Date::ISO_8601)
+    'updated_at.gte' => $lastRun->format('c')
 );
 if (!empty($GET->startPage)) {
     $options['page'] = $GET->startPage;
@@ -151,4 +151,4 @@ $defaultMaxPages = ($options['page'] + 1);
 $maxPages = $defaultMaxPages;
 
 
-echo '<h1>Updating `' . $statusData['table'] . '` ' . $options['per_page'] . ' at a time with entries updated since ' . $lastRun->get(TicketEvolution_Date::DATETIME) . '</h1>' . PHP_EOL;
+echo '<h1>Updating `' . $statusData['table'] . '` ' . $options['per_page'] . ' at a time with entries updated since ' . $lastRun->format('r') . '</h1>' . PHP_EOL;

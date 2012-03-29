@@ -98,10 +98,10 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
             'region'                    => (string) $result->address->region,
             'postalCode'                => (string) $result->address->postal_code,
             'venueUrl'                  => (string) $result->url,
-            'updated_at'                => (string) $result->updated_at->get(TicketEvolution_Date::ISO_8601),
+            'updated_at'                => (string) $result->updated_at,
 
             'venueStatus'               => (int)    1,
-            'lastModifiedDate'          => (string) $startTime->get(TicketEvolution_Date::ISO_8601)
+            'lastModifiedDate'          => (string) $startTime->format('c'),
         );
         if (isset($result->address->country_code)) {
             $data['countryCode'] = $result->address->country_code;
@@ -113,10 +113,10 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
             $data['longitude'] = $result->address->longitude;
         }
         if (!empty($result->upcoming_events->first)) {
-            $data['upcomingEventFirst'] = (string) $result->upcoming_events->first->get(TicketEvolution_Date::ISO_8601);
+            $data['upcomingEventFirst'] = (string) $result->upcoming_events->first;
         }
         if (!empty($result->upcoming_events->last)) {
-            $data['upcomingEventLast'] = (string) $result->upcoming_events->last->get(TicketEvolution_Date::ISO_8601);
+            $data['upcomingEventLast'] = (string) $result->upcoming_events->last;
         }
 
         if ($row = $table->find((int) $result->id)->current()) {
@@ -160,7 +160,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string) $startTime->get(TicketEvolution_Date::ISO_8601);
+$statusData['lastRun'] = (string) $startTime->format('c');;
 if (isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {

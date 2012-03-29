@@ -13,35 +13,54 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_Webservice
- * @subpackage  Webservice
+ * @package     TicketEvolution_Webservice_ResultSet
+ * @subpackage  Filter
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-
-
-/**
- * @see TicketEvolution_Webservice_ResultSet_Abstract
- */
-require_once 'TicketEvolution/Webservice/ResultSet/Abstract.php';
 
 
 /**
  * @category    TicketEvolution
  * @package     TicketEvolution_Webservice
- * @subpackage  Webservice
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @subpackage  Filter
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Webservice_ResultSet_Orders
-    extends TicketEvolution_Webservice_ResultSet_Abstract
+class TicketEvolution_Webservice_ResultSet_Filter_TicketGroups_ETicket
+    extends TicketEvolution_Webservice_ResultSet_Filter_Abstract
 {
     /**
-     * Name of the class for the items in this set
+     * The value to match against the 'eticket' property
      *
-     * @var string
+     * @var bool
      */
-    protected $_itemClass = 'TicketEvolution_Order';
+    public $eTicket;
+
+
+    /**
+     * @param Iterator $iterator
+     * @param bool $inHand
+     */
+    public function __construct($iterator, $eTicket=true)
+    {
+        parent::__construct($iterator);
+
+        $this->eTicket = (bool) $eTicket;
+    }
+
+
+    /**
+     * Only return certain ticketGroups
+     */
+    public function accept()
+    {
+        if (parent::current()->eticket === $this->eTicket) {
+            return true;
+        }
+
+        return false;
+    }
 }
