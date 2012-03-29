@@ -89,6 +89,8 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
      */
     foreach ($results AS $result) {
         $data = array(
+            'performerId'       => (int)    $result->id,
+            'performerName'     => (string) $result->name,
             'updated_at'        => (string) $result->updated_at,
             'deleted_at'        => (string) $result->deleted_at,
             'eventStatus'       => (int)    0,
