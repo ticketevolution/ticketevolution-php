@@ -17,14 +17,14 @@
  * @package     TicketEvolution_DateTime
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
 
 /**
- * Extends Zend_Date with some handy constants and also allows for easy handling
- * of "TBA" event times.
+ * Extends PHP's DateTime with some handy constants and also allows for easy
+ * handling of "TBA" event times.
  *
  * @category    TicketEvolution
  * @package     TicketEvolution_DateTime
