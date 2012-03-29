@@ -2,6 +2,11 @@
 
 ## RELEASE INFORMATION
 
+### March 27, 2012 v1.9.3
+*This update contains changes that are NOT backwards compatible*
+
+- Huge improvements in both speed and memory usage. See [Issue #46](https://github.com/ticketevolution/ticketevolution-php/issues/46) for some details.
+
 ### Feb 29, 2012
 *This update contains changes that are NOT backwards compatible*
 
