@@ -64,16 +64,6 @@ class TicketEvolution_Webservice_ResultSet_Abstract
             }
         }
 
-        if (isset($result->total_entries)) {
-            $this->_total_entries = (int) $result->total_entries;
-        }
-
-        if (isset($result->per_page)) {
-            $this->_per_page = (int) $result->per_page;
-        } else {
-            $this->_per_page = $this->_total_entries;
-        }
-
     }
 
 
