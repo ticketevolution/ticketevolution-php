@@ -13,35 +13,34 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_Webservice
- * @subpackage  Webservice
+ * @package     TicketEvolution_Webservice_ResultSet
+ * @subpackage  Filter
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-
-
-/**
- * @see TicketEvolution_Webservice_ResultSet_Abstract
- */
-require_once 'TicketEvolution/Webservice/ResultSet/Abstract.php';
 
 
 /**
  * @category    TicketEvolution
  * @package     TicketEvolution_Webservice
- * @subpackage  Webservice
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @subpackage  Filter
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Webservice_ResultSet_EvoPayAccounts
-    extends TicketEvolution_Webservice_ResultSet_Abstract
+class TicketEvolution_Webservice_ResultSet_Filter_TicketGroups_Parking
+    extends TicketEvolution_Webservice_ResultSet_Filter_Abstract
 {
     /**
-     * Name of the class for the items in this set
-     *
-     * @var string
+     * Specifies that we only return ticketGroups that are for parking.
      */
-    protected $_itemClass = 'TicketEvolution_EvoPayAccount';
+    public function accept()
+    {
+        if (parent::current()->type == 'parking') {
+            return true;
+        }
+
+        return false;
+    }
 }

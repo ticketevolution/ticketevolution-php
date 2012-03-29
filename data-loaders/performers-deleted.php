@@ -89,10 +89,12 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
      */
     foreach ($results AS $result) {
         $data = array(
-            'updated_at'        => (string) $result->updated_at->get(TicketEvolution_Date::ISO_8601),
-            'deleted_at'        => (string) $result->deleted_at->get(TicketEvolution_Date::ISO_8601),
+            'performerId'       => (int)    $result->id,
+            'performerName'     => (string) $result->name,
+            'updated_at'        => (string) $result->updated_at,
+            'deleted_at'        => (string) $result->deleted_at,
             'eventStatus'       => (int)    0,
-            'lastModifiedDate'  => (string) $startTime->get(TicketEvolution_Date::ISO_8601),
+            'lastModifiedDate'  => (string) $startTime->format('c'),
         );
 
         if ($row = $table->find((int) $result->id)->current()) {
@@ -130,7 +132,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string) $startTime->get(Zend_Date::ISO_8601);
+$statusData['lastRun'] = (string) $startTime->format('c');
 if (isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {

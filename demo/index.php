@@ -1430,28 +1430,28 @@ if(isset($_GET['apiMethod'])) {
                         <optgroup label="Clients Methods">
                             <option label="listClients" value="listClients">listClients</option>
                             <option label="showClient" value="showClient">showClient</option>
-                            <option label="createClient" value="createClient"<?php echo $disabled;?>>createClient</option>
-                            <option label="updateClient" value="updateClient"<?php echo $disabled;?>>updateClient</option>
+                            <option label="createClient" value="createClient">createClient</option>
+                            <option label="updateClient" value="updateClient">updateClient</option>
 
                             <option label="listClientAddresses" value="listClientAddresses">listClientAddresses</option>
                             <option label="showClientAddress" value="showClientAddress">showClientAddress</option>
-                            <option label="createClientAddress" value="createClientAddress"<?php echo $disabled;?>>createClientAddress</option>
-                            <option label="updateClientAddress" value="updateClientAddress"<?php echo $disabled;?>>updateClientAddress</option>
+                            <option label="createClientAddress" value="createClientAddress">createClientAddress</option>
+                            <option label="updateClientAddress" value="updateClientAddress">updateClientAddress</option>
 
                             <option label="listClientPhoneNumbers" value="listClientPhoneNumbers">listClientPhoneNumbers</option>
                             <option label="showClientPhoneNumber" value="showClientPhoneNumber">showClientPhoneNumber</option>
-                            <option label="createClientPhoneNumber" value="createClientPhoneNumber"<?php echo $disabled;?>>createClientPhoneNumber</option>
-                            <option label="updateClientPhoneNumber" value="updateClientPhoneNumber"<?php echo $disabled;?>>updateClientPhoneNumber</option>
+                            <option label="createClientPhoneNumber" value="createClientPhoneNumber">createClientPhoneNumber</option>
+                            <option label="updateClientPhoneNumber" value="updateClientPhoneNumber">updateClientPhoneNumber</option>
 
                             <option label="listClientEmailAddresses" value="listClientEmailAddresses">listClientEmailAddresses</option>
                             <option label="showClientEmailAddress" value="showClientEmailAddress">showClientEmailAddress</option>
-                            <option label="createClientEmailAddress" value="createClientEmailAddress"<?php echo $disabled;?>>createClientEmailAddress</option>
-                            <option label="updateClientEmailAddress" value="updateClientEmailAddress"<?php echo $disabled;?>>updateClientEmailAddress</option>
+                            <option label="createClientEmailAddress" value="createClientEmailAddress">createClientEmailAddress</option>
+                            <option label="updateClientEmailAddress" value="updateClientEmailAddress">updateClientEmailAddress</option>
 
                             <option label="listClientCreditCards" value="listClientCreditCards">listClientCreditCards</option>
                             <option label="showClientCreditCard" value="showClientCreditCard">showClientCreditCard</option>
-                            <option label="createClientCreditCard" value="createClientCreditCard"<?php echo $disabled;?>>createClientCreditCard</option>
-                            <option label="updateClientCreditCard" value="updateClientCreditCard"<?php echo $disabled;?>>updateClientCreditCard</option>
+                            <option label="createClientCreditCard" value="createClientCreditCard">createClientCreditCard</option>
+                            <option label="updateClientCreditCard" value="updateClientCreditCard">updateClientCreditCard</option>
                         </optgroup>
 
                         <optgroup label="Offices Methods">
@@ -1513,12 +1513,12 @@ if(isset($_GET['apiMethod'])) {
                         <optgroup label="Orders Methods">
                             <option label="listOrders" value="listOrders">listOrders</option>
                             <option label="showOrder" value="showOrder">showOrder</option>
-                            <option label="createOrder (EvoPay)" value="createOrderEvoPay"<?php echo $disabled;?>>createOrder (EvoPay)</option>
-                            <option label="createOrder (Customer)" value="createOrderCustomer"<?php echo $disabled;?>>createOrder (Customer)</option>
-                            <option label="createFulfillmentOrder" value="createFulfillmentOrder"<?php echo $disabled;?>>createFulfillmentOrder</option>
-                            <option label="acceptOrder" value="acceptOrder"<?php echo $disabled;?>>acceptOrder</option>
-                            <option label="rejectOrder" value="rejectOrder"<?php echo $disabled;?>>rejectOrder</option>
-                            <option label="completeOrder" value="completeOrder"<?php echo $disabled;?>>completeOrder</option>
+                            <option label="createOrder (EvoPay)" value="createOrderEvoPay">createOrder (EvoPay)</option>
+                            <option label="createOrder (Customer)" value="createOrderCustomer">createOrder (Customer)</option>
+                            <option label="createFulfillmentOrder" value="createFulfillmentOrder">createFulfillmentOrder</option>
+                            <option label="acceptOrder" value="acceptOrder">acceptOrder</option>
+                            <option label="rejectOrder" value="rejectOrder">rejectOrder</option>
+                            <option label="completeOrder" value="completeOrder">completeOrder</option>
                         </optgroup>
 
                         <optgroup label="Quotes Methods">
@@ -1530,8 +1530,8 @@ if(isset($_GET['apiMethod'])) {
                         <optgroup label="Shipments Methods">
                             <option label="listShipments" value="listShipments">listShipments</option>
                             <option label="showShipment" value="showShipment">showShipment</option>
-                            <option label="createShipment" value="createShipment"<?php echo $disabled;?>>createShipment</option>
-                            <option label="updateShipment" value="updateShipment"<?php echo $disabled;?>>updateShipment</option>
+                            <option label="createShipment" value="createShipment">createShipment</option>
+                            <option label="updateShipment" value="updateShipment">updateShipment</option>
                         </optgroup>
 
 		            <optgroup label="EvoPay Resources">

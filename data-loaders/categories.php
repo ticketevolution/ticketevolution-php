@@ -92,9 +92,9 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
             'categoryId'        => (int)    $result->id,
             'categoryName'      => (string) $result->name,
             'categoryUrl'       => (string) $result->url,
-            'updated_at'        => (string) $result->updated_at->get(TicketEvolution_Date::ISO_8601),
+            'updated_at'        => (string) $result->updated_at,
             'categoryStatus'    => (int)    1,
-            'lastModifiedDate'  => (string) $startTime->get(TicketEvolution_Date::ISO_8601),
+            'lastModifiedDate'  => (string) $startTime->format('c'),
         );
         if (isset($result->parent->id)) {
             $data['parentCategoryId'] = (int) $result->parent->id;
@@ -135,7 +135,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string) $startTime->get(Zend_Date::ISO_8601);
+$statusData['lastRun'] = (string) $startTime->format('c');
 if (isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {

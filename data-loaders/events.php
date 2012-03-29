@@ -94,15 +94,15 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         $data = array(
             'eventId'           => (int)    $result->id,
             'eventName'         => (string) $result->name,
-            'eventDate'         => (string) $result->occurs_at->get(TicketEvolution_Date::ISO_8601),
+            'eventDate'         => (string) $result->occurs_at,
             'venueId'           => (int)    $result->venue->id,
             'categoryId'        => (int)    $result->category->id,
             'productsCount'     => (int)    $result->products_count,
             'eventUrl'          => (string) $result->url,
-            'updated_at'        => (string) $result->updated_at->get(TicketEvolution_Date::ISO_8601),
+            'updated_at'        => (string) $result->updated_at,
             'eventStatus'       => (int)    1,
             'eventState'        => (string) $result->state,
-            'lastModifiedDate'  => (string) $startTime->get(TicketEvolution_Date::ISO_8601)
+            'lastModifiedDate'  => (string) $startTime->format('c'),
         );
         if (isset($result->configuration->id)) {
             $data['configurationId'] = (int) $result->configuration->id;
@@ -145,7 +145,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
                     'eventId'               => (int)    $result->id,
                     'performerId'           => (int)    $performance->performer->id,
                     'isPrimary'             => (int)    $performance->primary,
-                    'lastModifiedDate'      => (string) $startTime->get(TicketEvolution_Date::ISO_8601),
+                    'lastModifiedDate'      => (string) $startTime->format('c'),
                     'eventPerformersStatus' => (int)    1,
                 );
 
@@ -190,7 +190,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
 } // End looping through all pages
 
 // Update `tevoDataLoaderStatus` with current info
-$statusData['lastRun'] = (string) $startTime->get(Zend_Date::ISO_8601);
+$statusData['lastRun'] = (string) $startTime->format('c');
 if (isset($statusRow)) {
     $statusRow->setFromArray($statusData);
 } else {

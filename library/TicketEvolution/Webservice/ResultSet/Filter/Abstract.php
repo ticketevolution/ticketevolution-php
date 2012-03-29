@@ -13,35 +13,31 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_Webservice
- * @subpackage  Webservice
+ * @package     TicketEvolution_Webservice_ResultSet
+ * @subpackage  Filter
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-
-
-/**
- * @see TicketEvolution_Webservice_ResultSet_Abstract
- */
-require_once 'TicketEvolution/Webservice/ResultSet/Abstract.php';
 
 
 /**
  * @category    TicketEvolution
  * @package     TicketEvolution_Webservice
- * @subpackage  Webservice
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @subpackage  Filter
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Webservice_ResultSet_SearchResults
-    extends TicketEvolution_Webservice_ResultSet_Abstract
+abstract class TicketEvolution_Webservice_ResultSet_Filter_Abstract
+    extends FilterIterator
+    implements Countable
 {
     /**
-     * Name of the class for the items in this set
-     *
-     * @var string
+     * By default FilterIterators are not Countable using count(), you have to
+     * use iterator_count(). Implement Countable for convenience.
      */
-    protected $_itemClass = 'TicketEvolution_SearchResult';
+    public function count() {
+        return iterator_count($this);
+    }
 }
