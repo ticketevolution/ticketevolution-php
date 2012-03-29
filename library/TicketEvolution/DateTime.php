@@ -64,7 +64,17 @@ class TicketEvolution_DateTime extends DateTime
      */
     public function __construct($date = null, $timezone = null)
     {
-        parent::__construct($date, $timezone);
+        /**
+         * Work around PHP bug 52063 that was fixed in 5.3.6
+         *
+         * @link https://bugs.php.net/bug.php?id=52063
+         * @link http://www.php.net/ChangeLog-5.php#5.3.6
+         */
+        if (!is_null($timezone)) {
+            parent::__construct($date, $timezone);
+        } else {
+            parent::__construct($date);
+        }
 
         if ($this->format('H:i') === '23:59' || $this->format('H:i') === '03:30') {
             // 23:59 is an EventInventory TBA time
@@ -93,30 +103,6 @@ class TicketEvolution_DateTime extends DateTime
         }
         return $this->format($format);
     }
-
-
-    /**
-     * Overrides DateTime::diff() to return an Onyx_DateInterval instead of DateInterval
-     *
-     * @param DateTime $datetime2 The date to compare to.
-     * @param bool $absolute Whether to return absolute difference.
-     * @return Onyx_DateInterval
-     */
-//     public function diff($datetime2, $absolute=false) {
-//
-//         $diff = self::getTimestamp() - $datetime2->getTimestamp();
-//         var_dump($diff);
-//
-//
-//         /**
-//          * @see TicketEvolution_DateInterval
-//          */
-//         require_once 'TicketEvolution/DateInterval.php';
-//
-//         $diff = new TicketEvolution_DateInterval(parent::diff($datetime2, $absolute));
-//
-//         return $diff;
-//     }
 
 
     /**
