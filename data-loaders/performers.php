@@ -100,10 +100,18 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
             $data['venueId'] = (int) $result->venue->id;
         }
         if (!empty($result->upcoming_events->first)) {
-            $data['upcomingEventFirst'] = (string) $result->upcoming_events->first;
+            // Ensure the timezone is not incorrectly adjusted
+            $firstEvent = new DateTime($result->upcoming_events->first);
+            $firstEvent->setTimezone($localTZ);
+
+            $data['upcomingEventFirst'] = (string) $firstEvent->format('c');
         }
         if (!empty($result->upcoming_events->last)) {
-            $data['upcomingEventLast'] = (string) $result->upcoming_events->last;
+            // Ensure the timezone is not incorrectly adjusted
+            $lastEvent = new DateTime($result->upcoming_events->last);
+            $lastEvent->setTimezone($localTZ);
+
+            $data['upcomingEventLast'] = (string) $lastEvent->format('c');
         }
         if (isset($result->category->id)) {
             $data['categoryId'] = (int) $result->category->id;
