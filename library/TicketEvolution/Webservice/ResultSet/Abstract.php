@@ -64,6 +64,15 @@ class TicketEvolution_Webservice_ResultSet_Abstract
             }
         }
 
+        if (isset($result->total_entries)) {
+            $this->_total_entries = (int) $result->total_entries;
+            $this->_per_page = (int) $result->total_entries;
+        }
+
+        if (isset($result->per_page)) {
+            $this->_per_page = (int) $result->per_page;
+        }
+
     }
 
 
@@ -85,8 +94,8 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      */
     public function totalResults()
     {
-        if (!is_null($this->_total_entries)) {
-            return (int) $this->_total_entries;
+        if (isset($this->_total_entries)) {
+            return $this->_total_entries;
         } else {
             // total_entries was not passed in the JSON
             // This happens when using listTicketGroups()
