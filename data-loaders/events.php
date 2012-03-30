@@ -91,10 +91,14 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
      * Process the API results either INSERTing or UPDATEing our table(s)
      */
     foreach ($results AS $result) {
+        // Ensure the timezone is not incorrectly adjusted
+        $occursAt = new DateTime($result->occurs_at);
+        $occursAt->setTimezone($localTZ);
+
         $data = array(
             'eventId'           => (int)    $result->id,
             'eventName'         => (string) $result->name,
-            'eventDate'         => (string) $result->occurs_at,
+            'eventDate'         => (string) $occursAt->format('c'),
             'venueId'           => (int)    $result->venue->id,
             'categoryId'        => (int)    $result->category->id,
             'productsCount'     => (int)    $result->products_count,
