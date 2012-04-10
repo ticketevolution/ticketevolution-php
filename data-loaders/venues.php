@@ -114,19 +114,14 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
         }
         if (!empty($result->upcoming_events->first)) {
             // Ensure the timezone is not incorrectly adjusted
-            $firstEvent = new DateTime($result->upcoming_events->first);
-            $firstEvent->setTimezone($localTZ);
-
-            $data['upcomingEventFirst'] = (string) $firstEvent->format('c');
+            $firstEvent = preg_replace('/[Z]/i', '', $result->upcoming_events->first);
+            $data['upcomingEventFirst'] = (string) $firstEvent;
         }
         if (!empty($result->upcoming_events->last)) {
             // Ensure the timezone is not incorrectly adjusted
-            $lastEvent = new DateTime($result->upcoming_events->last);
-            $lastEvent->setTimezone($localTZ);
-
-            $data['upcomingEventLast'] = (string) $lastEvent->format('c');
+            $lastEvent = preg_replace('/[Z]/i', '', $result->upcoming_events->last);
+            $data['upcomingEventLast'] = (string) $lastEvent;
         }
-
         if ($row = $table->find((int) $result->id)->current()) {
             $row->setFromArray($data);
             $action = 'UPDATE';
