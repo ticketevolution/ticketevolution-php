@@ -151,18 +151,4 @@ $defaultMaxPages = ($options['page'] + 1);
 $maxPages = $defaultMaxPages;
 
 
-/**
- * Create a DateTimeZone object of your local timezone
- * This will ensure that the occurs_at corresponds to your
- * default timezone.
- *
- * The API sends `occurs_at` and upcoming_event->[first|last] with UTC designation
- * but they are not actually in UTC, they are in the local timezone of the event
- * (and, IMO, should be sent with no timezone identifier) so we need to make sure
- * that MySQL doesn't (incorrectly) adjust the time.
- *
- */
-$localTZ = new DateTimeZone(date_default_timezone_get());
-
-
 echo '<h1>Updating `' . $statusData['table'] . '` ' . $options['per_page'] . ' at a time with entries updated since ' . $lastRun->format('r') . '</h1>' . PHP_EOL;

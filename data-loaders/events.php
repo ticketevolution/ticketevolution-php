@@ -92,13 +92,12 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
      */
     foreach ($results AS $result) {
         // Ensure the timezone is not incorrectly adjusted
-        $occursAt = new DateTime($result->occurs_at);
-        $occursAt->setTimezone($localTZ);
+        $occursAt = preg_replace('/[Z]/i', '', $result->occurs_at);
 
         $data = array(
             'eventId'           => (int)    $result->id,
             'eventName'         => (string) $result->name,
-            'eventDate'         => (string) $occursAt->format('c'),
+            'eventDate'         => (string) $occursAt,
             'venueId'           => (int)    $result->venue->id,
             'categoryId'        => (int)    $result->category->id,
             'productsCount'     => (int)    $result->products_count,
