@@ -136,6 +136,13 @@ $options = array(
     'per_page'          => 100,
     'updated_at.gte'    => $lastRun->format('c'),
 );
+
+// "deleted" endpoints are more reliable using "deleted_at" instead of "updated_at"
+if ($statusData['type'] == 'deleted') {
+    $options['deleted_at.gte'] = $options['updated_at.gte'];
+    unset($options['updated_at.gte']);
+}
+
 if (!empty($GET->startPage)) {
     $options['page'] = $GET->startPage;
 }
