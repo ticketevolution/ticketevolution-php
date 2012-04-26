@@ -2,6 +2,9 @@
 
 ## RELEASE INFORMATION
 
+### April 26, 2012 v1.9.4
+- Use `deleted_at` instead of `updated_at` in the data-loaders for deleted endpoints
+
 ### March 27, 2012 v1.9.3
 *This update contains changes that are NOT backwards compatible*
 
