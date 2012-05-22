@@ -164,6 +164,16 @@ if(isset($_GET['apiMethod'])) {
             'allowEmpty'        => false,
             'allowWhiteSpace'   => false,
         ),
+        'companyName' => array(
+            'presence'          => 'optional',
+            'allowEmpty'        => false,
+            'allowWhiteSpace'   => true,
+        ),
+        'companyId' => array(
+            'Digits',
+            'presence'          => 'optional',
+            'allowEmpty'        => false,
+        ),
     );
     $input = new Zend_Filter_Input($filters, $validators, $_GET);
     if ($input->hasInvalid() || $input->hasMissing()) {
@@ -547,7 +557,7 @@ if(isset($_GET['apiMethod'])) {
                         case 'createClient' :
                             // Create the properly formatted client
                             $client = new stdClass;
-                            $client->name = 'Morris “Moe” Szyslak';
+                            $client->name = 'John Doe';
 
                             // Display the code
                             echo '$client = new stdClass;' . PHP_EOL
@@ -666,6 +676,36 @@ if(isset($_GET['apiMethod'])) {
                             break;
 
 
+                        case 'createClientCompany' :
+
+                            // Create the properly formatted client company
+                            $company1 = new stdClass;
+                            $company1->name = $input->companyName;
+
+                            $companies = $company1;
+
+                            // Display the code
+                            echo '$company1 = new stdClass;' . PHP_EOL
+                               . '$company1->name = \'' . $input->companyName . '\';' . PHP_EOL
+                               . PHP_EOL
+                               . '$companies[] = $company1;' . PHP_EOL
+                               . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '($companies);' . PHP_EOL
+                            ;
+
+                            // Execute the call
+                            try {
+                                $results = $tevo->$apiMethod($companies);
+                            } catch (Exception $e) {
+                                echo '</pre>' . PHP_EOL
+                                   . '<h1>Exception thrown trying to perform API request</h1>' . PHP_EOL
+                                   . _getRequest($tevo, $apiMethod, true)
+                                   . _getResponse($tevo, $apiMethod, true);
+                                exit (1);
+                            }
+                            break;
+
+
                         case 'createClientAddress' :
                             $clientId = $input->clientId;
 
@@ -719,6 +759,34 @@ if(isset($_GET['apiMethod'])) {
                             // Execute the call
                             try {
                                 $results = $tevo->$apiMethod($clientId, $addresses);
+                            } catch (Exception $e) {
+                                echo '</pre>' . PHP_EOL
+                                   . '<h1>Exception thrown trying to perform API request</h1>' . PHP_EOL
+                                   . _getRequest($tevo, $apiMethod, true)
+                                   . _getResponse($tevo, $apiMethod, true);
+                                exit (1);
+                            }
+                            break;
+
+
+                        case 'updateClientCompany' :
+                            $companyId = $input->companyId;
+                            $companyName = $input->companyName;
+
+                            // Create the properly formatted client company
+                            $company = new stdClass;
+                            $company->name = $companyName;
+
+                            // Display the code
+                            echo '$company = new stdClass;' . PHP_EOL
+                               . '$company->name = \'' . $companyName . '\';' . PHP_EOL
+                               . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '($companyId, $company);' . PHP_EOL
+                            ;
+
+                            // Execute the call
+                            try {
+                                $results = $tevo->$apiMethod($companyId, $company);
                             } catch (Exception $e) {
                                 echo '</pre>' . PHP_EOL
                                    . '<h1>Exception thrown trying to perform API request</h1>' . PHP_EOL
@@ -1433,6 +1501,10 @@ if(isset($_GET['apiMethod'])) {
                             <option label="createClient" value="createClient">createClient</option>
                             <option label="updateClient" value="updateClient">updateClient</option>
 
+                            <option label="showClientCompany" value="showClientCompany">showClientCompany</option>
+                            <option label="createClientCompany" value="createClientCompany">createClientCompany</option>
+                            <option label="updateClientCompany" value="updateClientCompany">updateClientCompany</option>
+
                             <option label="listClientAddresses" value="listClientAddresses">listClientAddresses</option>
                             <option label="showClientAddress" value="showClientAddress">showClientAddress</option>
                             <option label="createClientAddress" value="createClientAddress">createClientAddress</option>
@@ -1609,6 +1681,20 @@ if(isset($_GET['apiMethod'])) {
                     <br />
                     <label for="query">Query: </label>
                     <input name="query" id="query" type="text" value="front" size="20" maxlength="50" />
+		        </div>
+
+		        <div id="companyNameOption" class="options">
+                    <br />
+                    <br />
+                    <label for="companyName">Company Name: </label>
+                    <input name="companyName" id="companyName" type="text" value="Moe’s Tavern" size="20" maxlength="50" />
+		        </div>
+
+		        <div id="companyIdOption" class="options">
+                    <br />
+                    <br />
+                    <label for="companyId">Company ID: </label>
+                    <input name="companyId" id="companyId" type="text" value="" size="10" maxlength="7" />
 		        </div>
 
 		        <div id="rejectionOption" class="options">
@@ -1789,6 +1875,15 @@ if(isset($_GET['apiMethod'])) {
                 case 'updateClientCreditCard':
                     $('#clientIdOption').fadeIn();
                     $('#idOption').fadeIn();
+                    break;
+
+                case 'createClientCompany':
+                    $('#companyNameOption').fadeIn();
+                    break;
+
+                case 'updateClientCompany':
+                    $('#companyIdOption').fadeIn();
+                    $('#companyNameOption').fadeIn();
                     break;
 
                 default:
