@@ -2,6 +2,9 @@
 
 ## RELEASE INFORMATION
 
+### May 22, 2012 v1.9.5
+- Added support for new [/companies endpoint](http://developer.ticketevolution.com/endpoints/companies)
+
 ### April 26, 2012 v1.9.4
 - Use `deleted_at` instead of `updated_at` in the data-loaders for deleted endpoints
 
