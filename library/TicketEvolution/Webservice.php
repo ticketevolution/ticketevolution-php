@@ -498,6 +498,119 @@ class TicketEvolution_Webservice
 
 
     /**
+     * Get a single client company by Id
+     *
+     * @param  int $id The Client Company ID
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Client
+     */
+    public function showClientCompany($id)
+    {
+        $endPoint = 'companies/' . $id;
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $options = array();
+        $defaultOptions = array();
+        $options = $this->_prepareOptions(
+            'GET',
+            $endPoint,
+            $options,
+            $defaultOptions
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
+
+        return $this->_postProcess($response);
+    }
+
+
+    /**
+     * Create client company(ies)
+     *
+     * @param  stdClass $companyDetails Company data structured per API example
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Webservice_ResultSet_Clients
+     */
+    public function createClientCompany($companyDetails)
+    {
+        $newClient = new stdClass;
+        $newClient->companies[] = $companyDetails;
+        $options = json_encode($newClient);
+
+        $endPoint = 'companies';
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri,
+            $this->_secretKey,
+            'POST',
+            $this->_apiPrefix . $endPoint,
+            $options
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
+
+        return $this->_postProcess($response);
+    }
+
+
+    /**
+     * Update a client company
+     *
+     * @param  int $id The client ID to update
+     * @param  stdClass $companyDetails Company data structured per API example
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Client
+     */
+    public function updateClientCompany($id, $companyDetails)
+    {
+        $options = json_encode($companyDetails);
+
+        $endPoint = 'companies/' . $id;
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri,
+            $this->_secretKey,
+            'PUT',
+            $this->_apiPrefix . $endPoint,
+            $options
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restPut($this->_apiPrefix . $endPoint, $options);
+
+        return $this->_postProcess($response);
+    }
+
+
+    /**
      * List Client Addresses
      *
      * @param  int $clientId ID of the specific client
