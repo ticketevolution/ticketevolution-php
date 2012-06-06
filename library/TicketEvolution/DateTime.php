@@ -94,7 +94,7 @@ class TicketEvolution_DateTime extends DateTime
      */
     public function formatTbaSafe($format)
     {
-        if ($this->get('H:i') === '00:00') {
+        if ($this->format('H:i') === '00:00') {
             // This time is for a TBA event
             $patterns = array('/[aABgGhHisu:]+/', '/ $/');
             $replacements = array('');
