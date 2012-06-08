@@ -2387,7 +2387,7 @@ class TicketEvolution_Webservice
     {
         $newOrders = new stdClass;
         foreach ($orders as $order) {
-            $newOrders->orders = $order;
+            $newOrders->orders[] = $order;
         }
         $options = json_encode($newOrders);
 
