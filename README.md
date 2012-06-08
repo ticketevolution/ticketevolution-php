@@ -2,6 +2,9 @@
 
 ## RELEASE INFORMATION
 
+### June 8, 2012 v1.9.6
+- Fixed bug in `TicketEvolution_Webservice::createOrder()` where an array should have been used. Thanks to @aaronwp for finding the bug.
+
 ### May 22, 2012 v1.9.5
 - Added support for new [/companies endpoint](http://developer.ticketevolution.com/endpoints/companies)
 
