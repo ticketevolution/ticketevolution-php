@@ -50,6 +50,8 @@ class TicketEvolution_DateTime extends DateTime
     const TIME_12_HOUR = 'g:i a';
     const TIME_24_HOUR = 'H:i';
 
+    const TBA_DISPLAY = 'TBA';
+
 
     /**
      * Does exactly what DateTime does except that after setting the intial date/time
@@ -84,6 +86,24 @@ class TicketEvolution_DateTime extends DateTime
         }
     }
 
+
+    /**
+     * Checks to see if the time would be considered "TBA"
+     *
+     * @return bool
+     */
+    public function isTba()
+    {
+        if ($this->format('H:i') === '23:59' // EventInventory
+         || $this->format('H:i') === '03:30' // TicketNetwork
+         || $this->format('H:i') === '00:00' // Team One/Ticket Evolution
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+
     /**
      * A "replacement" for the standard "format()" method that attempts to strip
      * time information from the requested format if the time appears to be for
@@ -94,11 +114,11 @@ class TicketEvolution_DateTime extends DateTime
      */
     public function formatTbaSafe($format)
     {
-        if ($this->format('H:i') === '00:00') {
+        if ($this->isTba()) {
             // This time is for a TBA event
             $patterns = array('/[aABgGhHisu:]+/', '/ $/');
             $replacements = array('');
-            $partCleaned = preg_replace($patterns, $replacements, $part);
+            $partCleaned = preg_replace($patterns, $replacements, $format);
             return $this->format($partCleaned) . ' ' . self::TBA_DISPLAY;
         }
         return $this->format($format);
