@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TicketEvolution Framework
  *
@@ -17,9 +18,10 @@
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
+
 
 /**
  * @see TicketEvolution_Db_Table_Abstract
@@ -30,7 +32,7 @@ require_once 'TicketEvolution/Db/Table/Abstract.php';
  * @category    TicketEvolution
  * @package     TicketEvolution_Db
  * @subpackage  Table
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 class TicketEvolution_Db_Table_TicketGroupSeats
@@ -52,14 +54,14 @@ class TicketEvolution_Db_Table_TicketGroupSeats
      * @var mixed
      */
     protected $_primary   = array('ticketGroupId', 'seatNumber');
-    
+
     /**
      * The column that we use to indicate status in boolean form
      *
      * @var string
      */
     protected $_statusColumn   = 'ticketGroupSeatStatus';
-    
+
     /**
      * Simple array of class names of tables that are "children" of the current
      * table, in other words tables that contain a foreign key to this one.
@@ -69,8 +71,8 @@ class TicketEvolution_Db_Table_TicketGroupSeats
      * @var array
      */
     protected $_dependentTables = array();
-    
-    
+
+
     /**
      * Associative array map of declarative referential integrity rules.
      * This array has one entry per foreign key in the current table.

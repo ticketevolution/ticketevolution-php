@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TicketEvolution Framework
  *
@@ -133,7 +134,7 @@ for ($currentPage = $options['page']; $currentPage <= $maxPages; $currentPage++)
          * as inactive we'll still do it since delete() does not allow us to
          * set properties such as 'deleted_at' at the same time.
          */
-        if (!$row->save()) {
+        if (!$row->delete()) {
             echo '<h1 class="error">'
                . htmlentities('Error attempting to delete() ' . $result->id . ': ' . $result->name . ' to `tevoEvents` and related `tevoEventPerformers`', ENT_QUOTES, 'UTF-8', false)
                . '</h1>' . PHP_EOL

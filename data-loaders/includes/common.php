@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TicketEvolution Framework
  *
@@ -16,7 +17,7 @@
  * @package     TicketEvolution
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
@@ -135,6 +136,7 @@ $options = array(
     'page'              => 1,
     'per_page'          => 100,
     'updated_at.gte'    => $lastRun->format('c'),
+    'performances[performer_id]' => 15677,
 );
 
 // "deleted" endpoints are more reliable using "deleted_at" instead of "updated_at"
