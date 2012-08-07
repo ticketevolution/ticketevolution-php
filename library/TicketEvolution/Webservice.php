@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TicketEvolution Framework
  *
@@ -16,7 +17,7 @@
  * @package     TicketEvolution_Webservice
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
@@ -24,7 +25,7 @@
 /**
  * @category    TicketEvolution
  * @package     TicketEvolution_Webservice
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 class TicketEvolution_Webservice
@@ -175,9 +176,15 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Brokerages
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listBrokers(array $options)
+    {
+        // This is here only for backwards compatibility with old method name
+        return $this->listBrokerages($options);
+    }
+
+    public function listBrokerages(array $options)
     {
         $endPoint = 'brokerages';
 
@@ -217,6 +224,12 @@ class TicketEvolution_Webservice
      */
     public function showBroker($id)
     {
+        // This is here only for backwards compatibility with old method name
+        return $this->showBrokerage($id);
+    }
+
+    public function showBrokerage($id)
+    {
         $endPoint = 'brokerages/' . $id;
 
         $client = $this->getRestClient();
@@ -250,9 +263,15 @@ class TicketEvolution_Webservice
      * @param  string $query The query string
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Brokerages
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function searchBrokers($query, array $options)
+    {
+        // This is here only for backwards compatibility with old method name
+        return $this->searchBrokerages($query, $options);
+    }
+
+    public function searchBrokerages($query, array $options)
     {
         $trimmedQuery = trim($query);
         if (empty ($trimmedQuery)) {
@@ -300,7 +319,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Clients
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listClients(array $options)
     {
@@ -375,7 +394,7 @@ class TicketEvolution_Webservice
      * @param  string $query The query string
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Clients
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function searchClients($query, array $options)
     {
@@ -425,7 +444,7 @@ class TicketEvolution_Webservice
      *
      * @param  stdClass $clientDetails Client data structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Clients
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function createClient($clientDetails)
     {
@@ -498,6 +517,44 @@ class TicketEvolution_Webservice
 
 
     /**
+     * List Client Companies
+     *
+     * @param  array $options Options to use for the search query
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Webservice_ResultSet
+     */
+    public function listClientCompanies(array $options)
+    {
+        $endPoint = 'companies';
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $defaultOptions = array(
+            'page'  => '1',
+            'per_page' => '100'
+        );
+        $options = $this->_prepareOptions(
+            'GET',
+            $endPoint,
+            $options,
+            $defaultOptions
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
+
+        return $this->_postProcess($response);
+    }
+
+
+    /**
      * Get a single client company by Id
      *
      * @param  int $id The Client Company ID
@@ -538,7 +595,7 @@ class TicketEvolution_Webservice
      *
      * @param  stdClass $companyDetails Company data structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Clients
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function createClientCompany($companyDetails)
     {
@@ -616,7 +673,7 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Addresses
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listClientAddresses($clientId, array $options)
     {
@@ -692,7 +749,7 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  array $addresses Array of address data structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Addresses
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function createClientAddress($clientId, $addresses)
     {
@@ -773,7 +830,7 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_PhoneNumbers
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listClientPhoneNumbers($clientId, array $options)
     {
@@ -849,7 +906,7 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  array $phoneNumbers Array of phone numbers structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_PhoneNumbers
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function createClientPhoneNumber($clientId, $phoneNumbers)
     {
@@ -930,7 +987,7 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_EmailAddresses
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listClientEmailAddresses($clientId, array $options)
     {
@@ -1006,7 +1063,7 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  array $emailAddresses Array of email addresses structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_EmailAddresses
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function createClientEmailAddress($clientId, $emailAddresses)
     {
@@ -1087,7 +1144,7 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_CreditCards
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listClientCreditCards($clientId, array $options)
     {
@@ -1171,7 +1228,7 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  array $creditCards Array of credit cards structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_EmailAddresses
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function createClientCreditCard($clientId, $creditCards)
     {
@@ -1297,7 +1354,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Offices
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listOffices(array $options)
     {
@@ -1372,7 +1429,7 @@ class TicketEvolution_Webservice
      * @param  string $query
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Offices
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function searchOffices($query, array $options)
     {
@@ -1422,7 +1479,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Users
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listUsers(array $options)
     {
@@ -1497,7 +1554,7 @@ class TicketEvolution_Webservice
      * @param  string $query
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Users
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function searchUsers($query, array $options)
     {
@@ -1547,7 +1604,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Categories
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listCategories(array $options)
     {
@@ -1585,7 +1642,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Categories
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listCategoriesDeleted(array $options)
     {
@@ -1659,7 +1716,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Events
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listEvents(array $options)
     {
@@ -1697,7 +1754,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Events
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listEventsDeleted(array $options)
     {
@@ -1771,7 +1828,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Performers
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listPerformers(array $options)
     {
@@ -1809,7 +1866,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Performers
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listPerformersDeleted(array $options)
     {
@@ -1884,7 +1941,7 @@ class TicketEvolution_Webservice
      * @param  string $query
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Performers
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function searchPerformers($query, array $options)
     {
@@ -1937,7 +1994,7 @@ class TicketEvolution_Webservice
      * @param  string $query
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_SearchResults
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function search($query, array $options)
     {
@@ -1987,7 +2044,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Venues
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listVenues(array $options)
     {
@@ -2025,7 +2082,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Venues
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listVenuesDeleted(array $options)
     {
@@ -2100,7 +2157,7 @@ class TicketEvolution_Webservice
      * @param  string $query
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Venues
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function searchVenues($query, array $options)
     {
@@ -2150,7 +2207,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Configurations
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listConfigurations(array $options)
     {
@@ -2224,7 +2281,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_TicketGroups
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listTicketGroups(array $options)
     {
@@ -2305,7 +2362,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Orders
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listOrders(array $options)
     {
@@ -2381,7 +2438,7 @@ class TicketEvolution_Webservice
      *      by the API.
      * @param bool $fulfillment Whether this is a fulfillment order or not
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Orders
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function createOrder(array $orders, $fulfillment=false)
     {
@@ -2430,7 +2487,7 @@ class TicketEvolution_Webservice
                             Multiple items per order is not currently supported
                             by the API.
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Orders
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function createFulfillmentOrder(array $orders)
     {
@@ -2606,7 +2663,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Shipments
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listShipments(array $options)
     {
@@ -2680,7 +2737,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $shipments
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Shipments
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function createShipment(array $shipments)
     {
@@ -2757,7 +2814,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Quotes
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listQuotes(array $options)
     {
@@ -2832,7 +2889,7 @@ class TicketEvolution_Webservice
      * @param  string $query
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_Quotes
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function searchQuotes($query, array $options)
     {
@@ -2882,7 +2939,7 @@ class TicketEvolution_Webservice
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_EvoPayAccounts
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listEvoPayAccounts(array $options)
     {
@@ -2957,7 +3014,7 @@ class TicketEvolution_Webservice
      * @param  int $accountId EvoPay Account ID
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet_EvoPayTransactions
+     * @return TicketEvolution_Webservice_ResultSet
      */
     public function listEvoPayTransactions($accountId, array $options)
     {
@@ -2991,6 +3048,44 @@ class TicketEvolution_Webservice
 
 
     /**
+     * List Shipping Settings
+     *
+     * @param  array $options Options to use for the search query
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Webservice_ResultSet
+     */
+    public function listSettingsShipping(array $options)
+    {
+        $endPoint = 'settings/shipping';
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $defaultOptions = array(
+            'page'  => '1',
+            'per_page' => '100'
+        );
+        $options = $this->_prepareOptions(
+            'GET',
+            $endPoint,
+            $options,
+            $defaultOptions
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
+
+        return $this->_postProcess($response);
+    }
+
+
+    /**
      * Get a single EvoPay by Id Transaction
      *
      * @param  int $accountId EvoPay Account ID
@@ -2998,7 +3093,7 @@ class TicketEvolution_Webservice
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_EvoPayTransaction
      */
-    public function showEvoPayTransacations($accountId, $transactionId)
+    public function showEvoPayTransacation($accountId, $transactionId)
     {
         $endPoint = 'accounts/' . $accountId . '/transactions/' . $transactionId;
 
