@@ -1,3 +1,4 @@
+/* @override http://j.pos.dev/tools/exchanges/ticket-evolution/api-demo/css/style.css?v=2 */
 
 /* ==== Scroll down to find where to put your styles :) ==== */
 
@@ -90,18 +91,52 @@ h1,h2 { margin-top: 2em; }
 h1 { font-size: 2em; }
 h2 { font-size: 1.5em; }
 p { margin-bottom: 1.2em; }
-fieldset { border: 1px solid black; margin: 3em; padding: 2em; width: 30em; }
+fieldset { border: 1px solid black; margin: 3em; padding: 2em; width: 500px;
+}
+legend {
+    font-weight: bold;
+    font-size: 1.2em;
+    text-transform: uppercase;
+}
+
+fieldset div {
+    width: 100%;
+    clear: both;
+}
 
 samp { padding: 3em; border: 1px solid black; }
 
 pre {background: #ddd;}
 
-.options {display:none;}
+.options, #submit {display:none;}
 
+label {
+    padding-top: 1em;
+    width: 200px;
+    float: left;
+    text-align: right;
+    display: block;
+    font-weight: bold;
+}
 
+label .hint {
+    color: gray;
+    font-style: normal;
+    font-weight: normal;
+    font-size: .8em;
+}
 
+div input,
+div select {
+    float: left;
+    margin-left: 10px;
+    margin-top: .7em;
+    margin-bottom: .8em;
+}
 
-
+.apiToken, .secretKey {
+    width: 25em;
+}
 
 
 
