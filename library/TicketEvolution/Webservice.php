@@ -27,6 +27,7 @@
  * @package     TicketEvolution_Webservice
  * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
+ * @link        http://developer.ticketevolution.com/
  */
 class TicketEvolution_Webservice
 {
@@ -172,18 +173,32 @@ class TicketEvolution_Webservice
 
 
     /**
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
+     *
+     * @deprecated
+     * @see listBrokerages
+     */
+    public function listBrokers(array $options)
+    {
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'listBrokers() is deprecated and will be removed in a future version. Please use listBrokerages() instead.',
+            E_USER_DEPRECATED
+        );
+
+        return $this->listBrokerages($options);
+    }
+
+
+    /**
      * List Brokerages
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8brokerages#list
      */
-    public function listBrokers(array $options)
-    {
-        // This is here only for backwards compatibility with old method name
-        return $this->listBrokerages($options);
-    }
-
     public function listBrokerages(array $options)
     {
         $endPoint = 'brokerages';
@@ -216,18 +231,33 @@ class TicketEvolution_Webservice
 
 
     /**
-     * Get a single brokerage by Id
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
      *
-     * @param  int $id The brokerage ID
-     * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Brokerage
+     * @deprecated
+     * @see showBrokerage
      */
     public function showBroker($id)
     {
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'showBroker() is deprecated and will be removed in a future version. Please use showBrokerage() instead.',
+            E_USER_DEPRECATED
+        );
+
         // This is here only for backwards compatibility with old method name
         return $this->showBrokerage($id);
     }
 
+
+    /**
+     * Get a single brokerage by Id
+     *
+     * @param  int $id The brokerage ID
+     * @throws TicketEvolution_Webservice_Exception
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8brokerages#show
+     */
     public function showBrokerage($id)
     {
         $endPoint = 'brokerages/' . $id;
@@ -258,19 +288,34 @@ class TicketEvolution_Webservice
 
 
     /**
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
+     *
+     * @deprecated
+     * @see searchBrokerages
+     */
+    public function searchBrokers($query, array $options)
+    {
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'searchBrokers() is deprecated and will be removed in a future version. Please use searchBrokerages() instead.',
+            E_USER_DEPRECATED
+        );
+
+        // This is here only for backwards compatibility with old method name
+        return $this->searchBrokerages($query, $options);
+    }
+
+
+    /**
      * Search for brokerage(s)
      *
      * @param  string $query The query string
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8brokerages#search
      */
-    public function searchBrokers($query, array $options)
-    {
-        // This is here only for backwards compatibility with old method name
-        return $this->searchBrokerages($query, $options);
-    }
-
     public function searchBrokerages($query, array $options)
     {
         $trimmedQuery = trim($query);
@@ -320,6 +365,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8clients#list
      */
     public function listClients(array $options)
     {
@@ -357,7 +403,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id The Client ID
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8clients#show
      */
     public function showClient($id)
     {
@@ -395,6 +442,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8clients#search
      */
     public function searchClients($query, array $options)
     {
@@ -440,17 +488,43 @@ class TicketEvolution_Webservice
 
 
     /**
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
+     *
+     * @deprecated
+     * @see createClients
+     */
+    public function createClient($client)
+    {
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'createClient() is deprecated and will be removed in a future version. Please use createClients() instead.',
+            E_USER_DEPRECATED
+        );
+
+        if (!is_array($client)) {
+            $temp = $client;
+            unset($client);
+            $clients[] = $temp;
+        }
+
+        return $this->createClients($clients);
+    }
+
+
+    /*
      * Create client(s)
      *
-     * @param  stdClass $clientDetails Client data structured per API example
+     * @param  array $clients Array of client objects
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8clients#create
      */
-    public function createClient($clientDetails)
+    public function createClients(array $clients)
     {
-        $newClient = new stdClass;
-        $newClient->clients[] = $clientDetails;
-        $options = json_encode($newClient);
+        $body = new stdClass;
+        $body->clients = $clients;
+        $options = json_encode($body);
 
         $endPoint = 'clients';
 
@@ -482,9 +556,10 @@ class TicketEvolution_Webservice
      * Update a client
      *
      * @param  int $id The client ID to update
-     * @param  stdClass $clientDetails Client data structured per API example
+     * @param  object $clientDetails Client object structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8clients#update
      */
     public function updateClient($id, $clientDetails)
     {
@@ -522,6 +597,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8companies#list
      */
     public function listClientCompanies(array $options)
     {
@@ -559,7 +635,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id The Client Company ID
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8companies#show
      */
     public function showClientCompany($id)
     {
@@ -591,17 +668,43 @@ class TicketEvolution_Webservice
 
 
     /**
-     * Create client company(ies)
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
      *
-     * @param  stdClass $companyDetails Company data structured per API example
-     * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet
+     * @deprecated
+     * @see createClientCompanies
      */
-    public function createClientCompany($companyDetails)
+    public function createClientCompany($company)
     {
-        $newClient = new stdClass;
-        $newClient->companies[] = $companyDetails;
-        $options = json_encode($newClient);
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'createClientCompany() is deprecated and will be removed in a future version. Please use createClientCompanies() instead.',
+            E_USER_DEPRECATED
+        );
+
+        if (!is_array($company)) {
+            $temp = $company;
+            unset($company);
+            $companies[] = $temp;
+        }
+
+        return $this->createClientCompanies($companies);
+    }
+
+
+    /**
+     * Create client companies
+     *
+     * @param  array $companies Array of objects structured per API example
+     * @throws TicketEvolution_Webservice_Exception
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8companies#create
+     */
+    public function createClientCompanies(array $companies)
+    {
+        $body = new stdClass;
+        $body->companies = $companies;
+        $options = json_encode($body);
 
         $endPoint = 'companies';
 
@@ -633,9 +736,10 @@ class TicketEvolution_Webservice
      * Update a client company
      *
      * @param  int $id The client ID to update
-     * @param  stdClass $companyDetails Company data structured per API example
+     * @param  object $companyDetails Company object structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8companies#update
      */
     public function updateClientCompany($id, $companyDetails)
     {
@@ -674,6 +778,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8addresses#list
      */
     public function listClientAddresses($clientId, array $options)
     {
@@ -712,7 +817,8 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  int $addressId ID of the specific address
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Address_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8addresses#show
      */
     public function showClientAddress($clientId, $addressId)
     {
@@ -744,20 +850,44 @@ class TicketEvolution_Webservice
 
 
     /**
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
+     *
+     * @deprecated
+     * @see createClientAddresses
+     */
+    public function createClientAddress($clientId, $address)
+    {
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'createClientAddress() is deprecated and will be removed in a future version. Please use createClientAddresses() instead.',
+            E_USER_DEPRECATED
+        );
+
+        if (!is_array($address)) {
+            $temp = $client;
+            unset($address);
+            $addresses[] = $temp;
+        }
+
+        return $this->createClientAddresses($addresses);
+    }
+
+
+    /**
      * Create client address(es)
      *
      * @param  int $clientId ID of the specific client
-     * @param  array $addresses Array of address data structured per API example
+     * @param  array $addresses Array of address objects structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8addresses#create
      */
-    public function createClientAddress($clientId, $addresses)
+    public function createClientAddresses($clientId, array $addresses)
     {
-        $newAddresses = new stdClass;
-        foreach ($addresses as $address) {
-            $newAddresses->addresses[] = $address;
-        }
-        $options = json_encode($newAddresses);
+        $body = new stdClass;
+        $body->addresses = $addresses;
+        $options = json_encode($body);
 
         $endPoint = 'clients/' . $clientId . '/addresses';
 
@@ -790,9 +920,10 @@ class TicketEvolution_Webservice
      *
      * @param  int $clientId ID of the specific client
      * @param  int $addressId ID of the specific address
-     * @param  stdClass $address Address data structured per API example
+     * @param  object $address Address object structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Address_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8addresses#update
      */
     public function updateClientAddress($clientId, $addressId, $address)
     {
@@ -831,6 +962,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8phone-numbers#list
      */
     public function listClientPhoneNumbers($clientId, array $options)
     {
@@ -869,7 +1001,8 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  int $phoneNumberId ID of the specific phone number
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_PhoneNumber_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8phone-numbers#show
      */
     public function showClientPhoneNumber($clientId, $phoneNumberId)
     {
@@ -901,20 +1034,44 @@ class TicketEvolution_Webservice
 
 
     /**
-     * Create a client phone number
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
+     *
+     * @deprecated
+     * @see createClientPhoneNumbers
+     */
+    public function createClientPhoneNumber($clientId, $phoneNumber)
+    {
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'createClientPhoneNumber() is deprecated and will be removed in a future version. Please use createClientPhoneNumbers() instead.',
+            E_USER_DEPRECATED
+        );
+
+        if (!is_array($phoneNumber)) {
+            $temp = $phoneNumber;
+            unset($phoneNumber);
+            $phoneNumbers[] = $phoneNumber;
+        }
+
+        return $this->createClientPhoneNumbers($phoneNumbers);
+    }
+
+
+    /**
+     * Create client phone number(s)
      *
      * @param  int $clientId ID of the specific client
-     * @param  array $phoneNumbers Array of phone numbers structured per API example
+     * @param  array $phoneNumbers Array of phone numbers objects per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8phone-numbers#create
      */
-    public function createClientPhoneNumber($clientId, $phoneNumbers)
+    public function createClientPhoneNumbers($clientId, array $phoneNumbers)
     {
-        $newPhoneNumbers = new stdClass;
-        foreach ($phoneNumbers as $phoneNumber) {
-            $newPhoneNumbers->phone_numbers[] = $phoneNumber;
-        }
-        $options = json_encode($newPhoneNumbers);
+        $body = new stdClass;
+        $body->phone_numbers = $phoneNumbers;
+        $options = json_encode($body);
 
         $endPoint = 'clients/' . $clientId . '/phone_numbers';
 
@@ -947,9 +1104,10 @@ class TicketEvolution_Webservice
      *
      * @param  int $clientId ID of the specific client
      * @param  int $phoneNumberId ID of the specific phone number
-     * @param  stdClass $phoneNumberDetails Client data structured per API example
+     * @param  object $phoneNumberDetails Phone number object structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_PhoneNumber_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8phone-numbers#update
      */
     public function updateClientPhoneNumber($clientId, $phoneNumberId, $phoneNumberDetails)
     {
@@ -988,6 +1146,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8email-addresses#list
      */
     public function listClientEmailAddresses($clientId, array $options)
     {
@@ -1026,7 +1185,8 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  int $emailAddressId ID of the specific email address
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_EmailAddress_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8email-addresses#show
      */
     public function showClientEmailAddress($clientId, $emailAddressId)
     {
@@ -1058,20 +1218,44 @@ class TicketEvolution_Webservice
 
 
     /**
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
+     *
+     * @deprecated
+     * @see createClientEmailAddresses
+     */
+    public function createClientEmailAddress($clientId, $emailAddress)
+    {
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'createClientEmailAddress() is deprecated and will be removed in a future version. Please use createClientEmailAddresses() instead.',
+            E_USER_DEPRECATED
+        );
+
+        if (!is_array($emailAddress)) {
+            $temp = $emailAddress;
+            unset($emailAddress);
+            $emailAddresses[] = $temp;
+        }
+
+        return $this->createClientEmailAddresses($emailAddresses);
+    }
+
+
+    /**
      * Create client email address(es)
      *
      * @param  int $clientId ID of the specific client
-     * @param  array $emailAddresses Array of email addresses structured per API example
+     * @param  array $emailAddresses Array of email address objects structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8email-addresses#create
      */
-    public function createClientEmailAddress($clientId, $emailAddresses)
+    public function createClientEmailAddresses($clientId, array $emailAddresses)
     {
-        $newEmailAddresses = new stdClass;
-        foreach ($emailAddresses as $emailAddress) {
-            $newEmailAddresses->email_addresses[] = $emailAddress;
-        }
-        $options = json_encode($newEmailAddresses);
+        $body = new stdClass;
+        $body->email_addresses[] = $emailAddress;
+        $options = json_encode($body);
 
         $endPoint = 'clients/' . $clientId . '/email_addresses';
 
@@ -1104,9 +1288,10 @@ class TicketEvolution_Webservice
      *
      * @param  int $clientId ID of the specific client
      * @param  int $emailAddressId ID of the specific email address
-     * @param  stdClass $emailAddressDetails Client data structured per API example
+     * @param  object $emailAddressDetails Client object structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_EmailAddress_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8email-addresses#update
      */
     public function updateClientEmailAddress($clientId, $emailAddressId, $emailAddressDetails)
     {
@@ -1145,6 +1330,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8credit-cards#list
      */
     public function listClientCreditCards($clientId, array $options)
     {
@@ -1178,6 +1364,8 @@ class TicketEvolution_Webservice
 
 
     /**
+     * THIS ENDPOINT DOES NOT YET EXIST!
+     *
      * Get a single client credit card by Id
      *
      * NOTE: For PCI compliance, once you create a credit card you can NEVER
@@ -1186,7 +1374,8 @@ class TicketEvolution_Webservice
      * @param  int $clientId ID of the specific client
      * @param  int $creditCardId ID of the specific credit card
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_EmailAddress_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8credit-cards#show
      */
     public function showClientCreditCard($clientId, $creditCardId)
     {
@@ -1218,6 +1407,31 @@ class TicketEvolution_Webservice
 
 
     /**
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
+     *
+     * @deprecated
+     * @see createClientCreditCards
+     */
+    public function createClientCreditCard($clientId, $creditCard)
+    {
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'createClientCreditCard() is deprecated and will be removed in a future version. Please use createClientCreditCards() instead.',
+            E_USER_DEPRECATED
+        );
+
+        if (!is_array($creditCard)) {
+            $temp = $creditCard;
+            unset($creditCard);
+            $creditCards[] = $temp;
+        }
+
+        return $this->createClientCreditCards($creditCards);
+    }
+
+
+    /**
      * Create client credit card(s)
      *
      *  NOTE: Currently the API only supports creating a single card at a time.
@@ -1226,13 +1440,14 @@ class TicketEvolution_Webservice
      *        This will change in a future release to allow multiples.
      *
      * @param  int $clientId ID of the specific client
-     * @param  array $creditCards Array of credit cards structured per API example
+     * @param  array $creditCards Array of credit card objects structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8credit-cards#create
      */
-    public function createClientCreditCard($clientId, $creditCards)
+    public function createClientCreditCards($clientId, array $creditCards)
     {
-        $newCreditCards = new stdClass;
+        $body = new stdClass;
         foreach ($creditCards as $creditCard) {
             /**
              * Strip non-numeric chars from CC number and validate it
@@ -1240,9 +1455,9 @@ class TicketEvolution_Webservice
             $creditCard->number = $this->_cleanAndValidateCreditCardNumber(
                 $creditCard->number
             );
-            $newCreditCards->credit_cards[] = $creditCard;
+            $body->credit_cards[] = $creditCard;
         }
-        $options = json_encode($newCreditCards);
+        $options = json_encode($body);
 
         $endPoint = 'clients/' . $clientId . '/credit_cards';
 
@@ -1271,13 +1486,16 @@ class TicketEvolution_Webservice
 
 
     /**
+     * THIS ENDPOINT DOES NOT YET EXIST!
+     *
      * Update a single client credit card
      *
      * @param  int $clientId ID of the specific client
      * @param  int $creditCardId ID of the specific email address
-     * @param  stdClass $emailAddressDetails Client data structured per API example
+     * @param  object $emailAddressDetails Client object structured per API example
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_EmailAddress_Client
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8credit-cards#update
      */
     public function updateClientCreditCard($clientId, $creditCardId, $creditCardDetails)
     {
@@ -1316,9 +1534,7 @@ class TicketEvolution_Webservice
 
 
     /**
-     * Remove non-numeric characters from credit card number and validate length
-     *
-     * NOTE: This does NOT validate the card against the Luhn algorithm.
+     * Remove non-numeric characters from credit card number and validate it
      *
      * @param  string $creditCardNumber
      * @throws TicketEvolution_Webservice_Exception
@@ -1355,6 +1571,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8offices#list
      */
     public function listOffices(array $options)
     {
@@ -1392,7 +1609,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Office
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8offices#show
      */
     public function showOffice($id)
     {
@@ -1430,6 +1648,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8offices#search
      */
     public function searchOffices($query, array $options)
     {
@@ -1480,6 +1699,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8users#list
      */
     public function listUsers(array $options)
     {
@@ -1517,7 +1737,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_User
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8users#show
      */
     public function showUser($id)
     {
@@ -1555,6 +1776,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8users#search
      */
     public function searchUsers($query, array $options)
     {
@@ -1600,11 +1822,12 @@ class TicketEvolution_Webservice
 
 
     /**
-     * List Categories
+     * List Active Categories
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8categories#list
      */
     public function listCategories(array $options)
     {
@@ -1643,6 +1866,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8categories#deleted
      */
     public function listCategoriesDeleted(array $options)
     {
@@ -1680,7 +1904,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Category
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8categories#show
      */
     public function showCategory($id)
     {
@@ -1712,11 +1937,12 @@ class TicketEvolution_Webservice
 
 
     /**
-     * List Events
+     * List Active Events
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8events#list
      */
     public function listEvents(array $options)
     {
@@ -1755,6 +1981,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8events#deleted
      */
     public function listEventsDeleted(array $options)
     {
@@ -1792,7 +2019,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Event
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8events#show
      */
     public function showEvent($id)
     {
@@ -1824,11 +2052,12 @@ class TicketEvolution_Webservice
 
 
     /**
-     * List Performers
+     * List Active Performers
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8performers#list
      */
     public function listPerformers(array $options)
     {
@@ -1867,6 +2096,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8performers#deleted
      */
     public function listPerformersDeleted(array $options)
     {
@@ -1904,7 +2134,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Performer
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8performers#show
      */
     public function showPerformer($id)
     {
@@ -1942,6 +2173,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8performers#search
      */
     public function searchPerformers($query, array $options)
     {
@@ -1995,6 +2227,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8search#list
      */
     public function search($query, array $options)
     {
@@ -2040,11 +2273,12 @@ class TicketEvolution_Webservice
 
 
     /**
-     * List Venues
+     * List Active Venues
      *
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8venues#list
      */
     public function listVenues(array $options)
     {
@@ -2083,6 +2317,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8venues#deleted
      */
     public function listVenuesDeleted(array $options)
     {
@@ -2120,7 +2355,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Venue
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8venues#show
      */
     public function showVenue($id)
     {
@@ -2158,6 +2394,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8venues#search
      */
     public function searchVenues($query, array $options)
     {
@@ -2208,6 +2445,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8configurations#list
      */
     public function listConfigurations(array $options)
     {
@@ -2245,7 +2483,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Configuration
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8configurations#show
      */
     public function showConfiguration($id)
     {
@@ -2282,6 +2521,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8ticket-groups#list
      */
     public function listTicketGroups(array $options)
     {
@@ -2326,7 +2566,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_TicketGroup
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8ticket-groups#show
      */
     public function showTicketGroup($id)
     {
@@ -2363,6 +2604,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8orders#list
      */
     public function listOrders(array $options)
     {
@@ -2400,7 +2642,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Order
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8orders#show
      */
     public function showOrder($id)
     {
@@ -2432,21 +2675,44 @@ class TicketEvolution_Webservice
 
 
     /**
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
+     *
+     * @deprecated
+     * @see createOrders
+     */
+    public function createOrder($order, $fulfillment=false)
+    {
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'createOrder() is deprecated and will be removed in a future version. Please use createOrders() instead.',
+            E_USER_DEPRECATED
+        );
+
+        if (!is_array($order)) {
+            $temp = $order;
+            unset($order);
+            $orders[] = $temp;
+        }
+
+        return $this->createOrders($orders);
+    }
+
+
+    /**
      * Create order(s)
      *
-     * @param  array $orders Multiple items per order is not currently supported
-     *      by the API.
+     * @param  array $orders Array of order objects as defined by API
      * @param bool $fulfillment Whether this is a fulfillment order or not
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8orders#create_client_order
      */
-    public function createOrder(array $orders, $fulfillment=false)
+    public function createOrders(array $orders, $fulfillment=false)
     {
-        $newOrders = new stdClass;
-        foreach ($orders as $order) {
-            $newOrders->orders[] = $order;
-        }
-        $options = json_encode($newOrders);
+        $body = new stdClass;
+        $body->orders[] = $orders;
+        $options = json_encode($body);
 
         $endPoint = 'orders';
         if ($fulfillment) {
@@ -2478,20 +2744,43 @@ class TicketEvolution_Webservice
 
 
     /**
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
+     *
+     * @deprecated
+     * @see createOrders
+     */
+    public function createFulfillmentOrder($order)
+    {
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'createFulfillmentOrder() is deprecated and will be removed in a future version. Please use createFulfillmentOrders() instead.',
+            E_USER_DEPRECATED
+        );
+
+        if (!is_array($order)) {
+            $temp = $order;
+            unset($order);
+            $orders[] = $temp;
+        }
+
+        return $this->createFulfillmentOrders($orders);
+    }
+
+
+    /**
      * Create Fulfillment order(s)
      *
-     * Utility method that calls createOrder()
+     * Utility method that calls createOrders()
      *
-     * @param  array $order Can be either an array with details for a single order
-                            or an array of arrays for multiple orders.
-                            Multiple items per order is not currently supported
-                            by the API.
+     * @param  array $order Array of order objects.
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8orders#create_fulfillment_order
      */
-    public function createFulfillmentOrder(array $orders)
+    public function createFulfillmentOrders(array $orders)
     {
-        return $this->createOrder($orders, true);
+        return $this->createOrders($orders, true);
     }
 
 
@@ -2502,6 +2791,7 @@ class TicketEvolution_Webservice
      * @param int $userId ID of the user who reviewed and accepts this order
      * @throws TicketEvolution_Webservice_Exception
      * @return bool
+     * @link http://developer.ticketevolution.com/endpoints/v8orders#accept_order
      */
     public function acceptOrder($orderId, $userId)
     {
@@ -2551,6 +2841,7 @@ class TicketEvolution_Webservice
      * @param int $userId ID of the user who reviewed and rejects this order
      * @throws TicketEvolution_Webservice_Exception
      * @return bool
+     * @link http://developer.ticketevolution.com/endpoints/v8orders#reject_order
      */
     public function rejectOrder($orderId, $userId, $reason)
     {
@@ -2617,6 +2908,7 @@ class TicketEvolution_Webservice
      * @param int $userId ID of the user who reviewed and rejects this order
      * @throws TicketEvolution_Webservice_Exception
      * @return bool
+     * @link http://developer.ticketevolution.com/endpoints/v8orders#complete_order
      */
     public function completeOrder($orderId)
     {
@@ -2664,6 +2956,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8shipments#list
      */
     public function listShipments(array $options)
     {
@@ -2701,7 +2994,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Shipment
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8shipments#show
      */
     public function showShipment($id)
     {
@@ -2733,19 +3027,43 @@ class TicketEvolution_Webservice
 
 
     /**
+     * This is here only for backwards compatibility and just "forwards"
+     * the information to the new method name
+     *
+     * @deprecated
+     * @see createShipments
+     */
+    public function createShipment($shipment)
+    {
+        // Trigger an E_USER_DEPRECATED notice that this method is deprecated
+        trigger_error(
+            'createShipment() is deprecated and will be removed in a future version. Please use createShipments() instead.',
+            E_USER_DEPRECATED
+        );
+
+        if (!is_array($shipment)) {
+            $temp = $shipment;
+            unset($shipment);
+            $shipments[] = $temp;
+        }
+
+        return $this->createShipments($shipments);
+    }
+
+
+    /**
      * Create shipment(s)
      *
-     * @param  array $shipments
+     * @param  array $shipments Array of shipment objects
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8shipments#create
      */
-    public function createShipment(array $shipments)
+    public function createShipments(array $shipments)
     {
-        $newShipments = new stdClass;
-        foreach ($shipments as $shipment) {
-            $newShipments->shipments = $shipments;
-        }
-        $options = json_encode($newShipments);
+        $body = new stdClass;
+        $body->shipments = $shipments;
+        $options = json_encode($body);
 
         $endPoint = 'shipments';
 
@@ -2776,17 +3094,14 @@ class TicketEvolution_Webservice
     /**
      * Update a single shipment
      *
-     * @param  array $shipments
+     * @param  object $shipment
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Shipment
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8shipments#update
      */
-    public function updateShipment(array $shipments)
+    public function updateShipment($shipment)
     {
-        $newShipments = new stdClass;
-        foreach ($shipments as $shipment) {
-            $newShipments->shipments = $shipments;
-        }
-        $options = json_encode($newShipments);
+        $options = json_encode($shipment);
 
         $endPoint = 'shipments';
 
@@ -2815,6 +3130,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8quotes#list
      */
     public function listQuotes(array $options)
     {
@@ -2852,7 +3168,8 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Quote
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8quotes#show
      */
     public function showQuote($id)
     {
@@ -2890,6 +3207,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8quotes#search
      */
     public function searchQuotes($query, array $options)
     {
@@ -2940,6 +3258,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8accounts#list
      */
     public function listEvoPayAccounts(array $options)
     {
@@ -2977,9 +3296,10 @@ class TicketEvolution_Webservice
      *
      * @param  int $id
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_EvoPayAccount
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8accounts#show
      */
-    public function showEvopayaccount($id)
+    public function showEvoPayAccount($id)
     {
         $endPoint = 'accounts/' . $id;
 
@@ -3015,6 +3335,7 @@ class TicketEvolution_Webservice
      * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
      * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8transactions#list
      */
     public function listEvoPayTransactions($accountId, array $options)
     {
@@ -3048,23 +3369,23 @@ class TicketEvolution_Webservice
 
 
     /**
-     * List Shipping Settings
+     * Get a single EvoPay by Id Transaction
      *
-     * @param  array $options Options to use for the search query
+     * @param  int $accountId EvoPay Account ID
+     * @param  int $transactionId
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/v8transactions#show
      */
-    public function listSettingsShipping(array $options)
+    public function showEvoPayTransacation($accountId, $transactionId)
     {
-        $endPoint = 'settings/shipping';
+        $endPoint = 'accounts/' . $accountId . '/transactions/' . $transactionId;
 
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
 
-        $defaultOptions = array(
-            'page'  => '1',
-            'per_page' => '100'
-        );
+        $options = array();
+        $defaultOptions = array();
         $options = $this->_prepareOptions(
             'GET',
             $endPoint,
@@ -3086,22 +3407,24 @@ class TicketEvolution_Webservice
 
 
     /**
-     * Get a single EvoPay by Id Transaction
+     * List Shipping Settings
      *
-     * @param  int $accountId EvoPay Account ID
-     * @param  int $transactionId
+     * @param  array $options Options to use for the search query
      * @throws TicketEvolution_Webservice_Exception
-     * @return TicketEvolution_EvoPayTransaction
+     * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/v8settings#shipping
      */
-    public function showEvoPayTransacation($accountId, $transactionId)
+    public function listSettingsShipping(array $options)
     {
-        $endPoint = 'accounts/' . $accountId . '/transactions/' . $transactionId;
+        $endPoint = 'settings/shipping';
 
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
 
-        $options = array();
-        $defaultOptions = array();
+        $defaultOptions = array(
+            'page'  => '1',
+            'per_page' => '100'
+        );
         $options = $this->_prepareOptions(
             'GET',
             $endPoint,

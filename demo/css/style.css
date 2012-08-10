@@ -91,7 +91,7 @@ h1,h2 { margin-top: 2em; }
 h1 { font-size: 2em; }
 h2 { font-size: 1.5em; }
 p { margin-bottom: 1.2em; }
-fieldset { border: 1px solid black; margin: 3em; padding: 2em; width: 500px;
+fieldset { border: 1px solid black; margin: 3em; padding: 2em; width: 600px;
 }
 legend {
     font-weight: bold;
