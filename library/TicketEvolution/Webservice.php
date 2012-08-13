@@ -1492,7 +1492,7 @@ class TicketEvolution_Webservice
      *
      * @param  int $clientId ID of the specific client
      * @param  int $creditCardId ID of the specific email address
-     * @param  object $emailAddressDetails Client object structured per API example
+     * @param  object $creditCardDetails Client object structured per API example
      * @throws TicketEvolution_Webservice_Exception
      * @return stdClass
      * @link http://developer.ticketevolution.com/endpoints/v8credit-cards#update

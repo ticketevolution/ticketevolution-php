@@ -4,7 +4,7 @@
 
 ### August 10, 2012
 - Pretty much a full rewrite of the Demo app
-- Deprecated some methods in TicketEvolution_Webservice. Deprecated methods will trigger an E_USER_DEPRECATED error. This was done in order to make the naming more consistent with TEvo naming and with the functionality of the methods.
+- Deprecated some methods in `TicketEvolution_Webservice`. Deprecated methods will trigger an `E_USER_DEPRECATED` error. This was done in order to make the naming more consistent with TEvo naming and with the functionality of the methods.
 - Added some new methods for new API features such as Companies and shipment settings.
 
 ### June 8, 2012 v1.9.6
