@@ -1254,7 +1254,7 @@ class TicketEvolution_Webservice
     public function createClientEmailAddresses($clientId, array $emailAddresses)
     {
         $body = new stdClass;
-        $body->email_addresses[] = $emailAddress;
+        $body->email_addresses[] = $emailAddresses;
         $options = json_encode($body);
 
         $endPoint = 'clients/' . $clientId . '/email_addresses';
@@ -2785,6 +2785,45 @@ class TicketEvolution_Webservice
 
 
     /**
+     * Update an order
+     *
+     * @param  int $orderId ID of the specific order
+     * @param  object $orderDetails Order object structured per API example
+     * @throws TicketEvolution_Webservice_Exception
+     * @return stdClass
+     * @link http://developer.ticketevolution.com/endpoints/orders#update
+     */
+    public function updateOrder($orderId, $orderDetails)
+    {
+        $options = json_encode($orderDetails);
+
+        $endPoint = 'orders/' . $orderId;
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $this->_requestSignature = self::computeSignature(
+            $this->_baseUri,
+            $this->_secretKey,
+            'PUT',
+            $this->_apiPrefix . $endPoint,
+            $options
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restPut($this->_apiPrefix . $endPoint, $options);
+
+        return $this->_postProcess($response);
+    }
+
+
+    /**
      * Accept an order
      *
      * @param int $orderId ID of the order to accept
@@ -3377,7 +3416,7 @@ class TicketEvolution_Webservice
      * @return stdClass
      * @link http://developer.ticketevolution.com/endpoints/v8transactions#show
      */
-    public function showEvoPayTransacation($accountId, $transactionId)
+    public function showEvoPayTransaction($accountId, $transactionId)
     {
         $endPoint = 'accounts/' . $accountId . '/transactions/' . $transactionId;
 
@@ -3417,6 +3456,45 @@ class TicketEvolution_Webservice
     public function listSettingsShipping(array $options)
     {
         $endPoint = 'settings/shipping';
+
+        $client = $this->getRestClient();
+        $client->setUri($this->_baseUri);
+
+        $defaultOptions = array(
+            'page'  => '1',
+            'per_page' => '100'
+        );
+        $options = $this->_prepareOptions(
+            'GET',
+            $endPoint,
+            $options,
+            $defaultOptions
+        );
+
+        $client->getHttpClient()->resetParameters();
+        $this->_setHeaders(
+            $this->apiToken,
+            $this->_apiVersion,
+            $this->_requestSignature
+        );
+
+        $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
+
+        return $this->_postProcess($response);
+    }
+
+
+    /**
+     * List Service Fees Settings
+     *
+     * @param  array $options Options to use for the search query
+     * @throws TicketEvolution_Webservice_Exception
+     * @return TicketEvolution_Webservice_ResultSet
+     * @link http://developer.ticketevolution.com/endpoints/settings#service_fees
+     */
+    public function listSettingsServiceFees(array $options)
+    {
+        $endPoint = 'settings/service_fees';
 
         $client = $this->getRestClient();
         $client->setUri($this->_baseUri);
