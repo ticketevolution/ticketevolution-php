@@ -3,7 +3,6 @@ $(document).ready(function() {
 
     $('#submit').button();
 
-
     changeEnvironment();
 
     $('input.date-time').AnyTime_picker({format: "%Y-%m-%d %H:%i:%s"});
@@ -23,6 +22,9 @@ $(document).ready(function() {
             $('#client_order_billing_address').fadeOut();
         }
     });
+
+    $('#tags').tagsInput();
+
 
 });
 
@@ -101,6 +103,12 @@ function toggleOptions()
     } else {
         $('#APItest').attr('method', 'GET');
     }
+
+    // If the tags wrapper is visible, make the child divs visibile too
+    if ($('#wrapper').is(':visible')) {
+        $('div', '#wrapper').fadeIn();
+    }
+
 }
 
 
@@ -110,6 +118,13 @@ function checkForm()
     // Keeps the URL cleaner
     $('input:hidden', 'fieldset').attr('disabled', true);
     $('select:hidden', 'fieldset').attr('disabled', true);
+    $('textarea:hidden', 'fieldset').attr('disabled', true);
+
+    // If the tags wrapper is visible, make sure the input is NOT disabled
+    if ($('#wrapper').is(':visible')) {
+        $('#tags').removeAttr('disabled');
+        //$('#tags').show();
+    }
 
     //$('#environmentAndCredentials input:hidden').attr('disabled', true);
     return true;
