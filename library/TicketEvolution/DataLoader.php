@@ -15,20 +15,22 @@
  *
  * @category    TicketEvolution
  * @package     TicketEvolution_DataLoader
+ * @author      J Cobb <j@teamonetickets.com>
+ * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
 
-require_once 'bootstrap.php';
-require_once 'includes/common.php';
-
-$webService = new TicketEvolution_Webservice($registry->config->params);
-
-$dataLoader = new TicketEvolution_DataLoader_Offices(
-    $webService,
-    $options
-);
-
-$dataLoader->loadAllData();
-
+/**
+ * Extends Zend_Date with some handy constants and also allows for easy handling
+ * of "TBA" event times.
+ *
+ * @category    TicketEvolution
+ * @package     TicketEvolution_DataLoader
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
+ */
+class TicketEvolution_DataLoader extends TicketEvolution_DataLoader_Abstract
+{
+}

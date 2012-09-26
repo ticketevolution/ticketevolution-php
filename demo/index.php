@@ -129,6 +129,7 @@ if (isset($_REQUEST['apiMethod'])) {
     } else {
         $input = new Zend_Filter_Input($filters, $validators, $_GET);
     }
+    //var_dump($_GET);
 
     $cfg['params']['apiToken'] = $input->apiToken;
     $cfg['params']['secretKey'] = $input->secretKey;
@@ -184,10 +185,12 @@ if (isset($_REQUEST['apiMethod'])) {
 	<link rel="stylesheet" href="css/style.css?v=2">
 	<link type="text/css" href="css/humanity/jquery-ui-1.8.22.custom.css" rel="stylesheet" />
 	<link type="text/css" href="css/anytime.c.css" rel="stylesheet" />
+	<link type="text/css" href="css/jquery.tagsinput.css" rel="stylesheet" />
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>
     <script type="text/javascript" src="js/demo.js"></script>
     <script type="text/javascript" src="js/anytime.c.js"></script>
+    <script type="text/javascript" src="js/jquery.tagsinput.min.js"></script>
 
 </head>
 <body>
@@ -239,6 +242,12 @@ if (isset($_REQUEST['apiMethod'])) {
                         echo '    ' . $brokerage . ',' . PHP_EOL;
                     }
                     echo ');' . PHP_EOL
+                       . PHP_EOL
+                       . '/**' . PHP_EOL
+                       . ' * Create a Zend_Config object to pass to TicketEvolution_Webservice' . PHP_EOL
+                       . ' */' . PHP_EOL
+                       . '$config = new Zend_Config($cfg);' . PHP_EOL
+                       . PHP_EOL
                        . '</pre>' . PHP_EOL
                     ;
 
@@ -271,6 +280,7 @@ if (isset($_REQUEST['apiMethod'])) {
                      * Setup any necessary vars and execute the call
                      */
                     $options = _getOptions($input);
+                    //var_dump($options);
 
                     switch ($apiMethod) {
                         case 'listBrokerages' :
@@ -278,6 +288,7 @@ if (isset($_REQUEST['apiMethod'])) {
                         case 'listClientCompanies' :
                         case 'listUsers' :
                         case 'listSettingsShipping' :
+                        case 'listSettingsServiceFees' :
                         case 'listCategories' :
                         case 'listCategoriesDeleted' :
                         case 'listConfigurations' :
@@ -318,6 +329,8 @@ if (isset($_REQUEST['apiMethod'])) {
                         case 'createClients' :
                             $client = new stdClass;
                             $client->name = $options['name'];
+                            $client->office_id = $options['office_id'];
+                            $client->tags = array(explode(',', $options['tags']));
 
                             // Clients must be passed in an array, even if there is only one
                             $clients[] = $client;
@@ -325,6 +338,8 @@ if (isset($_REQUEST['apiMethod'])) {
                             // Display the code
                             echo '$client = new stdClass;' . PHP_EOL
                                . '$client->name = \'' . $options['name'] . '\';' . PHP_EOL
+                               . '$client->office_id = \'' . $options['office_id'] . '\';' . PHP_EOL
+                               . '$client->tags = array(explode(\',\', ' . $options['tags'] . '));' . PHP_EOL
                                . PHP_EOL
                                . '// Clients must be passed in an array, even if there is only one' . PHP_EOL
                                . '$clients[] = $client;' . PHP_EOL
@@ -340,12 +355,20 @@ if (isset($_REQUEST['apiMethod'])) {
 
                             $client = new stdClass;
                             $client->name = $options['name'];
+                            $client->office_id = $options['office_id'];
+                            $client->primary_shipping_address_id = $options['primary_shipping_address_id'];
+                            $client->primary_credit_card_id = $options['primary_credit_card_id'];
+                            $client->tags = array(explode(',', $options['tags']));
 
                             // Display the code
                             echo '$client = new stdClass;' . PHP_EOL
                                . '$client->name = \'' . $options['name'] . '\';' . PHP_EOL
+                               . '$client->office_id = \'' . $options['office_id'] . '\';' . PHP_EOL
+                               . '$client->primary_shipping_address_id = \'' . $options['primary_shipping_address_id'] . '\';' . PHP_EOL
+                               . '$client->primary_credit_card_id = \'' . $options['primary_credit_card_id'] . '\';' . PHP_EOL
+                               . '$client->tags = array(explode(\',\', ' . $options['tags'] . '));' . PHP_EOL
                                . PHP_EOL
-                               . '$results = $tevo->' . $apiMethod . '($client_id, $client);' . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '(' . $updateId . ', $client);' . PHP_EOL
                             ;
 
                             $results = _doUpdate($tevo, $apiMethod, $updateId, $client);
@@ -361,14 +384,21 @@ if (isset($_REQUEST['apiMethod'])) {
                             $company = new stdClass;
                             $company->name = $options['name'];
 
+                            // Companies must be passed in an array, even if there is only one
+                            $companies[] = $company;
+
+
                             // Display the code
                             echo '$company = new stdClass;' . PHP_EOL
                                . '$company->name = \'' . $options['name'] . '\';' . PHP_EOL
                                . PHP_EOL
-                               . '$results = $tevo->' . $apiMethod . '($company);' . PHP_EOL
+                               . '// Companies must be passed in an array, even if there is only one' . PHP_EOL
+                               . '$companies[] = $company;' . PHP_EOL
+                               . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '($companies);' . PHP_EOL
                             ;
 
-                            $results = _doCreate($tevo, $apiMethod, $company);
+                            $results = _doCreate($tevo, $apiMethod, $companies);
                             break;
 
                         case 'updateClientCompany' :
@@ -381,7 +411,7 @@ if (isset($_REQUEST['apiMethod'])) {
                             echo '$company = new stdClass;' . PHP_EOL
                                . '$company->name = \'' . $options['name'] . '\';' . PHP_EOL
                                . PHP_EOL
-                               . '$results = $tevo->' . $apiMethod . '($company_id, $company);' . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '(' . $updateId . ', $company);' . PHP_EOL
                             ;
 
                             $results = _doUpdate($tevo, $apiMethod, $updateId, $company);
@@ -461,9 +491,6 @@ if (isset($_REQUEST['apiMethod'])) {
                             $address->country_code = $options['country_code'];
                             $address->primary = (bool) $options['primary'];
 
-                            // Addresses must be passed in an array, even if there is only one
-                            $addresses[] = $address;
-
                             // Display the code
                             echo '$address = new stdClass;' . PHP_EOL
                                . '$address->label = \'' . $options['label'] . '\';' . PHP_EOL
@@ -477,13 +504,10 @@ if (isset($_REQUEST['apiMethod'])) {
                                . '$address->country_code = \'' . $options['country_code'] . '\';' . PHP_EOL
                                . '$address->primary = (bool) ' . $options['primary'] . ';' . PHP_EOL
                                . PHP_EOL
-                               . '// Addresses must be passed in an array, even if there is only one' . PHP_EOL
-                               . '$addresses[] = $address;' . PHP_EOL
-                               . PHP_EOL
-                               . '$results = $tevo->' . $apiMethod . '($addresses);' . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '(' . $itemId . ', ' . $updateId . ', $address);' . PHP_EOL
                             ;
 
-                            $results = _doUpdateById($tevo, $apiMethod, $itemId, $updateId, $addresses);
+                            $results = _doUpdateById($tevo, $apiMethod, $itemId, $updateId, $address);
                             break;
 
                         case 'showClientPhoneNumber':
@@ -532,9 +556,6 @@ if (isset($_REQUEST['apiMethod'])) {
                             $phoneNumber->number = $options['number'];
                             $phoneNumber->extension = $options['extension'];
 
-                            // Phone Numbers must be passed in an array, even if there is only one
-                            $phoneNumbers[] = $phoneNumber;
-
                             // Display the code
                             echo '$phoneNumber = new stdClass;' . PHP_EOL
                                . '$phoneNumber->label = \'' . $options['label'] . '\';' . PHP_EOL
@@ -542,10 +563,7 @@ if (isset($_REQUEST['apiMethod'])) {
                                . '$phoneNumber->number = \'' . $options['number'] . '\';' . PHP_EOL
                                . '$phoneNumber->extension = \'' . $options['extension'] . '\';' . PHP_EOL
                                . PHP_EOL
-                               . '// Phone Numbers must be passed in an array, even if there is only one' . PHP_EOL
-                               . '$phoneNumbers[] = $phoneNumber;' . PHP_EOL
-                               . PHP_EOL
-                               . '$results = $tevo->' . $apiMethod . '(' . $itemId . ', ' . $updateId . ', $phoneNumbers);' . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '(' . $itemId . ', ' . $updateId . ', $phoneNumber);' . PHP_EOL
                             ;
 
                             $results = _doUpdateById($tevo, $apiMethod, $itemId, $updateId, $phoneNumber);
@@ -553,7 +571,7 @@ if (isset($_REQUEST['apiMethod'])) {
 
                         case 'showClientEmailAddress':
                             $client_id = $options['client_id'];
-                            $showId = $options['address_id'];
+                            $showId = $options['email_address_id'];
 
                             _outputShowByIdCode($apiMethod, $client_id, $showId);
                             $results = _doShowById($tevo, $apiMethod, $client_id, $showId);
@@ -577,7 +595,7 @@ if (isset($_REQUEST['apiMethod'])) {
                                . '// Email Addresses must be passed in an array, even if there is only one' . PHP_EOL
                                . '$emailAddresses[] = $emailAddress;' . PHP_EOL
                                . PHP_EOL
-                               . '$results = $tevo->' . $apiMethod . '($emailAddresses);' . PHP_EOL
+                               . '$results = $tevo->' . $apiMethod . '(' . $client_id . ', $emailAddresses);' . PHP_EOL
                             ;
 
                             $results = _doCreateById($tevo, $apiMethod, $client_id, $emailAddresses);
@@ -585,7 +603,7 @@ if (isset($_REQUEST['apiMethod'])) {
 
                         case 'updateClientEmailAddress' :
                             $itemId = $options['client_id'];
-                            $updateId = $options['address_id'];
+                            $updateId = $options['email_address_id'];
 
                             $emailAddress = new stdClass;
                             $emailAddress->label = $options['label'];
@@ -689,6 +707,7 @@ if (isset($_REQUEST['apiMethod'])) {
                             $results = _doShow($tevo, $apiMethod, $showId);
                             break;
 
+                        case 'searchQuotes' :
                         case 'searchOffices' :
                         case 'searchUsers' :
                         case 'searchPerformers' :
@@ -811,9 +830,10 @@ if (isset($_REQUEST['apiMethod'])) {
                             break;
 
                         case 'showEvoPayTransaction' :
-                            $showId = $options['account_id'];
-                            _outputShowCode($apiMethod, $showId);
-                            $results = _doShow($tevo, $apiMethod, $showId);
+                            $accountId = $options['account_id'];
+                            $transactionId = $options['transaction_id'];
+                            _outputShowByIdCode($apiMethod, $accountId, $transactionId);
+                            $results = _doShowById($tevo, $apiMethod, $accountId, $transactionId);
                             break;
 
                         case 'createOrdersClient' :
@@ -946,8 +966,136 @@ if (isset($_REQUEST['apiMethod'])) {
 
                             echo '$orders[] = $options;' . PHP_EOL;
 
-                            var_dump($orders);
-                            $results = _doCreate($tevo, 'createOrder', $orders);
+                            //var_dump($orders);
+                            $results = _doCreate($tevo, 'createOrders', $orders);
+                            break;
+
+
+                        case 'updateOrder' :
+                            $updateId = $options['order_id'];
+
+                            $order = new stdClass;
+                            $order->po_number = $options['po_number'];
+                            $order->invoice_number = $options['invoice_number'];
+                            $order->instructions = $options['instructions'];
+
+                            if (empty($_REQUEST['shipping_address_id'])) {
+                                $address = new stdClass;
+                                $address->label = $_REQUEST['shipping_address']['label'];
+                                $address->name = $_REQUEST['shipping_address']['name'];
+                                $address->company = $_REQUEST['shipping_address']['company'];
+                                $address->street_address = $_REQUEST['shipping_address']['street_address'];
+                                $address->extended_address = $_REQUEST['shipping_address']['extended_address'];
+                                $address->locality = $_REQUEST['shipping_address']['locality'];
+                                $address->region = $_REQUEST['shipping_address']['region'];
+                                $address->postal_code = $_REQUEST['shipping_address']['postal_code'];
+                                $address->country_code = $_REQUEST['shipping_address']['country_code'];
+
+                                $order->shipping_address = $address;
+
+                            } else {
+                                $order->shipping_address_id = $options['shipping_address_id'];
+                            }
+
+                            if (empty($_REQUEST['billing_address_id'])) {
+                                $address = new stdClass;
+                                $address->label = $_REQUEST['billing_address']['label'];
+                                $address->name = $_REQUEST['billing_address']['name'];
+                                $address->company = $_REQUEST['billing_address']['company'];
+                                $address->street_address = $_REQUEST['billing_address']['street_address'];
+                                $address->extended_address = $_REQUEST['billing_address']['extended_address'];
+                                $address->locality = $_REQUEST['billing_address']['locality'];
+                                $address->region = $_REQUEST['billing_address']['region'];
+                                $address->postal_code = $_REQUEST['billing_address']['postal_code'];
+                                $address->country_code = $_REQUEST['billing_address']['country_code'];
+
+                                $order->billing_address = $address;
+
+                            } else {
+                                $order->billing_address_id = $options['billing_address_id'];
+                            }
+
+
+                            echo '$order = new stdClass;' . PHP_EOL
+                               . '$order->po_number = ' . $options['po_number'] . ';' . PHP_EOL
+                               . '$order->invoice_number = ' . $options['invoice_number'] . ';' . PHP_EOL
+                               . '$order->instructions = \'' . $options['instructions'] . '\';' . PHP_EOL
+                               . PHP_EOL
+                               ;
+                            if (empty($_REQUEST['shipping_address_id'])) {
+                                echo '$address = new stdClass;' . PHP_EOL
+                                   . '$address->label = \'' . $_REQUEST['shipping_address']['label'] . '\';' . PHP_EOL
+                                   . '$address->name = \'' . $_REQUEST['shipping_address']['name'] . '\';' . PHP_EOL
+                                   . '$address->company = \'' . $_REQUEST['shipping_address']['company'] . '\';' . PHP_EOL
+                                   . '$address->street_address = \'' . $_REQUEST['shipping_address']['street_address'] . '\';' . PHP_EOL
+                                   . '$address->extended_address = \'' . $_REQUEST['shipping_address']['extended_address'] . '\';' . PHP_EOL
+                                   . '$address->locality = \'' . $_REQUEST['shipping_address']['locality'] . '\';' . PHP_EOL
+                                   . '$address->region = \'' . $_REQUEST['shipping_address']['region'] . '\';' . PHP_EOL
+                                   . '$address->postal_code = \'' . $_REQUEST['shipping_address']['postal_code'] . '\';' . PHP_EOL
+                                   . '$address->country_code = \'' . $_REQUEST['shipping_address']['country_code'] . '\';' . PHP_EOL
+                                   . PHP_EOL
+                                   . '$order->shipping_address = $address;' . PHP_EOL
+                                   . PHP_EOL
+                                ;
+                            } else {
+                                echo '$order->shipping_address_id = ' . $options['shipping_address_id'] . ';' . PHP_EOL;
+                            }
+
+                            if (empty($_REQUEST['billing_address_id'])) {
+                                echo '$address = new stdClass;' . PHP_EOL
+                                   . '$address->label = \'' . $_REQUEST['billing_address']['label'] . '\';' . PHP_EOL
+                                   . '$address->name = \'' . $_REQUEST['billing_address']['name'] . '\';' . PHP_EOL
+                                   . '$address->company = \'' . $_REQUEST['billing_address']['company'] . '\';' . PHP_EOL
+                                   . '$address->street_address = \'' . $_REQUEST['billing_address']['street_address'] . '\';' . PHP_EOL
+                                   . '$address->extended_address = \'' . $_REQUEST['billing_address']['extended_address'] . '\';' . PHP_EOL
+                                   . '$address->locality = \'' . $_REQUEST['billing_address']['locality'] . '\';' . PHP_EOL
+                                   . '$address->region = \'' . $_REQUEST['billing_address']['region'] . '\';' . PHP_EOL
+                                   . '$address->postal_code = \'' . $_REQUEST['billing_address']['postal_code'] . '\';' . PHP_EOL
+                                   . '$address->country_code = \'' . $_REQUEST['billing_address']['country_code'] . '\';' . PHP_EOL
+                                   . PHP_EOL
+                                   . '$order->billing_address = $address;' . PHP_EOL
+                                   . PHP_EOL
+                                ;
+                            } else {
+                                echo '$order->billing_address_id = ' . $options['billing_address_id'] . ';' . PHP_EOL;
+                            }
+
+                            echo '$results = $tevo->' . $apiMethod . '(' . $updateId . ', $order);' . PHP_EOL
+                               ;
+
+
+                            //var_dump($orders);
+                            $results = _doUpdate($tevo, 'updateOrder', $updateId, $order);
+                            break;
+
+
+                        case 'acceptOrder' :
+                            $orderId = $options['order_id'];
+                            $reviewerId = $options['reviewer_id'];
+
+                            echo '$results = $tevo->' . $apiMethod . '(' . $orderId . ', ' . $reviewerId . ');' . PHP_EOL;
+
+                            $results = _doOther($tevo, 'acceptOrder', $orderId, $reviewerId);
+                            break;
+
+
+                        case 'rejectOrder' :
+                            $orderId = $options['order_id'];
+                            $reviewerId = $options['reviewer_id'];
+                            $rejectionReason = $options['rejection_reason'];
+
+                            echo '$results = $tevo->' . $apiMethod . '(' . $orderId . ', ' . $reviewerId . ', \'' . $rejectionReason . '\');' . PHP_EOL;
+
+                            $results = _doOther($tevo, 'rejectOrder', $orderId, $reviewerId, $rejectionReason);
+                            break;
+
+
+                        case 'completeOrder' :
+                            $orderId = $options['order_id'];
+
+                            echo '$results = $tevo->' . $apiMethod . '(' . $orderId . ');' . PHP_EOL;
+
+                            $results = _doOther($tevo, 'completeOrder', $orderId);
                             break;
 
 
@@ -1076,10 +1224,9 @@ if (isset($_REQUEST['apiMethod'])) {
                     <div>
                         <label for="apiMethod" accesskey="m">Framework Method:</label>
                         <select id="apiMethod" name="apiMethod" size="1" onchange="toggleOptions();">
-                            <option label="Select a method…" value="">Select a method…()</option>
+                            <option label="Select a method…" value="">Select a method…</option>
 
                             <optgroup label="Brokerage Resources">
-                            </optgroup>
                                 <optgroup label="Brokerages Methods">
                                     <option label="listBrokerages()" value="listBrokerages">listBrokerages()</option>
                                     <option label="showBrokerage()" value="showBrokerage">showBrokerage()</option>
@@ -1088,54 +1235,7 @@ if (isset($_REQUEST['apiMethod'])) {
 
                                 <optgroup label="Settings Methods">
                                     <option label="listSettingsShipping()" value="listSettingsShipping">listSettingsShipping()</option>
-                                </optgroup>
-
-                                <optgroup label="Clients Methods">
-                                    <option label="listClients()" value="listClients">listClients()</option>
-                                    <option label="showClient()" value="showClient">showClient()</option>
-                                    <option label="createClients()" value="createClients">createClients()</option>
-                                    <option label="updateClient()" value="updateClient">updateClient()</option>
-
-                                    <optgroup label="Client Company Methods">
-                                        <option label="listClientCompanies()" value="listClientCompanies">listClientCompanies()</option>
-                                        <option label="showClientCompany()" value="showClientCompany">showClientCompany()</option>
-                                        <option label="createClientCompanies()" value="createClientCompanies">createClientCompanies()</option>
-                                        <option label="updateClientCompany()" value="updateClientCompany">updateClientCompany()</option>
-                                    </optgroup>
-
-                                    <optgroup label="Client Address Methods">
-                                        <option label="listClientAddresses()" value="listClientAddresses">listClientAddresses()</option>
-                                        <option label="showClientAddress()" value="showClientAddress">showClientAddress()</option>
-                                        <option label="createClientAddresses()" value="createClientAddresses">createClientAddresses()</option>
-                                        <option label="updateClientAddress()" value="updateClientAddress">updateClientAddress()</option>
-                                    </optgroup>
-
-                                    <optgroup label="Client Phone Number Methods">
-                                        <option label="listClientPhoneNumbers()" value="listClientPhoneNumbers">listClientPhoneNumbers()</option>
-                                        <option label="showClientPhoneNumber()" value="showClientPhoneNumber">showClientPhoneNumber()</option>
-                                        <option label="createClientPhoneNumbers()" value="createClientPhoneNumbers">createClientPhoneNumbers()</option>
-                                        <option label="updateClientPhoneNumber()" value="updateClientPhoneNumber">updateClientPhoneNumber()</option>
-                                    </optgroup>
-
-                                    <optgroup label="Client Email Address Methods">
-                                        <option label="listClientEmailAddresses()" value="listClientEmailAddresses">listClientEmailAddresses()</option>
-                                        <option label="showClientEmailAddress()" value="showClientEmailAddress">showClientEmailAddress()</option>
-                                        <option label="createClientEmailAddresses()" value="createClientEmailAddresses">createClientEmailAddresses()</option>
-                                        <option label="updateClientEmailAddress()" value="updateClientEmailAddress">updateClientEmailAddress()</option>
-                                    </optgroup>
-
-                                    <optgroup label="Client Credit Card Methods">
-                                        <option label="listClientCreditCards()" value="listClientCreditCards">listClientCreditCards()</option>
-                                        <?php
-                                            // This endpoint does not (yet?) exist
-                                            //<option label="showClientCreditCard()" value="showClientCreditCard">showClientCreditCard()</option>
-                                        ?>
-                                        <option label="createClientCreditCards()" value="createClientCreditCards">createClientCreditCards()</option>
-                                        <?php
-                                            // This endpoint does not (yet?) exist
-                                            //<option label="updateClientCreditCard()" value="updateClientCreditCard">updateClientCreditCard()</option>
-                                        ?>
-                                    </optgroup>
+                                    <option label="listSettingsServiceFees()" value="listSettingsServiceFees">listSettingsServiceFees()</option>
                                 </optgroup>
 
                                 <optgroup label="Offices Methods">
@@ -1149,9 +1249,60 @@ if (isset($_REQUEST['apiMethod'])) {
                                     <option label="showUser()" value="showUser">showUser()</option>
                                     <option label="searchUsers()" value="searchUsers">searchUsers()</option>
                                 </optgroup>
+                            </optgroup>
+
+                            <optgroup label="Clients Resources">
+                                <optgroup label="Clients Methods">
+                                    <option label="listClients()" value="listClients">listClients()</option>
+                                    <option label="showClient()" value="showClient">showClient()</option>
+                                    <option label="createClients()" value="createClients">createClients()</option>
+                                    <option label="updateClient()" value="updateClient">updateClient()</option>
+                                </optgroup>
+
+                                <optgroup label="Client Company Methods">
+                                    <option label="listClientCompanies()" value="listClientCompanies">listClientCompanies()</option>
+                                    <option label="showClientCompany()" value="showClientCompany">showClientCompany()</option>
+                                    <option label="createClientCompanies()" value="createClientCompanies">createClientCompanies()</option>
+                                    <option label="updateClientCompany()" value="updateClientCompany">updateClientCompany()</option>
+                                </optgroup>
+
+                                <optgroup label="Client Address Methods">
+                                    <option label="listClientAddresses()" value="listClientAddresses">listClientAddresses()</option>
+                                    <option label="showClientAddress()" value="showClientAddress">showClientAddress()</option>
+                                    <option label="createClientAddresses()" value="createClientAddresses">createClientAddresses()</option>
+                                    <option label="updateClientAddress()" value="updateClientAddress">updateClientAddress()</option>
+                                </optgroup>
+
+                                <optgroup label="Client Phone Number Methods">
+                                    <option label="listClientPhoneNumbers()" value="listClientPhoneNumbers">listClientPhoneNumbers()</option>
+                                    <option label="showClientPhoneNumber()" value="showClientPhoneNumber">showClientPhoneNumber()</option>
+                                    <option label="createClientPhoneNumbers()" value="createClientPhoneNumbers">createClientPhoneNumbers()</option>
+                                    <option label="updateClientPhoneNumber()" value="updateClientPhoneNumber">updateClientPhoneNumber()</option>
+                                </optgroup>
+
+                                <optgroup label="Client Email Address Methods">
+                                    <option label="listClientEmailAddresses()" value="listClientEmailAddresses">listClientEmailAddresses()</option>
+                                    <option label="showClientEmailAddress()" value="showClientEmailAddress">showClientEmailAddress()</option>
+                                    <option label="createClientEmailAddresses()" value="createClientEmailAddresses">createClientEmailAddresses()</option>
+                                    <option label="updateClientEmailAddress()" value="updateClientEmailAddress">updateClientEmailAddress()</option>
+                                </optgroup>
+
+                                <optgroup label="Client Credit Card Methods">
+                                    <option label="listClientCreditCards()" value="listClientCreditCards">listClientCreditCards()</option>
+                                    <?php
+                                        // This endpoint does not (yet?) exist
+                                        //<option label="showClientCreditCard()" value="showClientCreditCard">showClientCreditCard()</option>
+                                    ?>
+                                    <option label="createClientCreditCards()" value="createClientCreditCards">createClientCreditCards()</option>
+                                    <?php
+                                        // This endpoint does not (yet?) exist
+                                        //<option label="updateClientCreditCard()" value="updateClientCreditCard">updateClientCreditCard()</option>
+                                    ?>
+                                </optgroup>
+                            </optgroup>
+
 
                             <optgroup label="Catalog Resources">
-                            </optgroup>
                                 <optgroup label="Categories Methods">
                                     <option label="listCategories()" value="listCategories">listCategories()</option>
                                     <option label="listCategoriesDeleted()" value="listCategoriesDeleted">listCategoriesDeleted()</option>
@@ -1186,9 +1337,9 @@ if (isset($_REQUEST['apiMethod'])) {
                                     <option label="showVenue()" value="showVenue">showVenue()</option>
                                     <option label="searchVenues()" value="searchVenues">searchVenues()</option>
                                 </optgroup>
+                            </optgroup>
 
                             <optgroup label="Inventory Resources">
-                            </optgroup>
                                 <optgroup label="Ticket Groups">
                                     <option label="listTicketGroups()" value="listTicketGroups">listTicketGroups()</option>
                                     <option label="showTicketGroup()" value="showTicketGroup">showTicketGroup()</option>
@@ -1219,9 +1370,9 @@ if (isset($_REQUEST['apiMethod'])) {
                                     <option label="updateShipment()" value="updateShipment">updateShipment()</option>
                                     <option label="createAirbill()" value="createAirbill" disabled="disabled">createAirbill()</option>
                                 </optgroup>
+                            </optgroup>
 
                             <optgroup label="EvoPay Resources">
-                            </optgroup>
                                 <optgroup label="Accounts Methods">
                                     <option label="listEvoPayAccounts()" value="listEvoPayAccounts">listEvoPayAccounts()</option>
                                     <option label="showEvoPayAccount()" value="showEvoPayAccount">showEvoPayAccount()</option>
@@ -1231,6 +1382,7 @@ if (isset($_REQUEST['apiMethod'])) {
                                     <option label="listEvoPayTransactions()" value="listEvoPayTransactions">listEvoPayTransactions()</option>
                                     <option label="showEvoPayTransaction()" value="showEvoPayTransaction">showEvoPayTransaction()</option>
                                 </optgroup>
+                            </optgroup>
 
                         </select>
                     </div>
@@ -1266,6 +1418,19 @@ if (isset($_REQUEST['apiMethod'])) {
                     <div class="listBrokerages listUsers listQuotes">
                         <label for="email">email:</label>
                         <input name="email" id="email" type="email" value="" />
+                    </div>
+
+                    <div class="listClients">
+                        <label for="created_at">created_at:</label>
+                        <select name="created_at_operator" id="created_at_operator">
+                            <option value="eq">=</option>
+                            <option value="not_eq">≠</option>
+                            <option value="gt">&#62;</option>
+                            <option value="gte" selected="selected">≥</option>
+                            <option value="lt">&#60;</option>
+                            <option value="lte">≤</option>
+                        </select>
+                        <input name="created_at" id="created_at" class="date-time" type="text" value="" />
                     </div>
 
                     <div class="listBrokerages listOffices listUsers listVenues listVenuesDeleted listPerformers listPerformersDeleted listEvents listEventsDeleted listConfigurations listCategories listCategoriesDeleted listTicketGroups listShipments listQuotes listOrders listClients listClientCompanies listClientPhoneNumbers listClientAddresses listClientEmailAddresses listClientCreditCards listEvoPayAccounts listEvoPayTransactions">
@@ -1305,12 +1470,12 @@ if (isset($_REQUEST['apiMethod'])) {
                         <input name="deleted_at" id="deleted_at" class="date-time" type="text" value="" />
                     </div>
 
-                    <div class="searchBrokerages searchOffices searchUsers searchVenues searchPerformers listQuotes search">
+                    <div class="searchBrokerages searchOffices searchUsers searchVenues searchPerformers searchQuotes search">
                         <label for="q">Search Term (q):</label>
                         <input name="q" id="q" type="text" value="Front Row" />
                     </div>
 
-                    <div class="showBrokerage listOffices listUsers">
+                    <div class="showBrokerage listOffices listUsers listClients">
                         <label for="brokerage_id">brokerage_id:</label>
                         <input name="brokerage_id" id="brokerage_id" type="text" value="32" />
                     </div>
@@ -1345,9 +1510,78 @@ if (isset($_REQUEST['apiMethod'])) {
                         <input name="performer_id" id="performer_id" type="text" value="10638" />
                     </div>
 
+                    <div class="listEvents">
+                        <label for="primary_performer_id">primary_performer_id:</label>
+                        <input name="primary_performer_id" id="primary_performer_id" type="text" value="" />
+                    </div>
+
+                    <div class="listEvents">
+                        <label for="non_primary_id">non_primary_id:</label>
+                        <input name="non_primary_id" id="non_primary_id" type="text" value="" />
+                    </div>
+
+                    <div class="listEvents">
+                        <label for="by_time">by_time:</label>
+                        <select name="by_time" id="by_time">
+                            <option value="">Select One…</option>
+                            <option value="day">day</option>
+                            <option value="night">night</option>
+                        </select>
+                    </div>
+
+                    <div class="search">
+                        <label for="types">types:</label>
+                        <select name="types" id="types">
+                            <option value="performers">performers</option>
+                            <option value="venues">venues</option>
+                            <option value="offices">offices</option>
+                            <option value="clients">clients</option>
+                        </select>
+                    </div>
+
+                    <div class="listEvents listPerformers listVenues">
+                        <label for="order_by">order_by:</label>
+                        <input name="order_by" id="order_by" type="text" value="" />
+                    </div>
+
+                    <div class="listEvents listVenues">
+                        <label for="ip">ip:</label>
+                        <input name="ip" id="ip" type="text" value="" />
+                    </div>
+
+                    <div class="listEvents listVenues">
+                        <label for="lat">lat:</label>
+                        <input name="lat" id="lat" type="text" value="" />
+                    </div>
+
+                    <div class="listEvents listVenues">
+                        <label for="lon">lon:</label>
+                        <input name="lon" id="lon" type="text" value="" />
+                    </div>
+
+                    <div class="listEvents listVenues">
+                        <label for="city_state">city_state:</label>
+                        <input name="city_state" id="city_state" type="text" value="" />
+                    </div>
+
+                    <div class="listEvents listVenues">
+                        <label for="radius">radius:</label>
+                        <input name="radius" id="radius" type="text" value="" />
+                    </div>
+
+                    <div class="listEvents listVenues">
+                        <label for="postal_code">postal_code:</label>
+                        <input name="postal_code" id="postal_code" type="text" value="" />
+                    </div>
+
                     <div class="showCategory listPerformers listEvents listEventsDeleted">
                         <label for="category_id">category_id:</label>
                         <input name="category_id" id="category_id" type="text" value="20" />
+                    </div>
+
+                    <div class="listPerformers listVenues">
+                        <label for="first_letter">first_letter:</label>
+                        <input name="first_letter" id="first_letter" type="text" value="" />
                     </div>
 
                     <div class="showConfiguration listEvents listEventsDeleted">
@@ -1391,6 +1625,16 @@ if (isset($_REQUEST['apiMethod'])) {
                     </div>
 
                     <div class="listTicketGroups">
+                        <label for="eticket">eticket:</label>
+                        <input name="eticket" id="eticket" type="checkbox" value="1" />
+                    </div>
+
+                    <div class="listTicketGroups">
+                        <label for="quantity">quantity:</label>
+                        <input name="quantity" id="quantity" type="number" value="4" min="1" />
+                    </div>
+
+                    <div class="listTicketGroups">
                         <label for="ticketgroup_type">(ticketgroup) type:</label>
                         <select name="type" id="ticketgroup_type">
                             <option value="">All</option>
@@ -1409,13 +1653,24 @@ if (isset($_REQUEST['apiMethod'])) {
                         <input name="tracking_number" id="tracking_number" type="text" value="" />
                     </div>
 
+                    <div class="listShipments">
+                        <label for="client_order_id">client_order_id:</label>
+                        <input name="client_order_id" id="client_order_id" type="text" value="" />
+                    </div>
+
+                    <div class="listShipments">
+                        <label for="partner_order_id">partner_order_id:</label>
+                        <input name="partner_order_id" id="partner_order_id" type="text" value="" />
+                    </div>
+
                     <div class="listShipments createShipments updateShipment">
-                        <label for="shipment_type">(shipment) type:</label>
-                        <select name="type" id="shipment_type">
+                        <label for="shipment_type">shipment_type:</label>
+                        <select name="shipment_type" id="shipment_type">
                             <option value="">Select One…</option>
                             <option value="FedEx">FedEx</option>
                             <option value="UPS">UPS</option>
                             <option value="Courier">Courier</option>
+                            <option value="WillCall">Will Call</option>
                         </select>
                     </div>
 
@@ -1423,14 +1678,15 @@ if (isset($_REQUEST['apiMethod'])) {
                         <label for="shipment_state">(shipment) state:</label>
                         <select name="state" id="shipment_state">
                             <option value="">Select One…</option>
+                            <option value="pending">pending</option>
                             <option value="in_transit">in_transit</option>
                             <option value="delivered">delivered</option>
-                            <option value="pending">pending</option>
                             <option value="returned">returned</option>
+                            <option value="exception">exception</option>
                         </select>
                     </div>
 
-                    <div class="listShipments createShipments showOrder acceptOrder rejectOrder updateOrder listEvoPayTransactions">
+                    <div class="listShipments createShipments showOrder acceptOrder rejectOrder updateOrder completeOrder listEvoPayTransactions">
                         <label for="order_id">order_id:</label>
                         <input name="order_id" id="order_id" type="text" value="" />
                     </div>
@@ -1453,7 +1709,22 @@ if (isset($_REQUEST['apiMethod'])) {
                     <div class="createShipments updateShipment">
                         <label for="service_type">service_type:
                         <br /><span class="hint">Service type for this shipment, as returned from a call to get rates.</span></label>
-                        <input name="service_type" id="service_type" type="text" value="" />
+                        <select name="service_type" id="service_type">
+                            <option value="FEDEX_GROUND_HOME">Ground Home Delivery</option>
+                            <option value="FEDEX_GROUND">FedEx Ground</option>
+                            <option value="FEDEX_FIRST_OVERN">First Overnight</option>
+                            <option value="8">FedEx 2 Day Saturday Delivery</option>
+                            <option value="10">International Ground</option>
+                            <option value="FEDEX_INTNL_ECO">International Economy</option>
+                            <option value="FEDEX_INTNL_PRI">International Priority</option>
+                            <option value="FEDEX_INTNL_FIRST">International First</option>
+                            <option value="14">International Priority Saturday Delivery</option>
+                            <option value="FEDEX_EXPRESS_SAV">FedEx Express Saver</option>
+                            <option value="PRIORITY_OVERNIGHT_SATURDAY_DELIVERY">Priority Overnight Saturday Delivery</option>
+                            <option value="FEDEX_PRIORITY_OVERN">Priority Overnight</option>
+                            <option value="FEDEX_2DAY">FedEx 2 Day</option>
+                            <option value="FEDEX_STANDARD_OVERN">Standard Overnight</option>
+                        </select>
                     </div>
 
                     <div class="createShipments">
@@ -1473,6 +1744,42 @@ if (isset($_REQUEST['apiMethod'])) {
                         <input name="ship_to_name" id="ship_to_name" type="text" value="" />
                     </div>
 
+                    <div class="createShipments">
+                        <label for="ship_to_company_name">ship_to_company_name:</label>
+                        <input name="ship_to_company_name" id="ship_to_company_name" type="text" value="" />
+                    </div>
+
+                    <div class="createShipments">
+                        <label for="signature_type">signature_type:</label>
+                        <select name="state" id="signature_type">
+                            <option value="SERVICE_DEFAULT">SERVICE_DEFAULT</option>
+                            <option value="NO_SIGNATURE_REQUIRED">NO_SIGNATURE_REQUIRED</option>
+                            <option value="ADULT">ADULT</option>
+                            <option value="DIRECT">DIRECT</option>
+                            <option value="INDIRECT">INDIRECT</option>
+                        </select>
+                    </div>
+
+                    <div class="createShipments">
+                        <label for="service_type">service_type:</label>
+                        <select name="state" id="service_type">
+                            <option value="1">Ground Home Delivery</option>
+                            <option value="2">FedEx Ground</option>
+                            <option value="7">First Overnight</option>
+                            <option value="8">FedEx 2 Day Saturday Delivery</option>
+                            <option value="10">International Ground</option>
+                            <option value="11">International Economy</option>
+                            <option value="12">International Priority</option>
+                            <option value="13">International First</option>
+                            <option value="14">International Priority Saturday Delivery</option>
+                            <option value="3">FedEx Express Saver</option>
+                            <option value="9">Priority Overnight Saturday Delivery</option>
+                            <option value="6">Priority Overnight</option>
+                            <option value="4">FedEx 2 Day</option>
+                            <option value="5">Standard Overnight</option>
+                        </select>
+                    </div>
+
                     <div class="listOrders">
                         <label for="buyer_id">buyer_id:
                         <br /><span class="hint">Office ID of the buyer.</span></label>
@@ -1489,16 +1796,12 @@ if (isset($_REQUEST['apiMethod'])) {
                         <label for="order_state">(order) state:</label>
                         <select name="state" id="order_state">
                             <option value="">Select One…</option>
-                            <option value="rejected">rejected</option>
-                            <option value="taken">taken</option>
-                            <option value="expired">expired</option>
-                            <option value="held">held</option>
-                            <option value="processing">processing</option>
-                            <option value="open">open</option>
-                            <option value="canceled">canceled</option>
-                            <option value="completed">completed</option>
-                            <option value="accepted">accepted</option>
                             <option value="pending">pending</option>
+                            <option value="accepted">accepted</option>
+                            <option value="rejected">rejected</option>
+                            <option value="cancelled">cancelled</option>
+                            <option value="expired">expired</option>
+                            <option value="pending_substitution">pending_substitution</option>
                         </select>
                     </div>
 
@@ -1697,7 +2000,7 @@ if (isset($_REQUEST['apiMethod'])) {
                         <input name="additional_expense" id="additional_expense" type="text" value="0.00" />
                     </div>
 
-                    <div class="createOrdersClient">
+                    <div class="createOrdersClient updateOrder">
                         <label for="instructions">instructions:</label>
                         <textarea name="instructions" id="instructions"></textarea>
                     </div>
@@ -1724,7 +2027,7 @@ if (isset($_REQUEST['apiMethod'])) {
                         <input name="client_id" id="client_id" type="text" value="" />
                     </div>
 
-                    <div class="showClientCompany updateClientCompany">
+                    <div class="showClientCompany updateClientCompany listClients">
                         <label for="company_id">company_id:</label>
                         <input name="company_id" id="company_id" type="text" value="" />
                     </div>
@@ -1759,9 +2062,19 @@ if (isset($_REQUEST['apiMethod'])) {
                         <input name="address" id="address" type="email" value="" />
                     </div>
 
-                    <div class="showClientAddress updateClientAddress showClientEmailAddress updateClientEmailAddress createClientCreditCards updateClientCreditCard createShipments">
+                    <div class="showClientAddress updateClientAddress createClientCreditCards updateClientCreditCard createShipments">
                         <label for="address_id">address_id:</label>
                         <input name="address_id" id="address_id" type="text" value="" />
+                    </div>
+
+                    <div class="showClientEmailAddress updateClientEmailAddress">
+                        <label for="email_address_id">email_address_id:</label>
+                        <input name="email_address_id" id="email_address_id" type="text" value="" />
+                    </div>
+
+                    <div class="updateClient">
+                        <label for="primary_shipping_address_id">primary_shipping_address_id:</label>
+                        <input name="primary_shipping_address_id" id="primary_shipping_address_id" type="text" value="" />
                     </div>
 
                     <div class="listClientAddresses createClientAddresses updateClientAddress">
@@ -1799,9 +2112,19 @@ if (isset($_REQUEST['apiMethod'])) {
                         <input name="primary" id="isPrimary" type="checkbox" value="1" />
                     </div>
 
+                    <div class="listEvents">
+                        <label for="unique_performers">unique_performers:</label>
+                        <input name="unique_performers" id="unique_performers" type="checkbox" value="1" />
+                    </div>
+
                     <div class="showClientCreditCard updateClientCreditCard">
                         <label for="credit_card_id">credit_card_id:</label>
                         <input name="credit_card_id" id="credit_card_id" type="text" value="" />
+                    </div>
+
+                    <div class="updateClient">
+                        <label for="primary_credit_card_id">primary_credit_card_id:</label>
+                        <input name="primary_credit_card_id" id="primary_credit_card_id" type="text" value="" />
                     </div>
 
                     <div class="createClientCreditCards updateClientCreditCard">
@@ -1849,7 +2172,8 @@ if (isset($_REQUEST['apiMethod'])) {
                     <div class="listEvoPayTransactions">
                         <label for="evopay_transaction_type">(EvoPay Transaction) type:</label>
                         <select name="type" id="evopay_transaction_type">
-                            <option value="Credit" selected="selected">Credit</option>
+                            <option value="">Select One…</option>
+                            <option value="Credit">Credit</option>
                             <option value="etc">etc</option>
                         </select>
                     </div>
@@ -1867,6 +2191,18 @@ if (isset($_REQUEST['apiMethod'])) {
                     <div class="listSettingsShipping">
                         <label for="show_on_site">show_on_site:</label>
                         <input name="show_on_site" id="show_on_site" type="checkbox" value="1" />
+                    </div>
+
+
+
+                    <div class="listEvents">
+                        <label for="order_by">order_by:</label>
+                        <input name="order_by" id="order_by" type="text" value="" />
+                    </div>
+
+                    <div class="createClients updateClient" id="wrapper">
+                        <label for="tags">tags:</label>
+                        <input name="tags" id="tags" type="text" value="" />
                     </div>
 
 
@@ -1902,6 +2238,7 @@ function _getOptions($input)
         'updated_at',
         'occurs_at',
         'deleted_at',
+        'created_at',
     );
 
     /**
@@ -1912,6 +2249,7 @@ function _getOptions($input)
     $unknown = $input->getUnknown();
     foreach ($unknown as $key => $value) {
         if ($value !== '' && stristr($key, '_operator') === false) {
+//        if (stristr($key, '_operator') === false) {
             if (in_array($key, $dateFields)) {
                 $operatorKey = $key . '_operator';
                 $options[$key . '.' . $unknown[$operatorKey]] = $value;
@@ -1956,18 +2294,32 @@ function _outputShowByIdCode($apiMethod, $itemId, $showId)
  * @param string $apiMethod
  * @param array $options
  */
-function _outputListCode($apiMethod, $options)
+function _outputOptionsCode($options)
 {
     echo '$options = array(' . PHP_EOL;
     foreach( $options as $key => $val) {
-        if (!is_array($val) && !is_object($val)) {
+        if (!is_array($val) && !is_object($val) && is_numeric($val)) {
             echo '    \'' . $key . '\' => ' . $val . ',' . PHP_EOL;
+        } elseif (!is_array($val) && !is_object($val) && !is_numeric($val)) {
+            echo '    \'' . $key . '\' => \'' . $val . '\',' . PHP_EOL;
         }
     }
-    echo ');' . PHP_EOL
-       . PHP_EOL
-       . '$results = $tevo->' . $apiMethod . '($options);' . PHP_EOL
+    echo ');' . PHP_EOL . PHP_EOL
     ;
+}
+
+
+/**
+ * Utility function for outputting PHP code for demo purposes
+ *
+ * @param string $apiMethod
+ * @param array $options
+ */
+function _outputListCode($apiMethod, $options)
+{
+    _outputOptionsCode($options);
+
+    echo '$results = $tevo->' . $apiMethod . '($options);' . PHP_EOL;
 }
 
 
@@ -2000,7 +2352,9 @@ function _outputListByIdCode($apiMethod, $listId, $options)
  */
 function _outputSearchCode($apiMethod, $queryString, $options)
 {
-    echo '$results = $tevo->' . $apiMethod . '($queryString, $options);' . PHP_EOL;
+    _outputOptionsCode($options);
+
+    echo '$results = $tevo->' . $apiMethod . '(\'' . $queryString . '\', $options);' . PHP_EOL;
 }
 
 
@@ -2224,6 +2578,39 @@ function _doUpdateById(TicketEvolution_Webservice $tevo, $apiMethod, $itemId, $u
     // Execute the call
     try {
         $results = $tevo->$apiMethod($itemId, $updateId, $properties);
+    } catch (Exception $e) {
+        echo '</pre>' . PHP_EOL
+           . '<h1>Exception thrown trying to perform API request</h1>' . PHP_EOL
+           . _getRequest($tevo, $apiMethod, true)
+           . _getResponse($tevo, $apiMethod, true);
+        exit (1);
+    }
+
+    return $results;
+}
+
+
+/**
+ * Utility function for performing update*() calls
+ *
+ * @param TicketEvolution_Webservice $tevo
+ * @param string $apiMethod
+ * @param int $itemId
+ * @param int $updateId
+ * @param array $properties
+ * @return stdClass
+ */
+function _doOther(TicketEvolution_Webservice $tevo, $apiMethod, $param1, $param2=null, $param3=null)
+{
+    // Execute the call
+    try {
+        if (!is_null($param3)) {
+            $results = $tevo->$apiMethod($param1, $param2, $param3);
+        } elseif (!is_null($param2)) {
+            $results = $tevo->$apiMethod($param1, $param2);
+        } else {
+            $results = $tevo->$apiMethod($param1);
+        }
     } catch (Exception $e) {
         echo '</pre>' . PHP_EOL
            . '<h1>Exception thrown trying to perform API request</h1>' . PHP_EOL

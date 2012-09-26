@@ -78,7 +78,7 @@ require_once 'bootstrap.php';
                 $table = new TicketEvolution_Db_Table_DataLoaderStatus();
 
                 $scripts = array(
-                    'brokers'        => array(
+                    'brokerages'        => array(
                         'active',
                     ),
                     'categories'        => array(

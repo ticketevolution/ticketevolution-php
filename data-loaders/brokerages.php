@@ -25,7 +25,7 @@ require_once 'includes/common.php';
 
 $webService = new TicketEvolution_Webservice($registry->config->params);
 
-$dataLoader = new TicketEvolution_DataLoader_Offices(
+$dataLoader = new TicketEvolution_DataLoader_Brokerages(
     $webService,
     $options
 );

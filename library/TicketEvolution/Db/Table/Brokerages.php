@@ -35,15 +35,14 @@ require_once 'TicketEvolution/Db/Table/Abstract.php';
  * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Db_Table_OfficeEmails
-    extends TicketEvolution_Db_Table_Abstract
+class TicketEvolution_Db_Table_Brokerages extends TicketEvolution_Db_Table_Abstract
 {
     /**
      * The table name.
      *
      * @var string
      */
-    protected $_name   = 'tevoOfficeEmails';
+    protected $_name   = 'tevoBrokerages';
 
     /**
      * The primary key column or columns.
@@ -53,14 +52,14 @@ class TicketEvolution_Db_Table_OfficeEmails
      *
      * @var mixed
      */
-    protected $_primary   = 'officeEmailId';
+    protected $_primary   = 'brokerageId';
 
     /**
      * The column that we use to indicate status in boolean form
      *
      * @var string
      */
-    protected $_statusColumn   = 'officeEmailStatus';
+    protected $_statusColumn   = 'brokeragesStatus';
 
     /**
      * Classname for row
@@ -84,7 +83,10 @@ class TicketEvolution_Db_Table_OfficeEmails
      *
      * @var array
      */
-    protected $_dependentTables = array();
+    protected $_dependentTables = array(
+        'TicketEvolution_Db_Table_Offices',
+        'TicketEvolution_Db_Table_Users,
+    ');
 
 
     /**
@@ -105,11 +107,5 @@ class TicketEvolution_Db_Table_OfficeEmails
      *
      * @var array
      */
-    protected $_referenceMap    = array(
-        'offices'            => array(
-            'columns'           => 'officeId',
-            'refTableClass'     => 'TicketEvolution_Db_Table_Offices',
-            'refColumns'        => 'officeId'
-            ),
-    );
+    protected $_referenceMap    = array();
 }

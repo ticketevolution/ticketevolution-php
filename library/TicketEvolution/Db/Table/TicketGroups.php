@@ -63,6 +63,20 @@ class TicketEvolution_Db_Table_TicketGroups
     protected $_statusColumn   = 'ticketGroupStatus';
 
     /**
+     * Classname for row
+     *
+     * @var string
+     */
+    //protected $_rowClass = 'TicketEvolution_Db_Table_Row';
+
+    /**
+     * Sets where default column values should be taken from
+     *
+     * @var string
+     */
+    protected $_defaultSource = self::DEFAULT_DB;
+
+    /**
      * Simple array of class names of tables that are "children" of the current
      * table, in other words tables that contain a foreign key to this one.
      * Array elements are not table names; they are class names of classes that
@@ -99,9 +113,9 @@ class TicketEvolution_Db_Table_TicketGroups
             'refTableClass'     => 'TicketEvolution_Db_Table_Events',
             'refColumns'        => 'eventId'
             ),
-        'Brokers'            => array(
+        'Brokerages'            => array(
             'columns'           => 'brokerId',
-            'refTableClass'     => 'TicketEvolution_Db_Table_Brokers',
+            'refTableClass'     => 'TicketEvolution_Db_Table_Brokerages',
             'refColumns'        => 'brokerId'
             ),
         'Offices'            => array(
