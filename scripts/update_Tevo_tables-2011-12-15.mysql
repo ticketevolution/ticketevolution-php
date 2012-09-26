@@ -8,4 +8,4 @@ ALTER TABLE  `tevoCategories` ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTE
 ALTER TABLE  `tevoEvents` ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`;
 ALTER TABLE  `tevoPerformers` ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`;
 ALTER TABLE  `tevoVenues` ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`;
-ALTER TABLE  `tevoLib`.`tevoDataLoaderStatus` DROP PRIMARY KEY, ADD PRIMARY KEY (  `table` ,  `type` );
+ALTER TABLE  `tevoDataLoaderStatus` DROP PRIMARY KEY, ADD PRIMARY KEY (  `table` ,  `type` );
