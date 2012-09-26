@@ -114,6 +114,8 @@ class TicketEvolution_DataLoader_Performers extends TicketEvolution_DataLoader_A
         }
         if (isset($result->category->id)) {
             $this->_data['categoryId'] = (int) $result->category->id;
+        } else {
+            $this->_data['categoryId'] = null;
         }
     }
 
