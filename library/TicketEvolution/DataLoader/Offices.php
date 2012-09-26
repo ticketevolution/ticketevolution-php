@@ -93,6 +93,15 @@ class TicketEvolution_DataLoader_Offices extends TicketEvolution_DataLoader_Abst
             'updated_at'        => (string) $result->updated_at,
             'officeStatus'      => (int)    1,
         );
+
+        if (!empty($result->created_at)) {
+            $this->_data['created_at'] = (string) $result->created_at;
+        }
+
+        if (!empty($result->deleted_at)) {
+            $this->_data['deleted_at'] = (string) $result->deleted_at;
+        }
+
         if (isset($result->address)) {
             $this->_data['streetAddress']   = (string) $result->address->street_address;
             $this->_data['extendedAddress'] = (string) $result->address->extended_address;
@@ -138,13 +147,13 @@ class TicketEvolution_DataLoader_Offices extends TicketEvolution_DataLoader_Abst
             // Loop through the emails and add them to the `tevoOfficeEmails` table
             foreach ($result->email as $email) {
                 $data = array(
-                    'officeId'          => (int)    $result->id,
-                    'email'             => strtolower((string)$email),
-                    'officeEmailStatus' => (int)    1,
-                    'lastModifiedDate'  => (string) $this->_startTime->format('c'),
+                    'officeId'              => (int)    $result->id,
+                    'email'                 => strtolower((string)$email),
+                    'officeEmailsStatus'    => (int)    1,
+                    'lastModifiedDate'      => (string) $this->_startTime->format('c'),
                 );
 
-                if ($row = $emailsTable->fetchRow($emailsTable->select()->where("`officeId` = ?", $data['officeId'])->where("`officeEmailStatus` = ?", (int) 0)->where("`email` = ?", $data['email']))) {
+                if ($row = $emailsTable->fetchRow($emailsTable->select()->where("`officeId` = ?", $data['officeId'])->where("`officeEmailsStatus` = ?", (int) 0)->where("`email` = ?", $data['email']))) {
                     $row->setFromArray($data);
                 } else {
                     $row = $emailsTable->createRow($data);
@@ -165,11 +174,11 @@ class TicketEvolution_DataLoader_Offices extends TicketEvolution_DataLoader_Abst
             // were attached to this office but are no longer to false/inactive
             if (isset($emailArray)) {
                 $data = array(
-                    'officeEmailStatus' => (int)    0,
+                    'officeEmailsStatus' => (int)    0,
                     'lastModifiedDate'  => (string) $this->_startTime->format('c'),
                 );
                 $where = $emailsTable->getAdapter()->quoteInto("`officeId` = ?", $result->id);
-                $where .= $emailsTable->getAdapter()->quoteInto(" AND `officeEmailStatus` = ?", (int) 1);
+                $where .= $emailsTable->getAdapter()->quoteInto(" AND `officeEmailsStatus` = ?", (int) 1);
                 $where .= $emailsTable->getAdapter()->quoteInto(" AND `email` NOT IN (?)", $emailArray);
                 $emailsTable->update($data, $where);
                 unset($data);

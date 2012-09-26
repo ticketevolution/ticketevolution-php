@@ -98,6 +98,15 @@ class TicketEvolution_DataLoader_Venues extends TicketEvolution_DataLoader_Abstr
             'venueStatus'               => (int)    1,
         );
 
+        if (!empty($result->created_at)) {
+            $this->_data['created_at'] = (string) $result->created_at;
+        }
+
+        if (!empty($result->deleted_at)) {
+            $this->_data['deleted_at'] = (string) $result->deleted_at;
+        }
+
+
         /**
          * Currently country_code is not part of the address object. Not sure why.
          * Handle it properly wherever it is

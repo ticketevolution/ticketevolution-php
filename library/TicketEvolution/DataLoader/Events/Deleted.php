@@ -89,11 +89,18 @@ class TicketEvolution_DataLoader_Events_Deleted extends TicketEvolution_DataLoad
             'eventName'         => (string) $result->name,
             'eventDate'         => (string) $occursAt,
             'eventUrl'          => (string) $result->url,
-            'created_at'        => (string) $result->created_at,
             'updated_at'        => (string) $result->updated_at,
-            'deleted_at'        => (string) $result->deleted_at,
             'eventStatus'       => (int)    0,
         );
+
+        if (!empty($result->created_at)) {
+            $this->_data['created_at'] = (string) $result->created_at;
+        }
+
+        if (!empty($result->deleted_at)) {
+            $this->_data['deleted_at'] = (string) $result->deleted_at;
+        }
+
     }
 
 

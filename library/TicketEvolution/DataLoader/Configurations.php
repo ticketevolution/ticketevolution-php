@@ -83,17 +83,29 @@ class TicketEvolution_DataLoader_Configurations extends TicketEvolution_DataLoad
     {
         $this->_data = array(
             'configurationId'           => (int)    $result->id,
-            'venueId'                   => (int)    $result->venue->id,
             'configurationName'         => (string) $result->name,
             'isPrimary'                 => (int)    $result->primary,
             'ticketUtilsId'             => (string) $result->ticket_utils_id,
             'fanvenuesKey'              => (string) $result->fanvenues_key,
-            'capacity'                  => (string) $result->capacity,
+            'capacity'                  =>          $result->capacity,
             'isGeneralAdmission'        => (int)    $result->general_admission,
             'configurationUrl'          => (string) $result->url,
             'updated_at'                => (string) $result->updated_at,
             'configurationStatus'       => (int)    1,
         );
+
+        if (!empty($result->created_at)) {
+            $this->_data['created_at'] = (string) $result->created_at;
+        }
+
+        if (!empty($result->deleted_at)) {
+            $this->_data['deleted_at'] = (string) $result->deleted_at;
+        }
+
+        if (!empty($result->venue->id)) {
+            $this->_data['venueId'] = (int) $result->venue->id;
+        }
+
         if (!empty($result->seating_chart->medium)) {
             $this->_data['urlSeatingChartMedium'] = (string) $result->seating_chart->medium;
         }

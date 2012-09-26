@@ -60,7 +60,7 @@ class TicketEvolution_Db_Table_OfficeEmails
      *
      * @var string
      */
-    protected $_statusColumn   = 'officeEmailStatus';
+    protected $_statusColumn   = 'officeEmailsStatus';
 
     /**
      * Classname for row

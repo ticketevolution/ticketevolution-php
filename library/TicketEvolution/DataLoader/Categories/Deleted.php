@@ -89,6 +89,15 @@ class TicketEvolution_DataLoader_Categories_Deleted extends TicketEvolution_Data
             'deleted_at'        => (string) $result->deleted_at,
             'categoryStatus'    => (int)    0,
         );
+
+        if (!empty($result->created_at)) {
+            $this->_data['created_at'] = (string) $result->created_at;
+        }
+
+        if (!empty($result->deleted_at)) {
+            $this->_data['deleted_at'] = (string) $result->deleted_at;
+        }
+
         if (isset($result->parent->id)) {
             $this->_data['parentCategoryId'] = (int) $result->parent->id;
         }

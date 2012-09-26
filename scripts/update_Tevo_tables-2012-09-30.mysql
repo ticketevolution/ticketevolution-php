@@ -1,4 +1,5 @@
-RENAME TABLE  `tevoBrokers` TO  `tevoBrokerages` ;
+RENAME TABLE  `
+` TO  `tevoBrokerages` ;
 
 UPDATE `tevoDataLoaderStatus` SET `table` = 'brokerages' WHERE `table` = 'brokers';
 
@@ -14,7 +15,7 @@ ALTER TABLE  `tevoOffices` CHANGE  `brokerId`  `brokerageId` SMALLINT( 5 ) UNSIG
 
 ALTER TABLE  `tevoUsers` CHANGE  `brokerId`  `brokerageId` SMALLINT( 5 ) UNSIGNED NOT NULL;
 
-ALTER TABLE  `tevoTicketGroups` CHANGE  `brokerId`  `brokerageId` SMALLINT( 5 ) UNSIGNED NOT NULL;
+-- ALTER TABLE  `tevoTicketGroups` CHANGE  `brokerId`  `brokerageId` SMALLINT( 5 ) UNSIGNED NOT NULL;
 
 
 ALTER TABLE  `tevoPerformers` ADD  `popularityScore` DECIMAL( 7, 6 ) NOT NULL DEFAULT  '0.000000' AFTER  `performerUrl`, ADD INDEX (  `popularityScore` );
@@ -42,7 +43,7 @@ ALTER TABLE  `tevoEvents` ADD  `eventNotes` TEXT NULL DEFAULT NULL AFTER  `categ
 
 ALTER TABLE  `tevoEvents` ADD  `ownedByOfficeId` SMALLINT( 5 ) UNSIGNED NULL DEFAULT NULL AFTER  `popularityScore`;
 
-ALTER TABLE  `tevoEvents` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
+ALTER TABLE  `tevoEvents` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`;
 
 CREATE TABLE IF NOT EXISTS `tevoOfficeHours` (
   `officeHoursId` int(8) unsigned NOT NULL AUTO_INCREMENT,
@@ -60,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `tevoOfficeHours` (
   KEY `isClosed` (`isClosed`),
   KEY `open` (`open`),
   KEY `officeHoursStatus` (`officeHoursStatus`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=1 ;
 
 
 ALTER TABLE  `tevoPerformers` ADD  `performerKeywords` TEXT NULL DEFAULT NULL AFTER  `popularityScore`;
@@ -68,12 +69,32 @@ ALTER TABLE  `tevoPerformers` ADD FULLTEXT (
 `performerKeywords`
 );
 
-ALTER TABLE  `tevoPerformers` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
+ALTER TABLE  `tevoPerformers` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`;
 
-ALTER TABLE  `tevoVenues` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
+ALTER TABLE  `tevoVenues` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`;
 
 ALTER TABLE  `tevoVenues` ADD  `venueKeywords` TEXT NULL DEFAULT NULL AFTER  `popularityScore`;
 ALTER TABLE  `tevoVenues` ADD FULLTEXT (
 `venueKeywords`
 );
+
+ALTER TABLE  `tevoBrokerages` CHANGE  `brokerageStatus`  `brokeragesStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoCategories` CHANGE  `categoryStatus`  `categoriesStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoConfigurations` CHANGE  `configurationStatus`  `configurationsStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoEvents` CHANGE  `eventStatus`  `eventsStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoOfficeEmails` CHANGE  `officeEmailStatus`  `officeEmailsStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoOffices` CHANGE  `officeStatus`  `officesStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoPerformers` CHANGE  `performerStatus`  `performersStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoUsers` CHANGE  `userStatus`  `usersStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoVenues` CHANGE  `venueStatus`  `venuesStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1'
+
+ALTER TABLE  `tevoBrokerages` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
+
+ALTER TABLE  `tevoCategories` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`;
+
+ALTER TABLE  `tevoConfigurations` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
+
+ALTER TABLE  `tevoOffices` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
+
+ALTER TABLE  `tevoUsers` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
 

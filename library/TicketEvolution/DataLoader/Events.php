@@ -100,6 +100,15 @@ class TicketEvolution_DataLoader_Events extends TicketEvolution_DataLoader_Abstr
             'eventStatus'       => (int)    1,
             'eventState'        => (string) $result->state,
         );
+
+        if (!empty($result->created_at)) {
+            $this->_data['created_at'] = (string) $result->created_at;
+        }
+
+        if (!empty($result->deleted_at)) {
+            $this->_data['deleted_at'] = (string) $result->deleted_at;
+        }
+
         if (isset($result->configuration->id)) {
             $this->_data['configurationId'] = (int) $result->configuration->id;
         }

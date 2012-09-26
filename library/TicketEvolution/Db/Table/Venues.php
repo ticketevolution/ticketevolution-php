@@ -54,7 +54,7 @@ class TicketEvolution_Db_Table_Venues extends TicketEvolution_Db_Table_Abstract
      *
      * @var string
      */
-    protected $_statusColumn   = 'venueStatus';
+    protected $_statusColumn   = 'venuesStatus';
 
     /**
      * Classname for row

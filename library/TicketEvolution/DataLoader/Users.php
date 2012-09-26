@@ -93,6 +93,15 @@ class TicketEvolution_DataLoader_Users extends TicketEvolution_DataLoader_Abstra
             'updated_at'            => (string) $result->updated_at,
             'userStatus'            => (int) 1,
         );
+
+        if (!empty($result->created_at)) {
+            $this->_data['created_at'] = (string) $result->created_at;
+        }
+
+        if (!empty($result->deleted_at)) {
+            $this->_data['deleted_at'] = (string) $result->deleted_at;
+        }
+
     }
 
 

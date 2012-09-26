@@ -59,7 +59,7 @@ class TicketEvolution_Db_Table_Events extends TicketEvolution_Db_Table_Abstract
      *
      * @var string
      */
-    protected $_statusColumn   = 'eventStatus';
+    protected $_statusColumn   = 'eventsStatus';
 
     /**
      * Classname for row

@@ -90,12 +90,15 @@ class TicketEvolution_DataLoader_Performers_Deleted extends TicketEvolution_Data
             'updated_at'                    => (string) $result->updated_at,
             'performerStatus'               => (int)    0,
         );
-        if (isset($result->created_at)) {
+
+        if (!empty($result->created_at)) {
             $this->_data['created_at'] = (string) $result->created_at;
         }
-        if (isset($result->deleted_at)) {
+
+        if (!empty($result->deleted_at)) {
             $this->_data['deleted_at'] = (string) $result->deleted_at;
         }
+
         if (isset($result->venue->id)) {
             $this->_data['venueId'] = (int) $result->venue->id;
         }
