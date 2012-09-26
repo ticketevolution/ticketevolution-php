@@ -2,7 +2,7 @@
 
 ## RELEASE INFORMATION
 
-### September 26, 2012
+### September 26, 2012 v1.9.7
 *This update contains changes that are NOT backwards compatible*
 
 *Be sure to apply `/scripts/update_Tevo_tables-2012-09-26.mysql` to update your tables as necessary*
