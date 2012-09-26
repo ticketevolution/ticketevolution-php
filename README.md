@@ -2,10 +2,16 @@
 
 ## RELEASE INFORMATION
 
-### August 10, 2012
-- Pretty much a full rewrite of the Demo app
+### September 26, 2012
+*This update contains changes that are NOT backwards compatible*
+
+*Be sure to apply `/scripts/update_Tevo_tables-2012-09-26.mysql` to update your tables as necessary*
+
+- Full rewrite of the Demo app
+- Full rewrite of the Data Loaders for caching the API data locally. They are now classes, which means you can easily extend them to add additional features or tweaks as necessary.
 - Deprecated some methods in `TicketEvolution_Webservice`. Deprecated methods will trigger an `E_USER_DEPRECATED` error. This was done in order to make the naming more consistent with TEvo naming and with the functionality of the methods.
 - Added some new methods for new API features such as Companies and shipment settings.
+- Changed some column names for clarity.
 
 ### June 8, 2012 v1.9.6
 - Fixed bug in `TicketEvolution_Webservice::createOrder()` where an array should have been used. Thanks to @aaronwp for finding the bug.
