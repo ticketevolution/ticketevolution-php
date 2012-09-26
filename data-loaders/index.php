@@ -16,7 +16,7 @@
  * @category    TicketEvolution
  * @package     TicketEvolution
  * @author      J Cobb <j@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Ticket Evolution INC (http://www.ticketevolution.com)
+ * @copyright   Copyright (c) 2012 Ticket Evolution INC (http://www.ticketevolution.com)
  * @license     http://code.ticketevolution.com/license/new-bsd     New BSD License
  */
 
@@ -78,7 +78,7 @@ require_once 'bootstrap.php';
                 $table = new TicketEvolution_Db_Table_DataLoaderStatus();
 
                 $scripts = array(
-                    'brokers'        => array(
+                    'brokerages'        => array(
                         'active',
                     ),
                     'categories'        => array(

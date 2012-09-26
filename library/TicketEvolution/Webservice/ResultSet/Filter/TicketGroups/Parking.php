@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TicketEvolution Framework
  *

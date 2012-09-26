@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TicketEvolution Framework
  *
@@ -17,7 +18,7 @@
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
@@ -30,7 +31,7 @@ require_once 'Zend/Db/Table/Abstract.php';
  * @category    TicketEvolution
  * @package     TicketEvolution_Db
  * @subpackage  Table
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
