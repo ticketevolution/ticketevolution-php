@@ -137,8 +137,9 @@ $options = array(
 
 
 /**
- * If a "fullRefresh" as specified, overwrite the $lastRun
+ * If a "fullRefresh" was specified, overwrite the $lastRun date with one old
+ * enough to grab everything.
  */
 if ($GET->fullRefresh) {
-    $options['lastRun'] = '2010-01-01'; // This date is early enough to refresh everything
+    $options['lastRun'] = '2010-01-01';
 }
