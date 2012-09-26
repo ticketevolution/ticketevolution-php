@@ -72,6 +72,14 @@ $filters = array(
         'StripTags',
         'StripNewlines'
     ),
+    'fullRefresh' => array(
+        new Zend_Filter_Boolean(array(
+            'type'      => Zend_Filter_Boolean::ALL,
+        )),
+        'StringTrim',
+        'StripTags',
+        'StripNewlines'
+    ),
 );
 $validators = array(
     'lastRun' => array(
@@ -102,6 +110,11 @@ $validators = array(
         'allowEmpty'    => false,
         'default'       => true
     ),
+    'fullRefresh' => array(
+        'presence'      => 'optional',
+        'allowEmpty'    => false,
+        'default'       => false
+    ),
 );
 $GET = new Zend_Filter_Input($filters, $validators, $_GET);
 
@@ -121,3 +134,11 @@ $options = array(
     'showMemory'        => $GET->showMemory,
     'showProgress'      => $GET->showProgress,
 );
+
+
+/**
+ * If a "fullRefresh" as specified, overwrite the $lastRun
+ */
+if ($GET->fullRefresh) {
+    $options['lastRun'] = '2010-01-01'; // This date is early enough to refresh everything
+}
