@@ -1,0 +1,100 @@
+RENAME TABLE  `
+` TO  `tevoBrokerages` ;
+
+UPDATE `tevoDataLoaderStatus` SET `table` = 'brokerages' WHERE `table` = 'brokers';
+
+ALTER TABLE  `tevoBrokerages` ADD  `evopay` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '0' AFTER  `natbMember`;
+
+ALTER TABLE  `tevoBrokerages` CHANGE  `brokerId`  `brokerageId` SMALLINT( 5 ) UNSIGNED NOT NULL AUTO_INCREMENT ,
+CHANGE  `brokerName`  `brokerageName` VARCHAR( 200 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+CHANGE  `brokerAbbreviation`  `brokerageAbbreviation` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+CHANGE  `brokerUrl`  `brokerageUrl` VARCHAR( 50 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+CHANGE  `brokerStatus`  `brokerageStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+
+ALTER TABLE  `tevoOffices` CHANGE  `brokerId`  `brokerageId` SMALLINT( 5 ) UNSIGNED NOT NULL;
+
+ALTER TABLE  `tevoUsers` CHANGE  `brokerId`  `brokerageId` SMALLINT( 5 ) UNSIGNED NOT NULL;
+
+-- ALTER TABLE  `tevoTicketGroups` CHANGE  `brokerId`  `brokerageId` SMALLINT( 5 ) UNSIGNED NOT NULL;
+
+
+ALTER TABLE  `tevoPerformers` ADD  `popularityScore` DECIMAL( 7, 6 ) NOT NULL DEFAULT  '0.000000' AFTER  `performerUrl`, ADD INDEX (  `popularityScore` );
+ALTER TABLE  `tevoPerformers` DROP INDEX  `performerName`, ADD INDEX  `performerName` (  `performerName` );
+
+ALTER TABLE  `tevoVenues` ADD  `popularityScore` DECIMAL( 7, 6 ) NOT NULL DEFAULT  '0.000000' AFTER  `venueUrl`, ADD INDEX (  `popularityScore` );
+ALTER TABLE  `tevoVenues` DROP INDEX  `venueName`, ADD INDEX  `venueName` (  `venueName` );
+
+ALTER TABLE  `tevoEvents` ADD  `mergedInto` MEDIUMINT( 8 ) UNSIGNED NULL DEFAULT NULL AFTER  `eventUrl`;
+
+ALTER TABLE  `tevoDataLoaderStatus` CHANGE  `lastRun`  `lastRun` TIMESTAMP NOT NULL DEFAULT  '2010-01-01';
+
+ALTER TABLE  `tevoBrokerages` DROP INDEX  `brokerName`, ADD INDEX  `brokerName` (  `brokerageName` );
+ALTER TABLE  `tevoBrokerages` DROP INDEX  `brokerAbbreviation`, ADD INDEX  `brokerAbbreviation` (  `brokerageAbbreviation` );
+
+
+ALTER TABLE  `tevoDataLoaderStatus` CHANGE  `table`  `endpoint` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+CHANGE  `type`  `state` ENUM(  'active',  'deleted' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  'active';
+
+ALTER TABLE  `tevoConfigurations` ADD  `ticketUtilsId` VARCHAR( 40 ) NULL DEFAULT NULL AFTER  `fanvenuesKey`;
+
+ALTER TABLE  `tevoEvents` ADD  `popularityScore` DECIMAL( 7, 6 ) NOT NULL DEFAULT  '0.000000' AFTER  `eventUrl`, ADD INDEX (  `popularityScore` );
+
+ALTER TABLE  `tevoEvents` ADD  `eventNotes` TEXT NULL DEFAULT NULL AFTER  `categoryId`;
+
+ALTER TABLE  `tevoEvents` ADD  `ownedByOfficeId` SMALLINT( 5 ) UNSIGNED NULL DEFAULT NULL AFTER  `popularityScore`;
+
+ALTER TABLE  `tevoEvents` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`;
+
+CREATE TABLE IF NOT EXISTS `tevoOfficeHours` (
+  `officeHoursId` int(8) unsigned NOT NULL AUTO_INCREMENT,
+  `officeId` smallint(5) unsigned NOT NULL,
+  `dayOfWeek` tinyint(1) unsigned NOT NULL,
+  `isClosed` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `open` time NOT NULL,
+  `close` time NOT NULL,
+  `officeHoursStatus` tinyint(1) unsigned NOT NULL DEFAULT '1',
+  `createdDate` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `lastModifiedDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`officeHoursId`),
+  KEY `officeId` (`officeId`),
+  KEY `dayOfWeek` (`dayOfWeek`),
+  KEY `isClosed` (`isClosed`),
+  KEY `open` (`open`),
+  KEY `officeHoursStatus` (`officeHoursStatus`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=1 ;
+
+
+ALTER TABLE  `tevoPerformers` ADD  `performerKeywords` TEXT NULL DEFAULT NULL AFTER  `popularityScore`;
+ALTER TABLE  `tevoPerformers` ADD FULLTEXT (
+`performerKeywords`
+);
+
+ALTER TABLE  `tevoPerformers` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`;
+
+ALTER TABLE  `tevoVenues` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`;
+
+ALTER TABLE  `tevoVenues` ADD  `venueKeywords` TEXT NULL DEFAULT NULL AFTER  `popularityScore`;
+ALTER TABLE  `tevoVenues` ADD FULLTEXT (
+`venueKeywords`
+);
+
+ALTER TABLE  `tevoBrokerages` CHANGE  `brokerageStatus`  `brokeragesStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoCategories` CHANGE  `categoryStatus`  `categoriesStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoConfigurations` CHANGE  `configurationStatus`  `configurationsStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoEvents` CHANGE  `eventStatus`  `eventsStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoOfficeEmails` CHANGE  `officeEmailStatus`  `officeEmailsStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoOffices` CHANGE  `officeStatus`  `officesStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoPerformers` CHANGE  `performerStatus`  `performersStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoUsers` CHANGE  `userStatus`  `usersStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
+ALTER TABLE  `tevoVenues` CHANGE  `venueStatus`  `venuesStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1'
+
+ALTER TABLE  `tevoBrokerages` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
+
+ALTER TABLE  `tevoCategories` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`;
+
+ALTER TABLE  `tevoConfigurations` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
+
+ALTER TABLE  `tevoOffices` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
+
+ALTER TABLE  `tevoUsers` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
+

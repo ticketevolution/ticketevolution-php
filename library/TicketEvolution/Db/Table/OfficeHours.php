@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TicketEvolution Framework
  *
@@ -17,9 +18,10 @@
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
+
 
 /**
  * @see TicketEvolution_Db_Table_Abstract
@@ -30,17 +32,18 @@ require_once 'TicketEvolution/Db/Table/Abstract.php';
  * @category    TicketEvolution
  * @package     TicketEvolution_Db
  * @subpackage  Table
- * @copyright   Copyright (c) 2011 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Db_Table_Brokers extends TicketEvolution_Db_Table_Abstract
+class TicketEvolution_Db_Table_OfficeHours
+    extends TicketEvolution_Db_Table_Abstract
 {
     /**
      * The table name.
      *
      * @var string
      */
-    protected $_name   = 'tevoBrokers';
+    protected $_name   = 'tevoOfficeHours';
 
     /**
      * The primary key column or columns.
@@ -50,15 +53,29 @@ class TicketEvolution_Db_Table_Brokers extends TicketEvolution_Db_Table_Abstract
      *
      * @var mixed
      */
-    protected $_primary   = 'brokerId';
-    
+    protected $_primary   = 'officeHoursId';
+
     /**
      * The column that we use to indicate status in boolean form
      *
      * @var string
      */
-    protected $_statusColumn   = 'brokerStatus';
-    
+    protected $_statusColumn   = 'officeHoursStatus';
+
+    /**
+     * Classname for row
+     *
+     * @var string
+     */
+    //protected $_rowClass = 'TicketEvolution_Db_Table_Row';
+
+    /**
+     * Sets where default column values should be taken from
+     *
+     * @var string
+     */
+    protected $_defaultSource = self::DEFAULT_DB;
+
     /**
      * Simple array of class names of tables that are "children" of the current
      * table, in other words tables that contain a foreign key to this one.
@@ -67,10 +84,9 @@ class TicketEvolution_Db_Table_Brokers extends TicketEvolution_Db_Table_Abstract
      *
      * @var array
      */
-    protected $_dependentTables = array('TicketEvolution_Db_Table_Offices',
-                                        'TicketEvolution_Db_Table_Users');
-    
-    
+    protected $_dependentTables = array();
+
+
     /**
      * Associative array map of declarative referential integrity rules.
      * This array has one entry per foreign key in the current table.
@@ -89,5 +105,11 @@ class TicketEvolution_Db_Table_Brokers extends TicketEvolution_Db_Table_Abstract
      *
      * @var array
      */
-    protected $_referenceMap    = array();
+    protected $_referenceMap    = array(
+        'offices'            => array(
+            'columns'           => 'officeId',
+            'refTableClass'     => 'TicketEvolution_Db_Table_Offices',
+            'refColumns'        => 'officeId'
+            ),
+    );
 }

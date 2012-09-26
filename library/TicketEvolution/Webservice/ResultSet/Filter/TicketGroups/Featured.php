@@ -1,4 +1,5 @@
 <?php
+
 /**
  * TicketEvolution Framework
  *
@@ -24,7 +25,7 @@
 
 /**
  * @category    TicketEvolution
- * @package     TicketEvolution_Webservice
+ * @package     TicketEvolution_Webservice_ResultSet
  * @subpackage  Filter
  * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
