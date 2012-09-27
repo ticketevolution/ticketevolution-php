@@ -112,8 +112,20 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      */
     public function totalPages()
     {
-        $totalPages = ceil($this->totalResults() / $this->_per_page);
-        return (int) $totalPages;
+        /**
+         * The categories endpoints ignores the per_page settings and returns
+         * all results in one page. If there is nothing to return, such as from
+         * a call using 'updated_at' there will be 0 items and $this->_per_page
+         * will be set to 0.
+         *
+         * Work around this issue by checking for this and returning 1 total page
+         */
+        if ($this->_per_page == 0) {
+            return 1;
+        } else {
+            $totalPages = ceil($this->totalResults() / $this->_per_page);
+            return (int) $totalPages;
+        }
     }
 
 
