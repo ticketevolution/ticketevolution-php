@@ -3,6 +3,7 @@
 ## RELEASE INFORMATION
 
 ### September 27, 2012 v1.9.9
+- Fixes #76 by correcting typo in `TicketEvolution/Db/Table/Users.php`
 - Fixes a couple bugs in `/scripts/update_Tevo_tables-2012-09-26.mysql`
 - Improves handling of `showMemory` and `showProgress` options for DataLoaders
 - Better handling of an oddity in results from `/categories` endpoints when no results are returned
