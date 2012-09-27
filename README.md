@@ -2,6 +2,11 @@
 
 ## RELEASE INFORMATION
 
+### September 27, 2012 v1.9.9
+- Fixes a couple bugs in `/scripts/update_Tevo_tables-2012-09-26.mysql`
+- Improves handling of `showMemory` and `showProgress` options for DataLoaders
+- Better handling of an oddity in results from `/categories` endpoints when no results are returned
+
 ### September 26, 2012 v1.9.8
 - Fixes missing table name in `/scripts/update_Tevo_tables-2012-09-26.mysql` Thanks to @kylegato for reporting the bug.
 
