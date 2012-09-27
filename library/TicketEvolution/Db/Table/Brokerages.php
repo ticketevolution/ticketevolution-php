@@ -85,8 +85,8 @@ class TicketEvolution_Db_Table_Brokerages extends TicketEvolution_Db_Table_Abstr
      */
     protected $_dependentTables = array(
         'TicketEvolution_Db_Table_Offices',
-        'TicketEvolution_Db_Table_Users,
-    ');
+        'TicketEvolution_Db_Table_Users',
+    );
 
 
     /**

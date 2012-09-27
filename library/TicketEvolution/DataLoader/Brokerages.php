@@ -82,14 +82,14 @@ class TicketEvolution_DataLoader_Brokerages extends TicketEvolution_DataLoader_A
     protected function _formatData($result)
     {
         $this->_data = array(
-            'brokerageId'              => (int)    $result->id,
-            'brokerageName'            => (string) $result->name,
-            'brokerageAbbreviation'    => (string) $result->abbreviation,
-            'natbMember'            => (int)    $result->natb_member,
-            'evopay'                => (int)    $result->evopay,
-            'brokerageUrl'             => (string) $result->url,
-            'updated_at'            => (string) $result->updated_at,
-            'brokeragesStatus'      => (int)    1,
+            'brokerageId'               => (int)    $result->id,
+            'brokerageName'             => (string) $result->name,
+            'brokerageAbbreviation'     => (string) $result->abbreviation,
+            'natbMember'                => (int)    $result->natb_member,
+            'evopay'                    => (int)    $result->evopay,
+            'brokerageUrl'              => (string) $result->url,
+            'updated_at'                => (string) $result->updated_at,
+            'brokeragesStatus'          => (int)    1,
         );
 
         if (!empty($result->created_at)) {
