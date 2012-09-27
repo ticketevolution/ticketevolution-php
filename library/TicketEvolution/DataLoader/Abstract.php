@@ -555,7 +555,6 @@ abstract class TicketEvolution_DataLoader_Abstract
                    . '</h1>' . PHP_EOL;
             }
 
-            var_dump($e);
             throw new TicketEvolution_DataLoader_Exception($e);
         }
     }
