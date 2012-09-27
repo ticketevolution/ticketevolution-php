@@ -30,6 +30,16 @@ set_include_path (get_include_path() . PATH_SEPARATOR . '../library');
 
 
 /**
+ * Set up autoloading
+ */
+require_once 'Zend/Loader/Autoloader.php';
+$autoloader = Zend_Loader_Autoloader::getInstance();
+$autoloader->registerNamespace('Zend_');
+$autoloader->registerNamespace('TicketEvolution_');
+$autoloader->setFallbackAutoloader(true);
+
+
+/**
  * Set your Ticket Evolution API information.
  * This is available from your account under Brokerage->API Keys
  *
