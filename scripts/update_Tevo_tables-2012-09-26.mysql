@@ -84,7 +84,7 @@ ALTER TABLE  `tevoOfficeEmails` CHANGE  `officeEmailStatus`  `officeEmailsStatus
 ALTER TABLE  `tevoOffices` CHANGE  `officeStatus`  `officesStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
 ALTER TABLE  `tevoPerformers` CHANGE  `performerStatus`  `performersStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
 ALTER TABLE  `tevoUsers` CHANGE  `userStatus`  `usersStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
-ALTER TABLE  `tevoVenues` CHANGE  `venueStatus`  `venuesStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1'
+ALTER TABLE  `tevoVenues` CHANGE  `venueStatus`  `venuesStatus` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT  '1';
 
 ALTER TABLE  `tevoBrokerages` ADD  `created_at` TIMESTAMP NULL DEFAULT NULL AFTER  `updated_at`, ADD  `deleted_at` TIMESTAMP NULL DEFAULT NULL AFTER  `created_at`;
 
