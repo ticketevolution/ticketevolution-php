@@ -2,7 +2,12 @@
 
 ## RELEASE INFORMATION
 
+### September 26, 2012 v1.9.8
+- Fixes missing table name in `/scripts/update_Tevo_tables-2012-09-26.mysql` Thanks to @kylegato for reporting the bug.
+
 ### September 26, 2012 v1.9.7
+*This release has a bug in `/scripts/update_Tevo_tables-2012-09-26.mysql`. Use 1.9.8 instead.*
+
 *This update contains changes that are NOT backwards compatible*
 
 *Be sure to apply `/scripts/update_Tevo_tables-2012-09-26.mysql` to update your tables as necessary*
