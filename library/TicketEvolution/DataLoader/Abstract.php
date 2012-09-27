@@ -216,12 +216,12 @@ abstract class TicketEvolution_DataLoader_Abstract
             $this->_perPage = $options['perPage'];
         }
 
-        if (!empty($options['showMemory'])) {
-            $this->_showMemory = $options['showMemory'];
+        if (isset($options['showMemory'])) {
+            $this->_showMemory = (bool) $options['showMemory'];
         }
 
-        if (!empty($options['showProgress'])) {
-            $this->_showProgress = $options['showProgress'];
+        if (isset($options['showProgress'])) {
+            $this->_showProgress = (bool) $options['showProgress'];
         }
 
         /**

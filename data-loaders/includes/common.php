@@ -131,8 +131,8 @@ $options = array(
     'lastRun'           => $GET->lastRun,
     'startPage'         => $GET->startPage,
     'perPage'           => $GET->perPage,
-    'showMemory'        => $GET->showMemory,
-    'showProgress'      => $GET->showProgress,
+    'showMemory'        => (bool) $GET->showMemory,
+    'showProgress'      => (bool) $GET->showProgress,
 );
 
 
