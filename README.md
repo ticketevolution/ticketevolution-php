@@ -2,6 +2,9 @@
 
 ## RELEASE INFORMATION
 
+### September 27, 2012 v1.9.10
+- Remover leftover debug
+
 ### September 27, 2012 v1.9.9
 - Fixes #76 by correcting typo in `TicketEvolution/Db/Table/Users.php`
 - Fixes a couple bugs in `/scripts/update_Tevo_tables-2012-09-26.mysql`
