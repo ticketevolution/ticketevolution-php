@@ -335,15 +335,10 @@ abstract class TicketEvolution_DataLoader_Abstract
 
 
    		// Outer loop through pages of API results
-//    		try {
-   			while ($this->totalPages === null || $options['page'] <= $this->totalPages) {
-       			$this->processResults($options, $this->_showProgress, $this->_showMemory);
-       			$options['page']++;
-       		}
-//    		} catch (Exception $e) {
-//    		    var_dump($e);
-//        		throw new TicketEvolution_DataLoader_Exception('Unable to process ' . $this->_statusRow->endpoint . ' results for page ' . $options['page']);
-//    		}
+        while ($this->totalPages === null || $options['page'] <= $this->totalPages) {
+            $this->processResults($options, $this->_showProgress, $this->_showMemory);
+            $options['page']++;
+        }
 
 
    		// Record the DataLoaderStatus
@@ -560,6 +555,7 @@ abstract class TicketEvolution_DataLoader_Abstract
                    . '</h1>' . PHP_EOL;
             }
 
+            var_dump($e);
             throw new TicketEvolution_DataLoader_Exception($e);
         }
     }
