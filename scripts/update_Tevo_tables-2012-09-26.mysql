@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `tevoOfficeHours` (
   KEY `isClosed` (`isClosed`),
   KEY `open` (`open`),
   KEY `officeHoursStatus` (`officeHoursStatus`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8_general_ci AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
 ALTER TABLE  `tevoPerformers` ADD  `performerKeywords` TEXT NULL DEFAULT NULL AFTER  `popularityScore`;
