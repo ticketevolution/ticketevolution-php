@@ -1,5 +1,4 @@
-RENAME TABLE  `
-` TO  `tevoBrokerages` ;
+RENAME TABLE  `tevoBrokers` TO  `tevoBrokerages`;
 
 UPDATE `tevoDataLoaderStatus` SET `table` = 'brokerages' WHERE `table` = 'brokers';
 
@@ -32,8 +31,7 @@ ALTER TABLE  `tevoBrokerages` DROP INDEX  `brokerName`, ADD INDEX  `brokerName` 
 ALTER TABLE  `tevoBrokerages` DROP INDEX  `brokerAbbreviation`, ADD INDEX  `brokerAbbreviation` (  `brokerageAbbreviation` );
 
 
-ALTER TABLE  `tevoDataLoaderStatus` CHANGE  `table`  `endpoint` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-CHANGE  `type`  `state` ENUM(  'active',  'deleted' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  'active';
+ALTER TABLE  `tevoDataLoaderStatus` CHANGE  `table`  `endpoint` VARCHAR( 30 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL, CHANGE  `type`  `state` ENUM(  'active',  'deleted' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT  'active';
 
 ALTER TABLE  `tevoConfigurations` ADD  `ticketUtilsId` VARCHAR( 40 ) NULL DEFAULT NULL AFTER  `fanvenuesKey`;
 
