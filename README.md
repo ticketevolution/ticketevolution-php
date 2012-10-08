@@ -2,8 +2,11 @@
 
 ## RELEASE INFORMATION
 
+### October 8, 2012 v1.9.11
+- Fixed bug (#81) with `createClientEmailAddresses()`
+
 ### September 27, 2012 v1.9.10
-- Remover leftover debug
+- Removed leftover debug
 
 ### September 27, 2012 v1.9.9
 - Fixes #76 by correcting typo in `TicketEvolution/Db/Table/Users.php`
