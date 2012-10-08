@@ -1254,7 +1254,7 @@ class TicketEvolution_Webservice
     public function createClientEmailAddresses($clientId, array $emailAddresses)
     {
         $body = new stdClass;
-        $body->email_addresses[] = $emailAddresses;
+        $body->email_addresses = $emailAddresses;
         $options = json_encode($body);
 
         $endPoint = 'clients/' . $clientId . '/email_addresses';
