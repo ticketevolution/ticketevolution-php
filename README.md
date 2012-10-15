@@ -2,6 +2,9 @@
 
 ## RELEASE INFORMATION
 
+### October 15, 2012 v1.9.12
+- Fixed bug (#83) with `createOrders()`
+
 ### October 8, 2012 v1.9.11
 - Fixed bug (#81) with `createClientEmailAddresses()`
 
