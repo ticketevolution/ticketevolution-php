@@ -2711,7 +2711,7 @@ class TicketEvolution_Webservice
     public function createOrders(array $orders, $fulfillment=false)
     {
         $body = new stdClass;
-        $body->orders[] = $orders;
+        $body->orders = $orders;
         $options = json_encode($body);
 
         $endPoint = 'orders';
