@@ -1511,8 +1511,8 @@ if (isset($_REQUEST['apiMethod'])) {
                     </div>
 
                     <div class="listEvents">
-                        <label for="primary_performer_id">primary_performer_id:</label>
-                        <input name="primary_performer_id" id="primary_performer_id" type="text" value="" />
+                        <label for="primary_performer">primary_performer:</label>
+                        <input name="primary_performer" id="primary_performer" type="checkbox" value="true" />
                     </div>
 
                     <div class="listEvents">
