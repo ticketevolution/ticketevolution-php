@@ -2,6 +2,9 @@
 
 ## RELEASE INFORMATION
 
+### October 24, 2012 v1.9.13
+- The parameters to list events by the primary performer has changed from `primary_performer_id` to instead use `performer_id` and add the boolean `primary_performer`. Updated the Demo app to match.
+
 ### October 15, 2012 v1.9.12
 - Fixed bug (#83) with `createOrders()`
 
