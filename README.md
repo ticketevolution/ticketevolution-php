@@ -2,6 +2,9 @@
 
 ## RELEASE INFORMATION
 
+### December 10, 2012 v1.9.14
+- Squashed bugs in the deprecated methods `createClientCompany()`, `createClientAddress()`, `createClientPhoneNumber()`, `createClientEmailAddress()`, `createClientCreditCard()`, and `createOrder()` thanks to a report from tonyguo2010
+
 ### October 24, 2012 v1.9.13
 - The parameters to list events by the primary performer has changed from `primary_performer_id` to instead use `performer_id` and add the boolean `primary_performer`. Updated the Demo app to match.
 

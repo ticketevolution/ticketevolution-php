@@ -674,7 +674,7 @@ class TicketEvolution_Webservice
      * @deprecated
      * @see createClientCompanies
      */
-    public function createClientCompany($company)
+    public function createClientCompany($companies)
     {
         // Trigger an E_USER_DEPRECATED notice that this method is deprecated
         trigger_error(
@@ -682,10 +682,11 @@ class TicketEvolution_Webservice
             E_USER_DEPRECATED
         );
 
-        if (!is_array($company)) {
-            $temp = $company;
-            unset($company);
+        if (!is_array($companies)) {
+            $temp = $companies;
+            unset($companies);
             $companies[] = $temp;
+            unset($temp);
         }
 
         return $this->createClientCompanies($companies);
@@ -856,7 +857,7 @@ class TicketEvolution_Webservice
      * @deprecated
      * @see createClientAddresses
      */
-    public function createClientAddress($clientId, $address)
+    public function createClientAddress($clientId, $addresses)
     {
         // Trigger an E_USER_DEPRECATED notice that this method is deprecated
         trigger_error(
@@ -864,13 +865,14 @@ class TicketEvolution_Webservice
             E_USER_DEPRECATED
         );
 
-        if (!is_array($address)) {
-            $temp = $client;
-            unset($address);
+        if (!is_array($addresses)) {
+            $temp = $addresses;
+            unset($addresses);
             $addresses[] = $temp;
+            unset($temp);
         }
 
-        return $this->createClientAddresses($addresses);
+        return $this->createClientAddresses($clientId, $addresses);
     }
 
 
@@ -1040,7 +1042,7 @@ class TicketEvolution_Webservice
      * @deprecated
      * @see createClientPhoneNumbers
      */
-    public function createClientPhoneNumber($clientId, $phoneNumber)
+    public function createClientPhoneNumber($clientId, $phoneNumbers)
     {
         // Trigger an E_USER_DEPRECATED notice that this method is deprecated
         trigger_error(
@@ -1048,13 +1050,14 @@ class TicketEvolution_Webservice
             E_USER_DEPRECATED
         );
 
-        if (!is_array($phoneNumber)) {
-            $temp = $phoneNumber;
-            unset($phoneNumber);
-            $phoneNumbers[] = $phoneNumber;
+        if (!is_array($phoneNumbers)) {
+            $temp = $phoneNumbers;
+            unset($phoneNumbers);
+            $phoneNumbers[] = $temp;
+            unset($temp);
         }
 
-        return $this->createClientPhoneNumbers($phoneNumbers);
+        return $this->createClientPhoneNumbers($clientId, $phoneNumbers);
     }
 
 
@@ -1224,7 +1227,7 @@ class TicketEvolution_Webservice
      * @deprecated
      * @see createClientEmailAddresses
      */
-    public function createClientEmailAddress($clientId, $emailAddress)
+    public function createClientEmailAddress($clientId, $emailAddresses)
     {
         // Trigger an E_USER_DEPRECATED notice that this method is deprecated
         trigger_error(
@@ -1232,13 +1235,14 @@ class TicketEvolution_Webservice
             E_USER_DEPRECATED
         );
 
-        if (!is_array($emailAddress)) {
-            $temp = $emailAddress;
-            unset($emailAddress);
+        if (!is_array($emailAddresses)) {
+            $temp = $emailAddresses;
+            unset($emailAddresses);
             $emailAddresses[] = $temp;
+            unset($temp);
         }
 
-        return $this->createClientEmailAddresses($emailAddresses);
+        return $this->createClientEmailAddresses($clientId, $emailAddresses);
     }
 
 
@@ -1413,7 +1417,7 @@ class TicketEvolution_Webservice
      * @deprecated
      * @see createClientCreditCards
      */
-    public function createClientCreditCard($clientId, $creditCard)
+    public function createClientCreditCard($clientId, $creditCards)
     {
         // Trigger an E_USER_DEPRECATED notice that this method is deprecated
         trigger_error(
@@ -1421,13 +1425,14 @@ class TicketEvolution_Webservice
             E_USER_DEPRECATED
         );
 
-        if (!is_array($creditCard)) {
-            $temp = $creditCard;
-            unset($creditCard);
+        if (!is_array($creditCards)) {
+            $temp = $creditCards;
+            unset($creditCards);
             $creditCards[] = $temp;
+            unset($temp);
         }
 
-        return $this->createClientCreditCards($creditCards);
+        return $this->createClientCreditCards($clientId, $creditCards);
     }
 
 
@@ -2681,7 +2686,7 @@ class TicketEvolution_Webservice
      * @deprecated
      * @see createOrders
      */
-    public function createOrder($order, $fulfillment=false)
+    public function createOrder($orders, $fulfillment=false)
     {
         // Trigger an E_USER_DEPRECATED notice that this method is deprecated
         trigger_error(
@@ -2689,13 +2694,14 @@ class TicketEvolution_Webservice
             E_USER_DEPRECATED
         );
 
-        if (!is_array($order)) {
-            $temp = $order;
-            unset($order);
+        if (!is_array($orders)) {
+            $temp = $orders;
+            unset($orders);
             $orders[] = $temp;
+            unset($temp);
         }
 
-        return $this->createOrders($orders);
+        return $this->createOrders($orders, $fulfillment);
     }
 
 
