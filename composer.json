@@ -1,12 +1,5 @@
 {
-    "name": "vendor/ticket-evolution",
-    "description": "Description of project ticketEvolution.",
-    "authors": [
-        {
-            "name": "jonathanserle",
-            "email": "jdserle@gmail.com"
-        }
-    ],
+    "name": "jserle/ticket-evolution",
     "require": {
         "breerly/zf1": "*"
     },
@@ -14,5 +7,6 @@
         "psr-0": {
             "TicketEvolution": "library/"
         }
-    }
+    },
+    "include-path": ["library/"]
 }
