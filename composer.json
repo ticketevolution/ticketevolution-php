@@ -1,5 +1,5 @@
 {
-    "name": "jserle/ticket-evolution",
+    "name": "jserle/ticketevolution-php",
     "require": {
         "breerly/zf1": "*"
     },
