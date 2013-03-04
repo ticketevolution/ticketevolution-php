@@ -1,0 +1,12 @@
+{
+    "name": "ticketevolution/ticketevolution-php",
+    "require": {
+        "breerly/zf1": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "TicketEvolution": "library/"
+        }
+    },
+    "include-path": ["library/"]
+}

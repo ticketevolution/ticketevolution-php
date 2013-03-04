@@ -5,3 +5,6 @@ library/Zend
 
 demo/config.php
 data-loaders/config.php
+/nbproject/
+/vendor/
+/composer.lock
