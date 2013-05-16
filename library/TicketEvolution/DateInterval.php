@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,24 +14,28 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_DateInterval
+ * @package     TicketEvolution\DateInterval
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
+
+namespace TicketEvolution;
+
+
 /**
  * @category    TicketEvolution
- * @package     TicketEvolution_DateInterval
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @package     TicketEvolution\DateInterval
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_DateInterval extends DateInterval
+class DateInterval extends \DateInterval
 {
     /**
-     * Creates a TicketEvolution_DateInterval from a DateInterval instance.
-     * Makes it easy to pass in a standard PHP DateInterval to create an TicketEvolution_DateInterval
+     * Creates a TicketEvolution\DateInterval from a DateInterval instance.
+     * Makes it easy to pass in a standard PHP DateInterval to create an TicketEvolution\DateInterval
      *
      * NOTE: Even if the $dateInterval you pass in has the 'days' property set
      *       it will be set to boolean false. Apparently you cannot extend
@@ -39,7 +43,7 @@ class TicketEvolution_DateInterval extends DateInterval
      *       that you cannot use format('%a') as it will return '(unknown)'
      *
      * @param DateInterval The DateInterval to create from
-     * @return Onyx_DateInterval
+     * @return TicketEvolution\DateInterval
      */
     public function __construct($dateInterval) {
         if ($dateInterval InstanceOf DateInterval) {

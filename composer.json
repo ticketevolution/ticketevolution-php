@@ -1,0 +1,25 @@
+{
+    "name": "ticketevolution/ticketevolution-php",
+    "type": "library",
+    "description": "A PHP 5.3+ library for the Ticket Evolution API.",
+    "keywords": ["library", "Ticket Evolution", "ticket"],
+    "homepage": "https://github.com/ticketevolution/ticketevolution-php",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "J Cobb"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "zendframework/zendframework1": ">=1.12"
+    },
+    "autoload": {
+        "psr-0": { "TicketEvolution": "library/" }
+    },
+    "support": {
+        "issues": "https://github.com/ticketevolution/ticketevolution-php/issues",
+        "wiki": "https://github.com/ticketevolution/ticketevolution-php/wiki",
+        "source": "https://github.com/ticketevolution/ticketevolution-php"
+    }
+}

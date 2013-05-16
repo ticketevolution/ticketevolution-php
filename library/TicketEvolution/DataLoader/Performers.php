@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,24 +14,26 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_DataLoader
+ * @package     TicketEvolution\DataLoader
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
+
+
+namespace TicketEvolution\DataLoader;
 
 
 /**
- * Extends Zend_Date with some handy constants and also allows for easy handling
- * of "TBA" event times.
+ * DataLoader for a specific API endpoint to cache the data into local table(s)
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_DataLoader
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @package     TicketEvolution\DataLoader
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_DataLoader_Performers extends TicketEvolution_DataLoader_Abstract
+class Performers extends AbstractDataLoader
 {
     /**
      * Which endpoint we are hitting. This is used in the `dataLoaderStatus` table
@@ -52,23 +54,23 @@ class TicketEvolution_DataLoader_Performers extends TicketEvolution_DataLoader_A
     /**
      * The class of the table
      *
-     * @var Zend_Db_Table
+     * @var \Zend_Db_Table
      */
-    protected $_tableClass = 'TicketEvolution_Db_Table_Performers';
+    protected $_tableClass = '\TicketEvolution\Db\Table\Performers';
 
 
     /**
      * Perform the API call
      *
      * @param array $options Options for the API call
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return \TicketEvolution\Webservice\ResultSet
      */
     protected function _doApiCall(array $options)
     {
         try {
             return $this->_webService->listPerformers($options);
         } catch(Exceotion $e) {
-            throw new TicketEvolution_DataLoader_Exception($e);
+            throw new namespace\Exception($e);
         }
     }
 
@@ -88,7 +90,7 @@ class TicketEvolution_DataLoader_Performers extends TicketEvolution_DataLoader_A
             'popularityScore'               => (float)  $result->popularity_score,
             'performerKeywords'             => (string) $result->keywords,
             'updated_at'                    => (string) $result->updated_at,
-            'performerStatus'               => (int)    1,
+            'performersStatus'               => (int)    1,
         );
 
         if (!empty($result->created_at)) {

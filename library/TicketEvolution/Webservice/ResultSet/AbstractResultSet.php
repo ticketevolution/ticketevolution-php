@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,24 +14,27 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_Webservice
+ * @package     TicketEvolution\Webservice
  * @subpackage  ResultSet
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
+
+
+namespace TicketEvolution\Webservice\ResultSet;
 
 
 /**
  * @category    TicketEvolution
- * @package     TicketEvolution_Webservice
+ * @package     TicketEvolution\Webservice
  * @subpackage  ResultSet
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Webservice_ResultSet_Abstract
-    implements SeekableIterator, Countable
+class AbstractResultSet
+    implements \SeekableIterator, \Countable
 {
     /**
      * An array of objects
@@ -49,7 +52,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
 
 
     /**
-     * Create an instance of TicketEvolution_ResultSet and create the necessary data objects
+     * Create an instance of TicketEvolution\ResultSet and create the necessary data objects
      *
      * @param  object $result
      * @return void
@@ -177,7 +180,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
      * Implement SeekableIterator::seek()
      *
      * @param  int $index
-     * @throws OutOfBoundsException
+     * @throws \OutOfBoundsException
      * @return void
      */
     public function seek($index)
@@ -186,7 +189,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
         if ($indexInt >= 0 && (null === $this->_results || $indexInt < count($this->_results))) {
             $this->_currentIndex = $indexInt;
         } else {
-            throw new OutOfBoundsException("Illegal index '$index'");
+            throw new \OutOfBoundsException("Illegal index '$index'");
         }
     }
 
@@ -312,12 +315,12 @@ class TicketEvolution_Webservice_ResultSet_Abstract
     {
         $sortFlags = array(SORT_ASC, SORT_DESC);
         if (!in_array($direction, $sortFlags)) {
-            throw new InvalidArgumentException('Sort flag only accepts SORT_ASC or SORT_DESC');
+            throw new \InvalidArgumentException('Sort flag only accepts SORT_ASC or SORT_DESC');
         }
         return function($a, $b) use ($key, $direction, $sortFlags) {
             if (!is_array($key)) { //just one key and sort direction
                 if (!isset($a->$key) || !isset($b->$key)) {
-                    throw new TicketEvolution_Webservice_Exception('Attempting to sort on non-existent keys');
+                    throw new namespace\Exception('Attempting to sort on non-existent keys');
                 }
                 if ($a->$key == $b->$key) {
                     return 0;
@@ -332,7 +335,7 @@ class TicketEvolution_Webservice_ResultSet_Abstract
                     }
                     //just like above, except 'continue' in place of return 0
                     if (!isset($a->$subKey) || !isset($b->$subKey)) {
-                        throw new TicketEvolution_Webservice_Exception('Attempting to sort on non-existent keys');
+                        throw new namespace\Exception('Attempting to sort on non-existent keys');
                     }
                     if ($a->$subKey == $b->$subKey) {
                         continue;
