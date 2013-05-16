@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,27 +14,26 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_Db
+ * @package     TicketEvolution\Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
-/**
- * @see Zend_Db_Table_Abstract
- */
-require_once 'Zend/Db/Table/Abstract.php';
+
+namespace TicketEvolution\Db\Table;
+
 
 /**
  * @category    TicketEvolution
- * @package     TicketEvolution_Db
+ * @package     TicketEvolution\Db
  * @subpackage  Table
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
+class AbstractTable extends \Zend_Db_Table_Abstract
 {
     /**
      * The column that we use to indicate status in boolean form
@@ -48,7 +47,7 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
      *
      * @var string
      */
-    protected $_rowClass = 'TicketEvolution_Db_Table_Row';
+    protected $_rowClass = 'TicketEvolution\Db\Table\Row';
 
     /**
      * Returns the name of the column we are using to track status
@@ -95,7 +94,7 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
      */
     protected function _setEmptyFieldsToNull(array &$data)
     {
-        array_walk($data, array('TicketEvolution_Db_Table_Abstract', '_emptyFieldsToNull'));
+        array_walk($data, array('TicketEvolution\Db\Table\AbstractTable', '_emptyFieldsToNull'));
     }
 
 
@@ -185,16 +184,11 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
      * Get results via an array of parameters
      *
      * @param  mixed $params Options to use for the search query or a `uid`
-     * @throws TicketEvolution_Db_Table_Exception
+     * @throws TicketEvolution\Db\Table\Exception
      * @return mixed
      */
     public function getByParameters($params, $limit=null, $orderBy=null)
     {
-        /**
-         * @see Zend_Date
-         */
-        require_once 'Zend/Date.php';
-
         if (!is_array($params) && !is_array($this->_primary)) {
             // Assume this is a single Id and find it
             $row = $this->find((int)$params);
@@ -215,8 +209,8 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
             $column = lcfirst(preg_replace('/^tevo(\w{1})/i', "$1", $column));
             if (is_array($value)) {
                 $select->where($column ." IN (?)", $value);
-            } elseif ($value instanceof Zend_Date) {
-                $select->where($column ." = ?", $value->get(TicketEvolution_Date::MYSQL_DATETIME));
+            } elseif ($value instanceof \DateTime) {
+                $select->where($column ." = ?", $value->format('c'));
             } else {
                 $select->where($column ." = ?", $value);
             }
@@ -243,8 +237,7 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
                 $results = $this->fetchAll($select);
             }
         } catch(Exception $e) {
-            require_once 'TicketEvolution/Db/Table/Exception.php';
-            throw new TicketEvolution_Db_Table_Exception($e);
+            throw new namespace\Exception($e);
         }
         return $results;
     }
@@ -252,7 +245,6 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
 
     /**
      * Prepare options for queries
-     * Mostly just make sure if we passed a Zend_Date object that it gets converted to a string
      *
      * @param  array $params Parameters to use for the search query
      * @return array
@@ -261,36 +253,9 @@ class TicketEvolution_Db_Table_Abstract extends Zend_Db_Table_Abstract
     {
         // Verify that parameters are in an array.
         if (!is_array($params)) {
-            /**
-             * @see TicketEvolution_Db_Exception
-             */
-            require_once 'TicketEvolution/Db/Table/Exception.php';
-            throw new TicketEvolution_Db_Table_Exception('Query parameters must be in an array');
+            throw new namespace\Exception('Query parameters must be in an array');
         }
 
-        /**
-         * Commented out because I decided to do the conversion in getByParameters() for now
-         // Set an array of parameters that might be Zend_Date objects
-        $possibleDateFields = array(
-            'eventDate',
-            'updated_at',
-            'createdDate',
-            'lastModifiedDate');
-
-        // If any of our $params might be date objects convert them to strings
-        $dateFieldsUsed = array_intersect(array_keys($params), array_values($possibleDateFields));
-        //dump($dateFieldsUsed);
-        $options = array();
-        foreach ($dateFieldsUsed as $dateField) {
-            if ($params[$dateField] instanceof Zend_Date) {
-                //$options[$dateField] = $params[$dateField]->get(Zend_Date::DATETIME);
-            }
-        }
-        //dump($options);
-        //dump($params);
-        $cleanOptions = array_merge($params, $options);
-        return $cleanOptions;
-        */
         return $params;
     }
 }

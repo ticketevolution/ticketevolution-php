@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,23 +14,26 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_Db
+ * @package     TicketEvolution\Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
+
+
+namespace TicketEvolution\Db\Table;
 
 
 /**
  * @category    TicketEvolution
- * @package     TicketEvolution_Db
+ * @package     TicketEvolution\Db
  * @subpackage  Table
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Db_Table_Venues extends TicketEvolution_Db_Table_Abstract
+class Venues extends AbstractTable
 {
     /**
      * The table name.
@@ -61,7 +64,7 @@ class TicketEvolution_Db_Table_Venues extends TicketEvolution_Db_Table_Abstract
      *
      * @var string
      */
-    //protected $_rowClass = 'TicketEvolution_Db_Table_Row';
+    //protected $_rowClass = 'TicketEvolution\Db\Table\Row';
 
     /**
      * Sets where default column values should be taken from
@@ -79,9 +82,9 @@ class TicketEvolution_Db_Table_Venues extends TicketEvolution_Db_Table_Abstract
      * @var array
      */
     protected $_dependentTables = array(
-        'TicketEvolution_Db_Table_Configurations',
-        'TicketEvolution_Db_Table_Events',
-        'TicketEvolution_Db_Table_Performers',
+        'TicketEvolution\Db\Table\Configurations',
+        'TicketEvolution\Db\Table\Events',
+        'TicketEvolution\Db\Table\Performers',
     );
 
 
@@ -103,7 +106,6 @@ class TicketEvolution_Db_Table_Venues extends TicketEvolution_Db_Table_Abstract
      *
      * @var array
      */
-    protected $_referenceMap    = array(
-    );
+    protected $_referenceMap    = array();
 
 }
