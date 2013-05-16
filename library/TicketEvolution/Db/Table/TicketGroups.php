@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,29 +14,26 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_Db
+ * @package     TicketEvolution\Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
 
-/**
- * @see TicketEvolution_Db_Table_Abstract
- */
-require_once 'TicketEvolution/Db/Table/Abstract.php';
+namespace TicketEvolution\Db\Table;
+
 
 /**
  * @category    TicketEvolution
- * @package     TicketEvolution_Db
+ * @package     TicketEvolution\Db
  * @subpackage  Table
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Db_Table_TicketGroups
-    extends TicketEvolution_Db_Table_Abstract
+class TicketGroups extends AbstractTable
 {
     /**
      * The table name.
@@ -67,7 +64,7 @@ class TicketEvolution_Db_Table_TicketGroups
      *
      * @var string
      */
-    //protected $_rowClass = 'TicketEvolution_Db_Table_Row';
+    //protected $_rowClass = 'TicketEvolution\Db\Table\Row';
 
     /**
      * Sets where default column values should be taken from
@@ -85,7 +82,7 @@ class TicketEvolution_Db_Table_TicketGroups
      * @var array
      */
     protected $_dependentTables = array(
-        'TicketEvolution_Db_Table_TicketGroupSeats',
+        'TicketEvolution\Db\Table\TicketGroupSeats',
     );
 
 
@@ -108,20 +105,20 @@ class TicketEvolution_Db_Table_TicketGroups
      * @var array
      */
     protected $_referenceMap    = array(
-        'Events'            => array(
+        'Event'            => array(
             'columns'           => 'eventId',
-            'refTableClass'     => 'TicketEvolution_Db_Table_Events',
-            'refColumns'        => 'eventId'
-            ),
+            'refTableClass'     => 'TicketEvolution\Db\Table\Events',
+            'refColumns'        => 'eventId',
+        ),
         'Brokerages'            => array(
             'columns'           => 'brokerId',
-            'refTableClass'     => 'TicketEvolution_Db_Table_Brokerages',
-            'refColumns'        => 'brokerId'
-            ),
+            'refTableClass'     => 'TicketEvolution\Db\Table\Brokerages',
+            'refColumns'        => 'brokerId',
+        ),
         'Offices'            => array(
             'columns'           => 'officeId',
-            'refTableClass'     => 'TicketEvolution_Db_Table_Offices',
-            'refColumns'        => 'officeId'
-            ),
+            'refTableClass'     => 'TicketEvolution\Db\Table\Offices',
+            'refColumns'        => 'officeId',
+        ),
     );
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,29 +14,26 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_Db
+ * @package     TicketEvolution\Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
 
-/**
- * @see TicketEvolution_Db_Table_Abstract
- */
-require_once 'TicketEvolution/Db/Table/Abstract.php';
+namespace TicketEvolution\Db\Table;
+
 
 /**
  * @category    TicketEvolution
- * @package     TicketEvolution_Db
+ * @package     TicketEvolution\Db
  * @subpackage  Table
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Db_Table_OfficeHours
-    extends TicketEvolution_Db_Table_Abstract
+class OfficeHours extends AbstractTable
 {
     /**
      * The table name.
@@ -67,7 +64,7 @@ class TicketEvolution_Db_Table_OfficeHours
      *
      * @var string
      */
-    //protected $_rowClass = 'TicketEvolution_Db_Table_Row';
+    //protected $_rowClass = 'TicketEvolution\Db\Table\Row';
 
     /**
      * Sets where default column values should be taken from
@@ -106,10 +103,10 @@ class TicketEvolution_Db_Table_OfficeHours
      * @var array
      */
     protected $_referenceMap    = array(
-        'offices'            => array(
+        'Office'            => array(
             'columns'           => 'officeId',
-            'refTableClass'     => 'TicketEvolution_Db_Table_Offices',
-            'refColumns'        => 'officeId'
-            ),
+            'refTableClass'     => 'TicketEvolution\Db\Table\Offices',
+            'refColumns'        => 'officeId',
+        ),
     );
 }

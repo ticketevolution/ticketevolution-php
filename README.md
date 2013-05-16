@@ -1,6 +1,16 @@
-# Welcome to the Ticket Evolution Framework for PHP!
+# Ticket Evolution PHP Library for use with Zend Framework
 
 ## RELEASE INFORMATION
+
+### May 17, 2013 v2.0.0
+*This update contains changes that are NOT backwards compatible*
+
+- The Demo has been split out to a [separate repository](https://github.com/TeamOneTickets/ticket-evolution-api-demo).
+- The DataLoaders have been split out to a [separate repository](https://github.com/TeamOneTickets/ticket-evolution-dataloaders).
+- Added [Composer](http://getcomposer.org/) support.
+- Added more proper [namespace](http://php.net/manual/en/language.namespaces.rationale.php) support
+- Require autoloading by removing all `require_once` statements for requiring classes
+- Removed some methods that were previously deprecated
 
 ### December 10, 2012 v1.9.14
 - Squashed bugs in the deprecated methods `createClientCompany()`, `createClientAddress()`, `createClientPhoneNumber()`, `createClientEmailAddress()`, `createClientCreditCard()`, and `createOrder()` thanks to a report from tonyguo2010
@@ -15,7 +25,7 @@
 - Fixed bug (#81) with `createClientEmailAddresses()`
 
 ### September 27, 2012 v1.9.10
-- Removed leftover debug
+- Remover leftover debug
 
 ### September 27, 2012 v1.9.9
 - Fixes #76 by correcting typo in `TicketEvolution/Db/Table/Users.php`

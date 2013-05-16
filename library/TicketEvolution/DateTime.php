@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,12 +14,15 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_DateTime
+ * @package     TicketEvolution\DateTime
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
+
+
+namespace TicketEvolution;
 
 
 /**
@@ -27,11 +30,11 @@
  * handling of "TBA" event times.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_DateTime
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @package     TicketEvolution\DateTime
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_DateTime extends DateTime
+class DateTime extends \DateTime
 {
     /**
      * These are here for convenience
@@ -61,8 +64,7 @@ class TicketEvolution_DateTime extends DateTime
      *
      * @param  string|null  $date    A date/time string. Enter NULL here to obtain the current time when using the $timezone parameter
      * @param  DateTimeZone $timezone $part    A DateTimeZone object representing the desired time zone. If $timezone is omitted, the current timezone will be used.
-     * @return Zend_Date
-     * @throws Zend_Date_Exception
+     * @return TicketEvolution\DateTime
      */
     public function __construct($date = null, $timezone = null)
     {
@@ -122,27 +124,6 @@ class TicketEvolution_DateTime extends DateTime
             return $this->format($partCleaned) . ' ' . self::TBA_DISPLAY;
         }
         return $this->format($format);
-    }
-
-
-    /**
-     * Mimics the the basics of Zend_Date::compare().
-     * Doesn't support comparing parts.
-     *
-     * Compares a date or datepart with the existing one.
-     * Returns -1 if earlier, 0 if equal and 1 if later.
-     *
-     * @param  string|integer|array|DateTime  $date    Date or datepart to compare with the date object
-     * @return integer  0 = equal, 1 = later, -1 = earlier
-     * @throws Zend_Date_Exception
-     */
-    public function compare($date) {
-        if ($this > $date) {
-            return 1;
-        } elseif ($this < $date) {
-            return -1;
-        }
-        return 0;
     }
 
 

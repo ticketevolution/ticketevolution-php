@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,24 +14,27 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_DataLoader
+ * @package     TicketEvolution\DataLoader
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
+
+
+namespace TicketEvolution\DataLoader\Events;
+use TicketEvolution\DataLoader\AbstractDataLoader;
 
 
 /**
- * Extends Zend_Date with some handy constants and also allows for easy handling
- * of "TBA" event times.
+ * DataLoader for a specific API endpoint to cache the data into local table(s)
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_DataLoader
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @package     TicketEvolution\DataLoader
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_DataLoader_Events_Deleted extends TicketEvolution_DataLoader_Abstract
+class Deleted extends AbstractDataLoader
 {
     /**
      * Which endpoint we are hitting. This is used in the `dataLoaderStatus` table
@@ -52,23 +55,23 @@ class TicketEvolution_DataLoader_Events_Deleted extends TicketEvolution_DataLoad
     /**
      * The class of the table
      *
-     * @var Zend_Db_Table
+     * @var \Zend_Db_Table
      */
-    protected $_tableClass = 'TicketEvolution_Db_Table_Events';
+    protected $_tableClass = '\TicketEvolution\Db\Table\Events';
 
 
     /**
      * Perform the API call
      *
      * @param array $options Options for the API call
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return \TicketEvolution\Webservice\ResultSet
      */
     protected function _doApiCall(array $options)
     {
         try {
             return $this->_webService->listEventsDeleted($options);
         } catch(Exceotion $e) {
-            throw new TicketEvolution_DataLoader_Exception($e);
+            throw new namespace\Exception($e);
         }
     }
 
@@ -81,26 +84,12 @@ class TicketEvolution_DataLoader_Events_Deleted extends TicketEvolution_DataLoad
      */
     protected function _formatData($result)
     {
-        // Ensure the timezone is not incorrectly adjusted
-        $occursAt = preg_replace('/[Z]/i', '', $result->occurs_at);
-
         $this->_data = array(
             'eventId'           => (int)    $result->id,
-            'eventName'         => (string) $result->name,
-            'eventDate'         => (string) $occursAt,
-            'eventUrl'          => (string) $result->url,
-            'updated_at'        => (string) $result->updated_at,
+            'merged_into'       =>          $result->merged_into,
+            'deleted_at'        => (string) $result->deleted_at,
             'eventStatus'       => (int)    0,
         );
-
-        if (!empty($result->created_at)) {
-            $this->_data['created_at'] = (string) $result->created_at;
-        }
-
-        if (!empty($result->deleted_at)) {
-            $this->_data['deleted_at'] = (string) $result->deleted_at;
-        }
-
     }
 
 
@@ -134,7 +123,7 @@ class TicketEvolution_DataLoader_Events_Deleted extends TicketEvolution_DataLoad
          * as inactive we'll still do it since delete() does not allow us to
          * set properties such as 'deleted_at' at the same time.
          *
-         * NOTE: delete() is overridden in TicketEvolution_Db_Table_Abstract to
+         * NOTE: delete() is overridden in TicketEvolution\Db\Table\AbstractTable to
          * only toggle the status to inactive, but it still cascades doing the same.
          */
         try {
@@ -142,17 +131,17 @@ class TicketEvolution_DataLoader_Events_Deleted extends TicketEvolution_DataLoad
 
             if ($this->_showProgress) {
                 echo '<p class="error">'
-                   . htmlentities('Successful delete() of ' . $result->id . ': ' . $result->name . ' in `tevoEvents` and the related `tevoEventPerformers`', ENT_QUOTES, 'UTF-8', false)
+                   . 'Successful delete() of <strong>' . $result->id . '</strong>: in `tevoEvents` and the related `tevoEventPerformers`'
                    . '</p>' . PHP_EOL;
             }
         } catch (Exception $e) {
             if ($this->_showProgress) {
                 echo '<p>'
-                   . htmlentities('Error attempting to delete() ' . $result->id . ': ' . $result->name . ' in `tevoEvents` and the related `tevoEventPerformers`', ENT_QUOTES, 'UTF-8', false)
+                   . 'Error attempting to delete() <strong>' . $result->id . '</strong>: in `tevoEvents` and the related `tevoEventPerformers`'
                    . '</p>' . PHP_EOL;
             }
 
-            throw new TicketEvolution_DataLoader_Exception($e);
+            throw new namespace\Exception($e);
         }
     }
 

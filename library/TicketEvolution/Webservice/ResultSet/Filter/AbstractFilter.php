@@ -14,8 +14,8 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution\Db
- * @subpackage  Table
+ * @package     TicketEvolution\Webservice\ResultSet
+ * @subpackage  Filter
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
@@ -23,19 +23,24 @@
  */
 
 
-namespace TicketEvolution\Db\Table;
+namespace TicketEvolution\Webservice\ResultSet\Filter;
 
 
 /**
- * Reference concrete class that extends Zend_Db_Table_Row_Abstract.
- * Developers may also create their own classes that extend the abstract class.
- *
  * @category    TicketEvolution
- * @package     TicketEvolution\Db
- * @subpackage  Table
+ * @package     TicketEvolution\Webservice\ResultSet
+ * @subpackage  Filter
  * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class Row extends Row\AbstractRow
+abstract class AbstractFilter extends \FilterIterator
+    implements \Countable
 {
+    /**
+     * By default FilterIterators are not Countable using count(), you have to
+     * use iterator_count(). Implement Countable for convenience.
+     */
+    public function count() {
+        return iterator_count($this);
+    }
 }

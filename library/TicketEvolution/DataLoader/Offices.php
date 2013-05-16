@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,24 +14,26 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_DataLoader
+ * @package     TicketEvolution\DataLoader
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
+
+
+namespace TicketEvolution\DataLoader;
 
 
 /**
- * Extends Zend_Date with some handy constants and also allows for easy handling
- * of "TBA" event times.
+ * DataLoader for a specific API endpoint to cache the data into local table(s)
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_DataLoader
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @package     TicketEvolution\DataLoader
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_DataLoader_Offices extends TicketEvolution_DataLoader_Abstract
+class Offices extends AbstractDataLoader
 {
     /**
      * Which endpoint we are hitting. This is used in the `dataLoaderStatus` table
@@ -52,23 +54,23 @@ class TicketEvolution_DataLoader_Offices extends TicketEvolution_DataLoader_Abst
     /**
      * The class of the table
      *
-     * @var Zend_Db_Table
+     * @var \Zend_Db_Table
      */
-    protected $_tableClass = 'TicketEvolution_Db_Table_Offices';
+    protected $_tableClass = '\TicketEvolution\Db\Table\Offices';
 
 
     /**
      * Perform the API call
      *
      * @param array $options Options for the API call
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return \TicketEvolution\Webservice\ResultSet
      */
     protected function _doApiCall(array $options)
     {
         try {
             return $this->_webService->listOffices($options);
         } catch(Exceotion $e) {
-            throw new TicketEvolution_DataLoader_Exception($e);
+            throw new namespace\Exception($e);
         }
     }
 
@@ -139,7 +141,7 @@ class TicketEvolution_DataLoader_Offices extends TicketEvolution_DataLoader_Abst
         // Save any email addresses to a separate table
         if (isset($result->email[0])) {
             // Create an object for the `tevoOfficeEmails` table
-            $emailsTable = new TicketEvolution_Db_Table_OfficeEmails();
+            $emailsTable = new \TicketEvolution\Db\Table\OfficeEmails();
 
             // Initialize an array of emails
             $emailArray = array();
@@ -191,23 +193,23 @@ class TicketEvolution_DataLoader_Offices extends TicketEvolution_DataLoader_Abst
         // Save any office hours to a separate table
         if (isset($result->hours[0])) {
             // Create an object for the `tevoOfficeHours` table
-            $hoursTable = new TicketEvolution_Db_Table_OfficeHours();
+            $hoursTable = new \TicketEvolution\Db\Table\OfficeHours();
 
             // Initialize an array of emails
             $hoursIdArray = array();
 
             // Loop through the emails and add them to the `tevoOfficeEmails` table
             foreach ($result->hours as $hour) {
-                $openTime = new DateTime($hour->open);
-                $closeTime = new DateTime($hour->close);
+                $openTime = new \DateTime($hour->open);
+                $closeTime = new \DateTime($hour->close);
 
                 $data = array(
                     'officeHoursId'     => (int)    $hour->id,
                     'officeId'          => (int)    $result->id,
                     'dayOfWeek'         => (int)    $hour->day_of_week,
                     'isClosed'          => (int)    $hour->closed,
-                    'open'              => (string) $openTime->format(TicketEvolution_DateTime::MYSQL_TIME),
-                    'close'             => (string) $closeTime->format(TicketEvolution_DateTime::MYSQL_TIME),
+                    'open'              => (string) $openTime->format(\TicketEvolution\DateTime::MYSQL_TIME),
+                    'close'             => (string) $closeTime->format(\TicketEvolution\DateTime::MYSQL_TIME),
                     'officeHoursStatus' => (int)    1,
                     'lastModifiedDate'  => (string) $this->_startTime->format('c'),
                 );

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,28 +14,26 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_Db
+ * @package     TicketEvolution\Db
  * @subpackage  Table
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
 
 
-/**
- * @see TicketEvolution_Db_Table_Abstract
- */
-require_once 'TicketEvolution/Db/Table/Abstract.php';
+namespace TicketEvolution\Db\Table;
+
 
 /**
  * @category    TicketEvolution
- * @package     TicketEvolution_Db
+ * @package     TicketEvolution\Db
  * @subpackage  Table
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_Db_Table_Offices extends TicketEvolution_Db_Table_Abstract
+class Offices extends AbstractTable
 {
     /**
      * The table name.
@@ -66,7 +64,7 @@ class TicketEvolution_Db_Table_Offices extends TicketEvolution_Db_Table_Abstract
      *
      * @var string
      */
-    //protected $_rowClass = 'TicketEvolution_Db_Table_Row';
+    //protected $_rowClass = 'TicketEvolution\Db\Table\Row';
 
     /**
      * Sets where default column values should be taken from
@@ -83,7 +81,11 @@ class TicketEvolution_Db_Table_Offices extends TicketEvolution_Db_Table_Abstract
      *
      * @var array
      */
-    protected $_dependentTables = array('TicketEvolution_Db_Table_Users');
+    protected $_dependentTables = array(
+        'TicketEvolution\Db\Table\Users',
+        'TicketEvolution\Db\Table\OfficeHours',
+        'TicketEvolution\Db\Table\OfficeEmails',
+    );
 
 
     /**
@@ -105,10 +107,10 @@ class TicketEvolution_Db_Table_Offices extends TicketEvolution_Db_Table_Abstract
      * @var array
      */
     protected $_referenceMap    = array(
-        'brokerages'            => array(
-            'columns'           => 'brokerId',
-            'refTableClass'     => 'TicketEvolution_Db_Table_Brokerages',
-            'refColumns'        => 'brokerId'
-            ),
+        'Brokerage'            => array(
+            'columns'           => 'brokerageId',
+            'refTableClass'     => 'TicketEvolution\Db\Table\Brokerages',
+            'refColumns'        => 'brokerageId',
+        ),
     );
 }

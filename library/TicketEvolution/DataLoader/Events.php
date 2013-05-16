@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TicketEvolution Framework
+ * Ticket Evolution PHP Library for use with Zend Framework
  *
  * LICENSE
  *
@@ -14,24 +14,26 @@
  * to license@teamonetickets.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_DataLoader
+ * @package     TicketEvolution\DataLoader
  * @author      J Cobb <j@teamonetickets.com>
  * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
+
+
+namespace TicketEvolution\DataLoader;
 
 
 /**
- * Extends Zend_Date with some handy constants and also allows for easy handling
- * of "TBA" event times.
+ * DataLoader for a specific API endpoint to cache the data into local table(s)
  *
  * @category    TicketEvolution
- * @package     TicketEvolution_DataLoader
- * @copyright   Copyright (c) 2012 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
+ * @package     TicketEvolution\DataLoader
+ * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketEvolution_DataLoader_Events extends TicketEvolution_DataLoader_Abstract
+class Events extends AbstractDataLoader
 {
     /**
      * Which endpoint we are hitting. This is used in the `dataLoaderStatus` table
@@ -52,23 +54,23 @@ class TicketEvolution_DataLoader_Events extends TicketEvolution_DataLoader_Abstr
     /**
      * The class of the table
      *
-     * @var Zend_Db_Table
+     * @var \Zend_Db_Table
      */
-    protected $_tableClass = 'TicketEvolution_Db_Table_Events';
+    protected $_tableClass = '\TicketEvolution\Db\Table\Events';
 
 
     /**
      * Perform the API call
      *
      * @param array $options Options for the API call
-     * @return TicketEvolution_Webservice_ResultSet
+     * @return \TicketEvolution\Webservice\ResultSet
      */
     protected function _doApiCall(array $options)
     {
         try {
             return $this->_webService->listEvents($options);
         } catch(Exceotion $e) {
-            throw new TicketEvolution_DataLoader_Exception($e);
+            throw new namespace\Exception($e);
         }
     }
 
@@ -90,7 +92,7 @@ class TicketEvolution_DataLoader_Events extends TicketEvolution_DataLoader_Abstr
             'eventDate'         => (string) $occursAt,
             'venueId'           => (int)    $result->venue->id,
             'categoryId'        => (int)    $result->category->id,
-            'eventNotes'        => (int)    $result->notes,
+            'eventNotes'        => (string) $result->notes,
             'productsCount'     => (int)    $result->products_count,
             'eventUrl'          => (string) $result->url,
             'popularityScore'   => (float)  $result->popularity_score,
@@ -136,7 +138,7 @@ class TicketEvolution_DataLoader_Events extends TicketEvolution_DataLoader_Abstr
     protected function _postSave($result)
     {
         // Create an object for the `tevoEventPerformers` table too
-        $epTable = new TicketEvolution_Db_Table_EventPerformers();
+        $epTable = new \TicketEvolution\Db\Table\EventPerformers();
 
         // Set arrays of performers we can append performerIds to
         $performerListPrimary = array();
@@ -177,7 +179,7 @@ class TicketEvolution_DataLoader_Events extends TicketEvolution_DataLoader_Abstr
                            . '</h1>' . PHP_EOL;
                     }
 
-                    throw new TicketEvolution_DataLoader_Exception($e);
+                    throw new namespace\Exception($e);
                 }
             }
         } // End loop through performers for this event
