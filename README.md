@@ -5,7 +5,7 @@
 ### May 17, 2013 v2.0.0
 *This update contains changes that are NOT backwards compatible*
 
-- The Demo has been split out to a [separate repository](https://github.com/TeamOneTickets/ticket-evolution-api-demo).
+- The Demo has been split out to a [separate repository](https://github.com/TeamOneTickets/ticket-evolution-php-library-demo).
 - The DataLoaders have been split out to a [separate repository](https://github.com/TeamOneTickets/ticket-evolution-dataloaders).
 - Added [Composer](http://getcomposer.org/) support.
 - Added more proper [namespace](http://php.net/manual/en/language.namespaces.rationale.php) support
