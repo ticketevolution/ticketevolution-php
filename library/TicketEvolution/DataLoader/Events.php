@@ -99,7 +99,7 @@ class Events extends AbstractDataLoader
             'ownedByOfficeId'   => (int)    $result->owned_by_office,
             'updated_at'        => (string) $result->updated_at,
             'deleted_at'        =>          null,
-            'eventStatus'       => (int)    1,
+            'eventsStatus'       => (int)    1,
             'eventState'        => (string) $result->state,
         );
 

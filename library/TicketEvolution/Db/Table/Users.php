@@ -104,9 +104,9 @@ class Users extends AbstractTable
      */
     protected $_referenceMap    = array(
         'Brokerage'             => array(
-            'columns'           => 'brokerId',
+            'columns'           => 'brokerageId',
             'refTableClass'     => 'TicketEvolution\Db\Table\Brokerages',
-            'refColumns'        => 'brokerId',
+            'refColumns'        => 'brokerageId',
         ),
         'Office'            => array(
             'columns'           => 'officeId',

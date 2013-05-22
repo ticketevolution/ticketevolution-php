@@ -1,6 +1,14 @@
 # Ticket Evolution PHP Library for use with Zend Framework
 
+## WHAT HAPPENED TO THE DEMO AND DATALOADERS?
+As of version 2.0.0 the Demo app and DataLoaders have been split into separate projects in order to simplify this package down to just the actual library.
+- The Demo app is now at https://github.com/TeamOneTickets/ticket-evolution-php-library-demo
+- The DataLoaders app is now at https://github.com/TeamOneTickets/ticket-evolution-dataloaders
+
 ## RELEASE INFORMATION
+
+### May 21, 2013 v2.0.1
+- Fixed some column names in the DataLoader classes that did not match the column names as specified in the [DataLoader project](https://github.com/TeamOneTickets/ticket-evolution-dataloaders)
 
 ### May 17, 2013 v2.0.0
 *This update contains changes that are NOT backwards compatible*
