@@ -88,7 +88,7 @@ class Deleted extends AbstractDataLoader
             'eventId'           => (int)    $result->id,
             'merged_into'       =>          $result->merged_into,
             'deleted_at'        => (string) $result->deleted_at,
-            'eventStatus'       => (int)    0,
+            'eventsStatus'       => (int)    0,
         );
     }
 

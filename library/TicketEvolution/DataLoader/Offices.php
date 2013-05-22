@@ -93,7 +93,7 @@ class Offices extends AbstractDataLoader
             'isMain'            => (int)    $result->main,
             'officeUrl'         => (string) $result->url,
             'updated_at'        => (string) $result->updated_at,
-            'officeStatus'      => (int)    1,
+            'officesStatus'     => (int)    1,
         );
 
         if (!empty($result->created_at)) {
@@ -171,7 +171,7 @@ class Offices extends AbstractDataLoader
                 echo '<p>Saved ' . implode(', ', $emailArray) . ' to `tevoOfficeEmails` for this office</p>' . PHP_EOL;
             }
 
-            // Now set `officeEmailStatus` = 0 for any `tevoOfficeEmails` entries for
+            // Now set `officeEmailsStatus` = 0 for any `tevoOfficeEmails` entries for
             // this office that are not in $emailArray. This will set any emails that
             // were attached to this office but are no longer to false/inactive
             if (isset($emailArray)) {

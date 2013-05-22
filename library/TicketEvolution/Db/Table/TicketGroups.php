@@ -111,9 +111,9 @@ class TicketGroups extends AbstractTable
             'refColumns'        => 'eventId',
         ),
         'Brokerages'            => array(
-            'columns'           => 'brokerId',
+            'columns'           => 'brokerageId',
             'refTableClass'     => 'TicketEvolution\Db\Table\Brokerages',
-            'refColumns'        => 'brokerId',
+            'refColumns'        => 'brokerageId',
         ),
         'Offices'            => array(
             'columns'           => 'officeId',

@@ -87,7 +87,7 @@ class Deleted extends AbstractDataLoader
         $this->_data = array(
             'categoryId'        => (int)    $result->id,
             'deleted_at'        => (string) $result->deleted_at,
-            'categoryStatus'    => (int)    0,
+            'categoriesStatus'  => (int)    0,
         );
     }
 

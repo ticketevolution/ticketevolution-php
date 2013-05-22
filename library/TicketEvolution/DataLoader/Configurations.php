@@ -93,7 +93,7 @@ class Configurations extends AbstractDataLoader
             'isGeneralAdmission'        => (int)    $result->general_admission,
             'configurationUrl'          => (string) $result->url,
             'updated_at'                => (string) $result->updated_at,
-            'configurationStatus'       => (int)    1,
+            'configurationsStatus'      => (int)    1,
         );
 
         if (!empty($result->created_at)) {
