@@ -88,7 +88,7 @@ class Categories extends AbstractDataLoader
             'categoryName'      => (string) $result->name,
             'categoryUrl'       => (string) $result->url,
             'updated_at'        => (string) $result->updated_at,
-            'categoryStatus'    => (int)    1,
+            'categoriesStatus'  => (int)    1,
         );
 
         if (!empty($result->created_at)) {

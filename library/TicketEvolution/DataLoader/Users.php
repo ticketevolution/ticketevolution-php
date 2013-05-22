@@ -93,7 +93,7 @@ class Users extends AbstractDataLoader
             'userEmail'             => strtolower((string) $result->email),
             'userUrl'               => (string) $result->url,
             'updated_at'            => (string) $result->updated_at,
-            'userStatus'            => (int) 1,
+            'usersStatus'           => (int) 1,
         );
 
         if (!empty($result->created_at)) {
