@@ -96,7 +96,6 @@ class Events extends AbstractDataLoader
             'productsCount'     => (int)    $result->products_count,
             'eventUrl'          => (string) $result->url,
             'popularityScore'   => (float)  $result->popularity_score,
-            'ownedByOfficeId'   => (int)    $result->owned_by_office,
             'updated_at'        => (string) $result->updated_at,
             'deleted_at'        =>          null,
             'eventsStatus'       => (int)    1,
