@@ -7,6 +7,9 @@ As of version 2.0.0 the Demo app and DataLoaders have been split into separate p
 
 ## RELEASE INFORMATION
 
+### May 28, 2013 v2.0.2
+- Remove reference to `owned_by_office` in `TicketEvolution\DataLoaders\Events` because that isn't a field that should be cached.
+
 ### May 21, 2013 v2.0.1
 - Fixed some column names in the DataLoader classes that did not match the column names as specified in the [DataLoader project](https://github.com/TeamOneTickets/ticket-evolution-dataloaders)
 
