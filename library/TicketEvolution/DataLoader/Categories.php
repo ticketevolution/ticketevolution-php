@@ -52,27 +52,19 @@ class Categories extends AbstractDataLoader
 
 
     /**
+     * The \TicketEvolution\Webservice method to use for the API request
+     *
+     * @var string
+     */
+    protected $_webServiceMethod = 'listCategories';
+
+
+    /**
      * The class of the table
      *
      * @var \Zend_Db_Table
      */
     protected $_tableClass = '\TicketEvolution\Db\Table\Categories';
-
-
-    /**
-     * Perform the API call
-     *
-     * @param array $options Options for the API call
-     * @return \TicketEvolution\Webservice\ResultSet
-     */
-    protected function _doApiCall(array $options)
-    {
-        try {
-            return $this->_webService->listCategories($options);
-        } catch(Exceotion $e) {
-            throw new namespace\Exception($e);
-        }
-    }
 
 
     /**

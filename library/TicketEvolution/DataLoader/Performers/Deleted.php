@@ -53,27 +53,19 @@ class Deleted extends AbstractDataLoader
 
 
     /**
+     * The \TicketEvolution\Webservice method to use for the API request
+     *
+     * @var string
+     */
+    protected $_webServiceMethod = 'listPerformersDeleted';
+
+
+    /**
      * The class of the table
      *
      * @var \Zend_Db_Table
      */
     protected $_tableClass = '\TicketEvolution\Db\Table\Performers';
-
-
-    /**
-     * Perform the API call
-     *
-     * @param array $options Options for the API call
-     * @return \TicketEvolution\Webservice\ResultSet
-     */
-    protected function _doApiCall(array $options)
-    {
-        try {
-            return $this->_webService->listPerformers($options);
-        } catch(Exceotion $e) {
-            throw new namespace\Exception($e);
-        }
-    }
 
 
     /**
@@ -86,38 +78,9 @@ class Deleted extends AbstractDataLoader
     {
         $this->_data = array(
             'performerId'                   => (int)    $result->id,
-            'performerName'                 => (string) $result->name,
-            'performerUrl'                  => (string) $result->url,
-            'popularityScore'               => (float)  $result->popularity_score,
-            'performerKeywords'             => (string) $result->keywords,
-            'updated_at'                    => (string) $result->updated_at,
-            'performersStatus'               => (int)    0,
+            'deleted_at'                    => (string) $result->deleted_at,
+            'performersStatus'              => (int)    0,
         );
-
-        if (!empty($result->created_at)) {
-            $this->_data['created_at'] = (string) $result->created_at;
-        }
-
-        if (!empty($result->deleted_at)) {
-            $this->_data['deleted_at'] = (string) $result->deleted_at;
-        }
-
-        if (isset($result->venue->id)) {
-            $this->_data['venueId'] = (int) $result->venue->id;
-        }
-        if (!empty($result->upcoming_events->first)) {
-            // Ensure the timezone is not incorrectly adjusted
-            $firstEvent = preg_replace('/[Z]/i', '', $result->upcoming_events->first);
-            $this->_data['upcomingEventFirst'] = (string) $firstEvent;
-        }
-        if (!empty($result->upcoming_events->last)) {
-            // Ensure the timezone is not incorrectly adjusted
-            $lastEvent = preg_replace('/[Z]/i', '', $result->upcoming_events->last);
-            $this->_data['upcomingEventLast'] = (string) $lastEvent;
-        }
-        if (isset($result->category->id)) {
-            $this->_data['categoryId'] = (int) $result->category->id;
-        }
     }
 
 
