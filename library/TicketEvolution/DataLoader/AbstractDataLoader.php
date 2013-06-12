@@ -143,6 +143,14 @@ abstract class AbstractDataLoader
 
 
     /**
+     * The \TicketEvolution\Webservice method to use for the API request
+     *
+     * @var string
+     */
+    protected $_webServiceMethod;
+
+
+    /**
      * The \Zend_Db_Table subclass for the table to update
      *
      * @var \Zend_Db_Table
@@ -225,6 +233,8 @@ abstract class AbstractDataLoader
         if (isset($options['showProgress'])) {
             $this->_showProgress = (bool) $options['showProgress'];
         }
+
+        $this->_originalOptions = $options;
 
         /**
          * Set the date we last ran this script so we can get only entries that have
@@ -378,8 +388,10 @@ abstract class AbstractDataLoader
     protected function _doApiCall(array $options)
     {
         try {
-            return $this->tevo->listBrokerages($options);
-        } catch(Exceotion $e) {
+            return $this->_webService->{$this->_webServiceMethod}($options);
+
+
+        } catch(\Exception $e) {
             throw new namespace\Exception($e);
         }
     }
@@ -419,7 +431,7 @@ abstract class AbstractDataLoader
         }
 
         foreach ($results as $result) {
-            $this->_setRow($result->id);
+            $this->_setRow($result);
 
             $this->_formatData($result);
 
@@ -478,19 +490,20 @@ abstract class AbstractDataLoader
 
 
     /**
-     *
-     * @return
-     * @throws
+     * Attempts to fetch an existing row from the table for updating.
+     * If one isn't found it creates an empty one.
      */
-    protected function _setRow($id)
+    protected function _setRow($result)
     {
-        $row = $this->_getTable()->find($id)->current();
+        $row = $this->_getTable()->find($result->id)->current();
         if (empty($row)) {
             // We didn't get a row from the table so create an empty one
             $this->_tableRow = $this->_getTable()->createRow();
+            unset($this->_tableRowPrevious);
             $this->_rowAction = 'INSERT';
         } else {
             $this->_tableRow = $row;
+            $this->_tableRowPrevious = $row;
             $this->_rowAction = 'UPDATE';
         }
     }
@@ -516,7 +529,8 @@ abstract class AbstractDataLoader
      */
     protected function _preSave($result)
     {
-        if ($this->_rowAction == 'INSERT') {
+        // Set these here rather than in the table class so that we can use the startTime
+        if ($this->_rowAction === 'INSERT') {
             $this->_data['createdDate']     = (string) $this->_startTime->format('c');
         }
         $this->_data['lastModifiedDate']    = (string) $this->_startTime->format('c');
@@ -532,27 +546,39 @@ abstract class AbstractDataLoader
      */
     protected function _saveRow($result)
     {
-        try {
-            $this->_tableRow->setFromArray($this->_data);
+        if ($this->_rowAction === 'INSERT' && $this->endpointState === 'deleted') {
+            // No need to INSERT rows of deleted items.
+            if ($this->_showProgress) {
+                echo '<p>Skipping INSERT of deleted item ' . $result->id . '</p>' . PHP_EOL;
+            }
             unset($this->_data);
+        } else {
+            try {
+                $this->_tableRow->setFromArray($this->_data);
+                unset($this->_data);
 
-            $this->_tableRow->save();
+                $this->_tableRow->save();
 
-            if ($this->_showProgress && !empty($result->id) && !empty($result->name)) {
-                echo '<p>'
-                   . 'Successful ' . $this->_rowAction . ' of '
-                   . $result->id . ': ' . $result->name
-                   . '</p>' . PHP_EOL;
+                if ($this->_showProgress) {
+                    $message = 'Successful ' . $this->_rowAction . ' of ' . $result->id;
+                    if (!empty($result->name)) {
+                        $message .= ': ' . $result->name;
+                    }
+
+                    echo '<p>' . $message . '</p>' . PHP_EOL;
+                }
+            } catch (Exception $e) {
+                if ($this->_showProgress) {
+                    $message = 'Error attempting to ' . $this->_rowAction . ' ' . $result->id;
+                    if (!empty($result->name)) {
+                        $message .= ': ' . $result->name;
+                    }
+
+                    echo '<h2 class="error">' . $message . '</h2>' . PHP_EOL;
+                }
+
+                throw new namespace\Exception($e);
             }
-        } catch (Exception $e) {
-            if ($this->_showProgress && !empty($result->id) && !empty($result->name)) {
-                echo '<h2 class="error">'
-                   . 'Error attempting to ' . $this->_rowAction . ' '
-                   . $result->id . ': ' . $result->name
-                   . '</h2>' . PHP_EOL;
-            }
-
-            throw new namespace\Exception($e);
         }
     }
 
