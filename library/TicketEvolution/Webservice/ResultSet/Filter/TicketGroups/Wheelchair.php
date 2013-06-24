@@ -35,25 +35,25 @@ use Iterator;
  * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class InHand extends AbstractFilter
+class Wheelchair extends AbstractFilter
 {
     /**
-     * The value to match against the 'in_hand' property
+     * The value to match against the 'wheelchair' property
      *
      * @var bool
      */
-    public $inHand;
+    public $wheelchair;
 
 
     /**
      * @param Iterator $iterator
-     * @param bool $inHand
+     * @param bool $wheelchair
      */
-    public function __construct(Iterator $iterator, $inHand=true)
+    public function __construct(Iterator $iterator, $wheelchair=true)
     {
         parent::__construct($iterator);
 
-        $this->inHand = (bool) $inHand;
+        $this->wheelchair = (bool) $wheelchair;
     }
 
 
@@ -62,7 +62,7 @@ class InHand extends AbstractFilter
      */
     public function accept()
     {
-        if (parent::current()->in_hand === $this->inHand) {
+        if (parent::current()->wheelchair === $this->wheelchair) {
             return true;
         }
 

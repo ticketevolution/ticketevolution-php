@@ -23,7 +23,8 @@
  */
 
 
-namespace TicketEvolution\Webservice\ResultSet\Filter;
+namespace TicketEvolution\Webservice\ResultSet\Filter\TicketGroups;
+use TicketEvolution\Webservice\ResultSet\Filter\AbstractFilter;
 
 
 /**
@@ -33,7 +34,7 @@ namespace TicketEvolution\Webservice\ResultSet\Filter;
  * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketGroups\Event extends AbstractFilter
+class Event extends AbstractFilter
 {
     /**
      * Specifies that we only return ticketGroups that are for events.
