@@ -23,7 +23,9 @@
  */
 
 
-namespace TicketEvolution\Webservice\ResultSet\Filter;
+namespace TicketEvolution\Webservice\ResultSet\Filter\TicketGroups;
+use TicketEvolution\Webservice\ResultSet\Filter\AbstractFilter;
+use Iterator;
 
 
 /**
@@ -33,7 +35,7 @@ namespace TicketEvolution\Webservice\ResultSet\Filter;
  * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class TicketGroups\Featured extends AbstractFilter
+class Featured extends AbstractFilter
 {
     /**
      * The value to match against the 'featured' property
@@ -47,7 +49,7 @@ class TicketGroups\Featured extends AbstractFilter
      * @param Iterator $iterator
      * @param bool $featured
      */
-    public function __construct($iterator, $featured=true)
+    public function __construct(Iterator $iterator, $featured=true)
     {
         parent::__construct($iterator);
 

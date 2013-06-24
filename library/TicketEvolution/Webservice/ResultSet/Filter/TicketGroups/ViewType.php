@@ -35,25 +35,26 @@ use Iterator;
  * @copyright   Copyright (c) 2013 Team One Tickets & Sports Tours, Inc. (http://www.teamonetickets.com)
  * @license     https://github.com/ticketevolution/ticketevolution-php/blob/master/LICENSE.txt     New BSD License
  */
-class InHand extends AbstractFilter
+class ViewType extends AbstractFilter
 {
     /**
-     * The value to match against the 'in_hand' property
+     * The value to match against the 'view_type' property
+     * One of "Full", "Obstructed", "Partially Obstructed"
      *
-     * @var bool
+     * @var string
      */
-    public $inHand;
+    public $viewType;
 
 
     /**
      * @param Iterator $iterator
-     * @param bool $inHand
+     * @param bool $viewType
      */
-    public function __construct(Iterator $iterator, $inHand=true)
+    public function __construct(Iterator $iterator, $viewType='Full')
     {
         parent::__construct($iterator);
 
-        $this->inHand = (bool) $inHand;
+        $this->viewType = (bool) $viewType;
     }
 
 
@@ -62,7 +63,7 @@ class InHand extends AbstractFilter
      */
     public function accept()
     {
-        if (parent::current()->in_hand === $this->inHand) {
+        if (parent::current()->view_type === $this->viewType) {
             return true;
         }
 
