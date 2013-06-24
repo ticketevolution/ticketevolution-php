@@ -1,3 +1,10 @@
+## 2.0.4 (June 24, 2013)
+- Fixed bug with TicketGroup filters
+- Added new TicketGroup Filters
+ - `TicketEvolution\Webservice\ResultSet\Filter\TicketGroups\ViewType`
+ - `TicketEvolution\Webservice\ResultSet\Filter\TicketGroups\Wheelchair`
+
+
 ## 2.0.3 (June 12, 2013)
 - Made some small improvements to DataLoader classes that make extending them easier.
 - Moved this list from README.md to CHANGELOG.md
