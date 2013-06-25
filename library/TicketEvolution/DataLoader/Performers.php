@@ -83,6 +83,13 @@ class Performers extends AbstractDataLoader
             'performerKeywords'             => (string) $result->keywords,
             'updated_at'                    => (string) $result->updated_at,
             'performersStatus'              => (int)    1,
+
+            'created_at'                    => null,
+            'deleted_at'                    => null,
+            'venueId'                       => null,
+            'categoryId'                    => null,
+            'upcomingEventFirst'            => null,
+            'upcomingEventLast'             => null,
         );
 
         if (!empty($result->created_at)) {
@@ -96,20 +103,21 @@ class Performers extends AbstractDataLoader
         if (isset($result->venue->id)) {
             $this->_data['venueId'] = (int) $result->venue->id;
         }
+
+        if (isset($result->category->id)) {
+            $this->_data['categoryId'] = (int) $result->category->id;
+        }
+
         if (!empty($result->upcoming_events->first)) {
             // Ensure the timezone is not incorrectly adjusted
             $firstEvent = preg_replace('/[Z]/i', '', $result->upcoming_events->first);
             $this->_data['upcomingEventFirst'] = (string) $firstEvent;
         }
+
         if (!empty($result->upcoming_events->last)) {
             // Ensure the timezone is not incorrectly adjusted
             $lastEvent = preg_replace('/[Z]/i', '', $result->upcoming_events->last);
             $this->_data['upcomingEventLast'] = (string) $lastEvent;
-        }
-        if (isset($result->category->id)) {
-            $this->_data['categoryId'] = (int) $result->category->id;
-        } else {
-            $this->_data['categoryId'] = null;
         }
     }
 

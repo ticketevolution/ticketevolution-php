@@ -76,16 +76,30 @@ class Offices extends AbstractDataLoader
     protected function _formatData($result)
     {
         $this->_data = array(
-            'officeId'          => (int)    $result->id,
-            'brokerageId'       => (int)    $result->brokerage->id,
-            'officeName'        => (string) $result->name,
-            'phone'             => (string) $result->phone,
-            'fax'               => (string) $result->fax,
-            'timezone'          => (string) $result->time_zone,
-            'isMain'            => (int)    $result->main,
-            'officeUrl'         => (string) $result->url,
-            'updated_at'        => (string) $result->updated_at,
-            'officesStatus'     => (int)    1,
+            'officeId'                  => (int)    $result->id,
+            'brokerageId'               => (int)    $result->brokerage->id,
+            'officeName'                => (string) $result->name,
+            'phone'                     => (string) $result->phone,
+            'fax'                       => (string) $result->fax,
+            'timezone'                  => (string) $result->time_zone,
+            'isMain'                    => (int)    $result->main,
+            'isPos'                     => (int)    $result->pos,
+            'evoPayDiscount'            => (float)  $result->evopay_discount,
+            'officeUrl'                 => (string) $result->url,
+            'updated_at'                => (string) $result->updated_at,
+            'officesStatus'             => (int)    1,
+
+            'created_at'                => null,
+            'deleted_at'                => null,
+            'streetAddress'             => null,
+            'extendedAddress'           => null,
+            'locality'                  => null,
+            'regionCode'                => null,
+            'postalCode'                => null,
+            'countryCode'               => null,
+            'isPoBox'                   => null,
+            'latitude'                  => null,
+            'longitude'                 => null,
         );
 
         if (!empty($result->created_at)) {
@@ -103,6 +117,7 @@ class Offices extends AbstractDataLoader
             $this->_data['regionCode']      = (string) $result->address->region;
             $this->_data['postalCode']      = (string) $result->address->postal_code;
             $this->_data['countryCode']     = (string) $result->address->country_code;
+            $this->_data['isPoBox']         = (int)    $result->address->po_box;
             $this->_data['latitude']        = (float)  $result->address->latitude;
             $this->_data['longitude']       = (float)  $result->address->longitude;
         }

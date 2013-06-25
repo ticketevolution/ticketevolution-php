@@ -79,19 +79,23 @@ class Events extends AbstractDataLoader
         $occursAt = preg_replace('/[Z]/i', '', $result->occurs_at);
 
         $this->_data = array(
-            'eventId'           => (int)    $result->id,
-            'eventName'         => (string) $result->name,
-            'eventDate'         => (string) $occursAt,
-            'venueId'           => (int)    $result->venue->id,
-            'categoryId'        => (int)    $result->category->id,
-            'eventNotes'        => (string) $result->notes,
-            'productsCount'     => (int)    $result->products_count,
-            'eventUrl'          => (string) $result->url,
-            'popularityScore'   => (float)  $result->popularity_score,
-            'updated_at'        => (string) $result->updated_at,
-            'deleted_at'        =>          null,
-            'eventsStatus'       => (int)    1,
-            'eventState'        => (string) $result->state,
+            'eventId'                   => (int)    $result->id,
+            'eventName'                 => (string) $result->name,
+            'eventDate'                 => (string) $occursAt,
+            'venueId'                   => (int)    $result->venue->id,
+            'categoryId'                => (int)    $result->category->id,
+            'eventNotes'                => (string) $result->notes,
+            'productsCount'             => (int)    $result->products_count,
+            'eventUrl'                  => (string) $result->url,
+            'popularityScore'           => (float)  $result->popularity_score,
+            'longTermPopularityScore'   => (float)  $result->long_term_popularity_score,
+            'updated_at'                => (string) $result->updated_at,
+            'eventState'                => (string) $result->state,
+            'eventsStatus'              => (int)    1,
+
+            'created_at'                => null,
+            'deleted_at'                => null,
+            'configurationId'           => null,
         );
 
         if (!empty($result->created_at)) {
