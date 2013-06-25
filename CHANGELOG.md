@@ -1,3 +1,7 @@
+## 2.0.5 (June 25, 2013)
+- Fixed bug (#99) with DataLoaders where some values would not be properly deleted on update.
+
+
 ## 2.0.4 (June 24, 2013)
 - Fixed bug with TicketGroup filters
 - Added new TicketGroup Filters
