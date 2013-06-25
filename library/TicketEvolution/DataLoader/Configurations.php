@@ -86,6 +86,12 @@ class Configurations extends AbstractDataLoader
             'configurationUrl'          => (string) $result->url,
             'updated_at'                => (string) $result->updated_at,
             'configurationsStatus'      => (int)    1,
+
+            'created_at'                => null,
+            'deleted_at'                => null,
+            'venueId'                   => null,
+            'urlSeatingChartMedium'     => null,
+            'urlSeatingChartLarge'      => null,
         );
 
         if (!empty($result->created_at)) {
@@ -103,6 +109,7 @@ class Configurations extends AbstractDataLoader
         if (!empty($result->seating_chart->medium)) {
             $this->_data['urlSeatingChartMedium'] = (string) $result->seating_chart->medium;
         }
+
         if (!empty($result->seating_chart->large)) {
             $this->_data['urlSeatingChartLarge'] = (string) $result->seating_chart->large;
         }

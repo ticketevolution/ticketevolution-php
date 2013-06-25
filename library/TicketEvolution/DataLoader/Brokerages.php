@@ -84,6 +84,9 @@ class Brokerages extends AbstractDataLoader
             'brokerageUrl'              => (string) $result->url,
             'updated_at'                => (string) $result->updated_at,
             'brokeragesStatus'          => (int)    1,
+
+            'created_at'                => null,
+            'deleted_at'                => null,
         );
 
         if (!empty($result->created_at)) {
