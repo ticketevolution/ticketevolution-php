@@ -76,21 +76,27 @@ class Venues extends AbstractDataLoader
     protected function _formatData($result)
     {
         $this->_data = array(
-            'venueId'                   => (int)$result->id,
-            'venueName'                 => (string) $result->name,
+            'venueId'                       => (int)    $result->id,
+            'venueName'                     => (string) $result->name,
+            'venueUrl'                      => (string) $result->url,
+            'venueKeywords'                 => (string) $result->keywords,
+            'popularityScore'               => (float)  $result->popularity_score,
+            'updated_at'                    => (string) $result->updated_at,
+            'venuesStatus'                  => (int)    1,
 
-            'streetAddress'             => (string) $result->address->street_address,
-            'extendedAddress'           => (string) $result->address->extended_address,
-            'locality'                  => (string) $result->address->locality,
-            'region'                    => (string) $result->address->region,
-            'postalCode'                => (string) $result->address->postal_code,
+            'created_at'                    => null,
+            'deleted_at'                    => null,
+            'upcomingEventFirst'            => null,
+            'upcomingEventLast'             => null,
+            'streetAddress'                 => null,
+            'extendedAddress'               => null,
+            'locality'                      => null,
+            'regionCode'                    => null,
+            'postalCode'                    => null,
+            'countryCode'                   => null,
+            'latitude'                      => null,
+            'longitude'                     => null,
 
-            'venueUrl'                  => (string) $result->url,
-            'venueKeywords'             => (string) $result->keywords,
-            'popularityScore'           => (float)  $result->popularity_score,
-            'updated_at'                => (string) $result->updated_at,
-
-            'venuesStatus'               => (int)    1,
         );
 
         if (!empty($result->created_at)) {
@@ -101,23 +107,15 @@ class Venues extends AbstractDataLoader
             $this->_data['deleted_at'] = (string) $result->deleted_at;
         }
 
-
-        /**
-         * Currently country_code is not part of the address object. Not sure why.
-         * Handle it properly wherever it is
-         */
-        if (isset($result->country_code)) {
-            $this->_data['countryCode'] = $result->country_code;
-        }
-        if (!empty($result->address->country_code)) {
-            $this->_data['countryCode'] = $result->address->country_code;
-        }
-
-        if (isset($result->address->latitude)) {
-            $this->_data['latitude'] = $result->address->latitude;
-        }
-        if (isset($result->address->longitude)) {
-            $this->_data['longitude'] = $result->address->longitude;
+        if (isset($result->address)) {
+            $this->_data['streetAddress']   = (string) $result->address->street_address;
+            $this->_data['extendedAddress'] = (string) $result->address->extended_address;
+            $this->_data['locality']        = (string) $result->address->locality;
+            $this->_data['regionCode']      = (string) $result->address->region;
+            $this->_data['postalCode']      = (string) $result->address->postal_code;
+            $this->_data['countryCode']     = (string) $result->address->country_code;
+            $this->_data['latitude']        = (float)  $result->address->latitude;
+            $this->_data['longitude']       = (float)  $result->address->longitude;
         }
 
         if (!empty($result->upcoming_events->first)) {
@@ -125,6 +123,7 @@ class Venues extends AbstractDataLoader
             $firstEvent = preg_replace('/[Z]/i', '', $result->upcoming_events->first);
             $this->_data['upcomingEventFirst'] = (string) $firstEvent;
         }
+
         if (!empty($result->upcoming_events->last)) {
             // Ensure the timezone is not incorrectly adjusted
             $lastEvent = preg_replace('/[Z]/i', '', $result->upcoming_events->last);

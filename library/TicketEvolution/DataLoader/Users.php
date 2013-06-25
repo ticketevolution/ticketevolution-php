@@ -76,16 +76,19 @@ class Users extends AbstractDataLoader
     protected function _formatData($result)
     {
         $this->_data = array(
-            'userId'                => (int) $result->id,
-            'brokerageId'           => (int) $result->office->brokerage->id,
-            'officeId'              => (int) $result->office->id,
-            'userName'              => (string) $result->name,
-            'userPhone'             => (string) $result->phone->number,
-            'userPhoneExtension'    => (string) $result->phone->extension,
-            'userEmail'             => strtolower((string) $result->email),
-            'userUrl'               => (string) $result->url,
-            'updated_at'            => (string) $result->updated_at,
-            'usersStatus'           => (int) 1,
+            'userId'                        => (int) $result->id,
+            'brokerageId'                   => (int) $result->office->brokerage->id,
+            'officeId'                      => (int) $result->office->id,
+            'userName'                      => (string) $result->name,
+            'userPhone'                     => (string) $result->phone->number,
+            'userPhoneExtension'            => (string) $result->phone->extension,
+            'userEmail'                     => strtolower((string) $result->email),
+            'userUrl'                       => (string) $result->url,
+            'updated_at'                    => (string) $result->updated_at,
+            'usersStatus'                   => (int) 1,
+
+            'created_at'                    => null,
+            'deleted_at'                    => null,
         );
 
         if (!empty($result->created_at)) {
