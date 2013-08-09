@@ -1,3 +1,7 @@
+## 2.0.6 (August 9, 2013)
+- Exception thrown in `TicketEvolution\Webservice::_cleanAndValidateCreditCardNumber()` with invalid card numbers was not obvious. Removed card validation as the API will return a message about invalid card numbers.
+
+
 ## 2.0.5 (June 25, 2013)
 - Fixed bug (#99) with DataLoaders where some values would not be properly deleted on update.
 

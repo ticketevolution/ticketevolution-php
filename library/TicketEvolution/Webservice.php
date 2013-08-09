@@ -1226,7 +1226,7 @@ class Webservice
             /**
              * Strip non-numeric chars from CC number and validate it
              */
-            $creditCard->number = $this->_cleanAndValidateCreditCardNumber(
+            $creditCard->number = $this->_cleanCreditCardNumber(
                 $creditCard->number
             );
             $body->credit_cards[] = $creditCard;
@@ -1276,7 +1276,7 @@ class Webservice
         /**
          * Strip non-numeric chars from CC number and validate it
          */
-        $creditCardDetails->number = $this->_cleanAndValidateCreditCardNumber(
+        $creditCardDetails->number = $this->_cleanCreditCardNumber(
             $creditCardDetails->number
         );
         $options = json_encode($creditCardDetails);
@@ -1314,19 +1314,9 @@ class Webservice
      * @throws Webservice\Exception
      * @return string
      */
-    protected function _cleanAndValidateCreditCardNumber($creditCardNumber)
+    protected function _cleanCreditCardNumber($creditCardNumber)
     {
-        $cleanNumber = preg_replace('/[^0-9]/', '', $creditCardNumber);
-
-        $valid = new \Zend_Validate_CreditCard();
-        if ($valid->isValid($cleanNumber)) {
-            return $cleanNumber;
-        } else {
-            throw new namespace\Exception(
-                'The credit card provided is not a valid credit card number'
-            );
-        }
-
+        return preg_replace('/[^0-9]/', '', $creditCardNumber);
     }
 
 
