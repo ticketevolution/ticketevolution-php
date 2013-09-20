@@ -1,3 +1,10 @@
+## 2.0.7 (September 20, 2013)
+- Added some more specific Exception classes to make it easier to catch different types
+- Moved classes specific to the [DataLoader project](https://github.com/TeamOneTickets/ticket-evolution-php-library-demo) to that project.
+- Cleaned up some inline documentation in `Webservice.php`
+- Refactored most of the methods in `Webservice.php`
+
+
 ## 2.0.6 (August 9, 2013)
 - Exception thrown in `TicketEvolution\Webservice::_cleanAndValidateCreditCardNumber()` with invalid card numbers was not obvious. Removed card validation as the API will return a message about invalid card numbers.
 
