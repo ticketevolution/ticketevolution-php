@@ -14,25 +14,45 @@
  * to license@ticketevolution.com so we can send you a copy immediately.
  *
  * @category    TicketEvolution
- * @package     TicketEvolution\Webservice
- * @subpackage  Webservice
- * @author      J Cobb <j@teamonetickets.com>
- * @author      Jeff Churchill <jeff@teamonetickets.com>
+ * @package     TicketEvolution\ApiException
  * @copyright   Copyright (c) 2013 Ticket Evolution, Inc. (http://www.ticketevolution.com)
  * @license     http://choosealicense.com/licenses/bsd-3-clause/ BSD (3-Clause) License
  */
 
 
-namespace TicketEvolution\Webservice;
+namespace TicketEvolution;
+use TicketEvolution\Exception;
 
 
 /**
  * @category    TicketEvolution
- * @package     TicketEvolution\Webservice
- * @subpackage  Webservice
+ * @package     TicketEvolution\ApiException
  * @copyright   Copyright (c) 2013 Ticket Evolution, Inc. (http://www.ticketevolution.com)
  * @license     http://choosealicense.com/licenses/bsd-3-clause/ BSD (3-Clause) License
  */
-class ResultSet extends ResultSet\AbstractResultSet
+class ApiException extends Exception
 {
+    public function __construct($message=null, $httpStatusCode=null, $httpBody=null, $jsonBody=null)
+    {
+        parent::__construct($message);
+
+        $this->httpStatusCode = $httpStatusCode;
+        $this->httpBody = $httpBody;
+        $this->jsonBody = $jsonBody;
+    }
+
+    public function getHttpStatusCode()
+    {
+        return $this->httpStatusCode;
+    }
+
+    public function getHttpBody()
+    {
+        return $this->httpBody;
+    }
+
+    public function getJsonBody()
+    {
+        return $this->jsonBody;
+    }
 }
