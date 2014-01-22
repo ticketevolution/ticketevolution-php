@@ -1091,6 +1091,37 @@ class Webservice
 
 
     /**
+     * Search for events
+     *
+     * @param   string  $query
+     * @param   array   $options    Options to use for the search query
+     * @throws  TicketEvolution\ApiException
+     * @return  TicketEvolution\Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470096
+     */
+    public function searchEvents($query, array $options)
+    {
+        $endPoint = 'events/search';
+
+        $options['q'] = trim($query);
+        if (empty ($options['q'])) {
+            throw new ApiException(
+                'You must provide a non-empty query string when searching.'
+            );
+        }
+
+        $defaultOptions = array(
+            'page'      => '1',
+            'per_page'  => '100'
+        );
+
+        return $this->_postProcess(
+            $this->_get($endPoint, $options, $defaultOptions)
+        );
+    }
+
+
+    /**
      * List Active Performers
      *
      * @param   array   $options    Options to use for the search query
@@ -1458,6 +1489,23 @@ class Webservice
         $body->orders = $orders;
         $options = json_encode($body);
         unset($body);
+
+        return $this->_postProcess(
+            $this->_post($endPoint, $options)
+        );
+    }
+
+
+    /**
+     * Create order(s) from raw JSON
+     *
+     * @param   array   $options     JSON of the order details
+     * @return  stdClass
+     * @link    http://developer.ticketevolution.com/endpoints/orders#create_client_order
+     */
+    public function createOrdersFromJson($options)
+    {
+        $endPoint = 'orders';
 
         return $this->_postProcess(
             $this->_post($endPoint, $options)
