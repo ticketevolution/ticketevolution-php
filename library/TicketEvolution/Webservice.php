@@ -15,8 +15,6 @@
  *
  * @category    TicketEvolution
  * @package     TicketEvolution\Webservice
- * @author      J Cobb <j@teamonetickets.com>
- * @author      Jeff Churchill <jeff@teamonetickets.com>
  * @copyright   Copyright (c) 2013 Ticket Evolution, Inc. (http://www.ticketevolution.com)
  * @license     http://choosealicense.com/licenses/bsd-3-clause/ BSD (3-Clause) License
  */
@@ -40,7 +38,7 @@ class Webservice
      * @var     string
      * @link    https://github.com/ticketevolution/ticketevolution-php/releases
      */
-    const VERSION = '2.0.7';
+    const VERSION = '2.1.1';
 
     /**
      * Ticket Evolution API Token
