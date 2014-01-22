@@ -15,7 +15,7 @@
  *
  * @category    TicketEvolution
  * @package     TicketEvolution\ApiConnectionException
- * @copyright   Copyright (c) 2013 Ticket Evolution, Inc. (http://www.ticketevolution.com)
+ * @copyright   Copyright (c) 2014 Ticket Evolution, Inc. (http://www.ticketevolution.com)
  * @license     http://choosealicense.com/licenses/bsd-3-clause/ BSD (3-Clause) License
  */
 
@@ -27,7 +27,7 @@ use TicketEvolution\Exception;
 /**
  * @category    TicketEvolution
  * @package     TicketEvolution\ApiConnectionException
- * @copyright   Copyright (c) 2013 Ticket Evolution, Inc. (http://www.ticketevolution.com)
+ * @copyright   Copyright (c) 2014 Ticket Evolution, Inc. (http://www.ticketevolution.com)
  * @license     http://choosealicense.com/licenses/bsd-3-clause/ BSD (3-Clause) License
  */
 class ApiConnectionException extends ApiException

@@ -15,9 +15,7 @@
  *
  * @category    TicketEvolution
  * @package     TicketEvolution\Exception
- * @author      J Cobb <j@teamonetickets.com>
- * @author      Jeff Churchill <jeff@teamonetickets.com>
- * @copyright   Copyright (c) 2013 Ticket Evolution, Inc. (http://www.ticketevolution.com)
+ * @copyright   Copyright (c) 2014 Ticket Evolution, Inc. (http://www.ticketevolution.com)
  * @license     http://choosealicense.com/licenses/bsd-3-clause/ BSD (3-Clause) License
  */
 
@@ -28,7 +26,7 @@ namespace TicketEvolution;
 /**
  * @category    TicketEvolution
  * @package     TicketEvolution\Exception
- * @copyright   Copyright (c) 2013 Ticket Evolution, Inc. (http://www.ticketevolution.com)
+ * @copyright   Copyright (c) 2014 Ticket Evolution, Inc. (http://www.ticketevolution.com)
  * @license     http://choosealicense.com/licenses/bsd-3-clause/ BSD (3-Clause) License
  */
 class Exception extends \Exception
