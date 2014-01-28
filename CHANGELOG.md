@@ -1,9 +1,18 @@
+## 2.1.2 (January 28, 2014)
+- Added the ability to time the API call & response using getElapsedTime(). This only times the actual call & response and does not include any of the setup time.
+
+## 2.1.1 (January 21, 2014)
+- Added searchEvents() for performing [full text search of events](https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470096)
+- Added createOrdersFromJson() for [creating orders](https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994275) from raw JSON
+- Removed @author attributions
+- Updated @copyright dates
+
 ## 2.1 (September 20, 2013)
 - Added some more specific Exception classes to make it easier to catch different types
 - Moved classes specific to the [DataLoader project](https://github.com/jwcobb/ticketevolution-php-dataloaders) to that project.
 - Cleaned up some inline documentation in `Webservice.php`
 - Reduced redundant code in most methods in `Webservice.php`
-- The copyright license has been transferred from [Team One Tickets & Sports Tours, Inc](http://www.teamonetickets.com) to [Ticket Evolution, Inc.](http://www.ticketevolution.com/). A copyright transfer agreement is on file with Ticket Evolution, Inc.
+- The copyright has been transferred from [Team One Tickets & Sports Tours, Inc](http://www.teamonetickets.com) to [Ticket Evolution, Inc.](http://www.ticketevolution.com/). A copyright transfer agreement is on file with Ticket Evolution, Inc.
 
 
 ## 2.0.6 (August 9, 2013)

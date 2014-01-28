@@ -102,6 +102,22 @@ class Webservice
 
 
     /**
+     * Variable for measuring API call execution time.
+     *
+     * @var     float
+     */
+    protected $_timeStart;
+
+
+    /**
+     * Variable for measuring API call execution time.
+     *
+     * @var     float
+     */
+    protected $_timeEnd;
+
+
+    /**
      * Constructs a new Ticket Evolution Web Services Client
      *
      * @param   mixed   $config     An array or Zend_Config object with adapter parameters.
@@ -2111,7 +2127,10 @@ class Webservice
         );
 
         try {
-            return $client->restGet($this->_apiPrefix . $endPoint, $options);
+            $this->_startTimer();
+            $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
+            $this->_endTimer();
+            return $response;
         } catch (\Exception $e) {
             throw new ApiConnectionException(
                 $e->getMessage(),
@@ -2154,7 +2173,10 @@ class Webservice
         );
 
         try {
-            return $client->restPost($this->_apiPrefix . $endPoint, $options);
+            $this->_startTimer();
+            $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
+            $this->_endTimer();
+            return $response;
         } catch (\Exception $e) {
             throw new ApiConnectionException(
                 $e->getMessage(),
@@ -2197,7 +2219,10 @@ class Webservice
         );
 
         try {
-            return $client->restPut($this->_apiPrefix . $endPoint, $options);
+            $this->_startTimer();
+            $response = $client->restPut($this->_apiPrefix . $endPoint, $options);
+            $this->_endTimer();
+            return $response;
         } catch (\Exception $e) {
             throw new ApiConnectionException(
                 $e->getMessage(),
@@ -2345,6 +2370,40 @@ class Webservice
         }
 
         return $decodedJson;
+    }
+
+
+    /**
+     * Utility method for timing API calls.
+     *
+     */
+    protected function _startTimer()
+    {
+        $this->_timeStart = microtime(true);
+    }
+
+
+    /**
+     * Utility method for timing API calls.
+     *
+     */
+    protected function _endTimer()
+    {
+        $this->_timeEnd = microtime(true);
+    }
+
+
+    /**
+     * Utility method for timing API calls.
+     *
+     */
+    public function getElapsedTime()
+    {
+        try {
+            return $this->_timeEnd - $this->_timeStart;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
 
