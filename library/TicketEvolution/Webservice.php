@@ -38,7 +38,7 @@ class Webservice
      * @var     string
      * @link    https://github.com/ticketevolution/ticketevolution-php/releases
      */
-    const VERSION = '2.1.1';
+    const VERSION = '2.1.3';
 
     /**
      * Ticket Evolution API Token
@@ -2297,7 +2297,7 @@ class Webservice
             }
             // There is a single item, so no need to return a ResultSet
             return $decodedBody;
-            
+
         } else {
             return $decodedBody;
         }
