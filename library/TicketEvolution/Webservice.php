@@ -2292,12 +2292,12 @@ class Webservice
 
 
         if ($this->resultType === 'resultset') {
-            if (!isset($decodedBody->total_entries)) {
-                // There is a single item, so no need to return a ResultSet
-                return $decodedBody;
+            if (isset($decodedBody->per_page) || isset($decodedBody->total_entries)) {
+                return new Webservice\ResultSet($decodedBody);
             }
-
-            return new Webservice\ResultSet($decodedBody);
+            // There is a single item, so no need to return a ResultSet
+            return $decodedBody;
+            
         } else {
             return $decodedBody;
         }
