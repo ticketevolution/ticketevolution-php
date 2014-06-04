@@ -1,3 +1,6 @@
+## 2.1.3 (June 4, 2014)
+- Account for a bug in some API responses where `total_entries` is being returned as `NULL`, thus causing `Webservice.php` to not return a `ResultSet` as is expected.
+
 ## 2.1.2 (January 28, 2014)
 - Added the ability to time the API call & response using getElapsedTime(). This only times the actual call & response and does not include any of the setup time.
 
