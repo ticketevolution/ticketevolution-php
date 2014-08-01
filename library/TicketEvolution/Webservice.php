@@ -38,7 +38,7 @@ class Webservice
      * @var     string
      * @link    https://github.com/ticketevolution/ticketevolution-php/releases
      */
-    const VERSION = '2.1.3';
+    const VERSION = '2.1.4';
 
     /**
      * Ticket Evolution API Token
@@ -1718,6 +1718,30 @@ class Webservice
 
         return $this->_postProcess(
             $this->_put($endPoint, $options)
+        );
+    }
+
+
+    /**
+     * Orders / Print Etickets & Items / Print Etickets
+     *
+     * @param   array   $options    Options to use for the search query
+     * @return  TicketEvolution\Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470115
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=12550151
+     */
+    public function printEtickets($orderId, $itemId=null)
+    {
+        $endPoint = 'orders/' . $orderId . '/print_etickets';
+        if ($itemId) {
+            $endPoint = 'orders/' . $orderId . '/items/' . $itemId . 'print_etickets';
+        }
+
+        $options = array();
+        $defaultOptions = array();
+
+        return $this->_postProcess(
+            $this->_get($endPoint, $options, $defaultOptions)
         );
     }
 

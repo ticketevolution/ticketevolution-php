@@ -1,3 +1,6 @@
+## 2.1.4 (August 1, 2014)
+- Add `printEtickets()` method for retrieving etickets for an order. Thanks to @tapmodo.
+
 ## 2.1.3 (June 4, 2014)
 - Account for a bug in some API responses where `total_entries` is being returned as `NULL`, thus causing `Webservice.php` to not return a `ResultSet` as is expected.
 
