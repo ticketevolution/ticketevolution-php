@@ -38,7 +38,7 @@ class Webservice
      * @var     string
      * @link    https://github.com/ticketevolution/ticketevolution-php/releases
      */
-    const VERSION = '2.1.4';
+    const VERSION = '2.1.5';
 
     /**
      * Ticket Evolution API Token
