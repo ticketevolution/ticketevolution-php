@@ -38,7 +38,7 @@ class Webservice
      * @var     string
      * @link    https://github.com/ticketevolution/ticketevolution-php/releases
      */
-    const VERSION = '2.1.5';
+    const VERSION = '2.2.0';
 
     /**
      * Ticket Evolution API Token
@@ -1447,6 +1447,27 @@ class Webservice
 
 
     /**
+     * Set a ticket's properties (PDF and/or barcode)
+     *
+     * @param   int     $ticketId
+     * @param   stdClass   $properties
+     * @return  stdClass
+     * @link    http://developer.ticketevolution.com/endpoints/ticket-groups#show
+     */
+    public function ticketsSetProperties($ticketId, \stdClass $properties)
+    {
+        $endPoint = 'tickets/' . $ticketId;
+
+        $options = json_encode($properties);
+        $defaultOptions = array();
+
+        return $this->_postProcess(
+            $this->_put($endPoint, $options, $defaultOptions)
+        );
+    }
+
+
+    /**
      * List Orders
      *
      * @param   array   $options    Options to use for the search query
@@ -1960,9 +1981,9 @@ class Webservice
     public function getRestClient()
     {
         if ($this->_rest === null) {
-            $this->_rest = new \Zend_Rest_Client();
+            $this->_rest = new RestClient();
 
-            $httpClient = new \Zend_Http_Client(
+            $httpClient = new HttpClient(
                 $this->_baseUri,
                 array (
                     'keepalive' => $this->_usePersistentConnections

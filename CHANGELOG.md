@@ -1,3 +1,7 @@
+## 2.2.0 (November 14, 2014)
+- Close #113 by extending `Zend_Rest_Client` and `Zend_Http_Client` to add the ability to set the proper `Content-Type` header.
+- Close #111 by adding the `ticketsSetProperties()` method.
+
 ## 2.1.5 (November 14, 2014)
 - Close #110 by adding a `$options` parameter to `showTicketGroup()`.
 - Close #112 by renaming `rejection_reason` to `reason` and adding support for `rejection_notes`.
