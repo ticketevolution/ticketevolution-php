@@ -1430,14 +1430,14 @@ class Webservice
      * Get a single Ticket by Id Group
      *
      * @param   int     $id
+     * @param   array   $options    Options to use for the search query
      * @return  stdClass
      * @link    http://developer.ticketevolution.com/endpoints/ticket-groups#show
      */
-    public function showTicketGroup($id)
+    public function showTicketGroup($id, $options=array())
     {
         $endPoint = 'ticket_groups/' . $id;
 
-        $options = array();
         $defaultOptions = array();
 
         return $this->_postProcess(
@@ -1578,11 +1578,13 @@ class Webservice
      *
      * @param   int     $orderId    ID of the order to accept
      * @param   int     $userId     ID of the user who reviewed and rejects this order
+     * @param   string  $reason     One of the allowed reasons
+     * @param   string  $rejection_notes     Additional notes if necessary
      * @throws  OutOfBoundsException
      * @return  bool
-     * @link    http://developer.ticketevolution.com/endpoints/orders#reject_order
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470108
      */
-    public function rejectOrder($orderId, $userId, $reason)
+    public function rejectOrder($orderId, $userId, $reason, $notes=null)
     {
         $endPoint = 'orders/' . $orderId . '/reject';
 
@@ -1604,7 +1606,8 @@ class Webservice
 
         $body = array(
             'reviewer_id'       => $userId,
-            'rejection_reason'  => $reason,
+            'reason'            => $reason,
+            'rejection_notes'   => $notes,
         );
         $options = json_encode($body);
         unset($body);

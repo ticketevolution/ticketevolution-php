@@ -1,3 +1,7 @@
+## 2.1.5 (November 14, 2014)
+- Close #110 by adding a `$options` parameter to `showTicketGroup()`.
+- Close #112 by renaming `rejection_reason` to `reason` and adding support for `rejection_notes`.
+
 ## 2.1.4 (August 1, 2014)
 - Add `printEtickets()` method for retrieving etickets for an order. Thanks to @tapmodo.
 
