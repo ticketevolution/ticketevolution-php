@@ -50,7 +50,7 @@ class RestClient extends Zend_Rest_Client
     {
         $client = self::getHttpClient();
         if (is_string($data)) {
-            $client->setRawData($data);
+            $client->setRawData($data, HttpClient::ENC_JSON);
         } elseif (is_array($data) || is_object($data)) {
             $client->setParameterPost((array) $data);
         }
