@@ -1,3 +1,10 @@
+## 2.2.1 (November 2, 2014)
+- Improved code formatting
+- Updated docblock `@link`s to related API documentation for all methods
+- Changed `searchClients()` to use `/searches/suggestions` endpoint
+- Removed `updateShipment()` and `updateOrder()`
+- Added methods: `cancelShipment()`, `generateAirbill()`, `getAirbill()`, `emailAirbill()`, `getShipmentSugestion()`, `createQuotes()`
+
 ## 2.2.0 (November 14, 2014)
 - Close #113 by extending `Zend_Rest_Client` and `Zend_Http_Client` to add the ability to set the proper `Content-Type` header.
 - Close #111 by adding the `ticketsSetProperties()` method.

@@ -1,26 +1,23 @@
-<?php
+<?php namespace TicketEvolution;
 
-/**
- * Ticket Evolution PHP Client Library
- *
- * LICENSE
- *
- * This source file is subject to the new BSD (3-Clause) License that is bundled
- * with this package in the file LICENSE.txt.
- * It is also available through the world-wide-web at this URL:
- * http://choosealicense.com/licenses/bsd-3-clause/
- * If you did not receive a copy of the license and are unable to
- * obtain it through the world-wide-web, please send an email
- * to license@ticketevolution.com so we can send you a copy immediately.
- *
- * @category    TicketEvolution
- * @package     TicketEvolution\Webservice
- * @copyright   Copyright (c) 2014 Ticket Evolution, Inc. (http://www.ticketevolution.com)
- * @license     http://choosealicense.com/licenses/bsd-3-clause/ BSD (3-Clause) License
- */
-
-
-namespace TicketEvolution;
+    /**
+     * Ticket Evolution PHP Client Library
+     *
+     * LICENSE
+     *
+     * This source file is subject to the new BSD (3-Clause) License that is bundled
+     * with this package in the file LICENSE.txt.
+     * It is also available through the world-wide-web at this URL:
+     * http://choosealicense.com/licenses/bsd-3-clause/
+     * If you did not receive a copy of the license and are unable to
+     * obtain it through the world-wide-web, please send an email
+     * to license@ticketevolution.com so we can send you a copy immediately.
+     *
+     * @category    TicketEvolution
+     * @package     TicketEvolution\Webservice
+     * @copyright   Copyright (c) 2014 Ticket Evolution, Inc. (http://www.ticketevolution.com)
+     * @license     http://choosealicense.com/licenses/bsd-3-clause/ BSD (3-Clause) License
+     */
 
 
 /**
@@ -38,13 +35,13 @@ class Webservice
      * @var     string
      * @link    https://github.com/ticketevolution/ticketevolution-php/releases
      */
-    const VERSION = '2.2.0';
+    const VERSION = '2.2.1';
 
     /**
      * Ticket Evolution API Token
      *
      * @var     string
-     * @link    http://exchange.ticketevolution.com/brokerage/credentials
+     * @link    http://settings.ticketevolution.com/brokerage/credentials
      */
     public $apiToken;
 
@@ -52,7 +49,7 @@ class Webservice
      * Ticket Evolution API Secret Key
      *
      * @var     string
-     * @link    http://exchange.ticketevolution.com/brokerage/credentials
+     * @link    http://settings.ticketevolution.com/brokerage/credentials
      */
     protected $_secretKey = null;
 
@@ -69,7 +66,7 @@ class Webservice
      * API version
      *
      * @var     string
-     * @link    http://api.ticketevolution.com/ Find the current version
+     * @link    https://ticketevolution.atlassian.net/wiki/display/API/Current+Version Find the current version
      */
     protected $_apiVersion = '9';
 
@@ -118,10 +115,23 @@ class Webservice
 
 
     /**
+     * Default parameters for endpoints that support pagination.
+     *
+     * @var     float
+     */
+    protected $_defaultPagination = array(
+        'page'     => '1',
+        'per_page' => '100'
+    );
+
+
+    /**
      * Constructs a new Ticket Evolution Web Services Client
      *
-     * @param   mixed   $config     An array or Zend_Config object with adapter parameters.
-     * @return  TicketEvolution\Webservice
+     * @param   mixed $config An array or Zend_Config object with adapter parameters.
+     *
+     * @throws ApiException
+     * @return  Webservice
      */
     public function __construct($config)
     {
@@ -154,21 +164,21 @@ class Webservice
 
         // See if we need to override the API version.
         if (!empty($config['apiVersion'])) {
-            $this->_apiVersion = (string) $config['apiVersion'];
+            $this->_apiVersion = (string)$config['apiVersion'];
         }
 
         // See if we need to override the base URI.
         if (!empty($config['baseUri'])) {
-            $this->_baseUri = (string) $config['baseUri'];
+            $this->_baseUri = (string)$config['baseUri'];
         }
 
         // See if we need to override the _usePersistentConnections.
         if (isset($config['usePersistentConnections'])) {
-            $this->_usePersistentConnections = (bool) $config['usePersistentConnections'];
+            $this->_usePersistentConnections = (bool)$config['usePersistentConnections'];
         }
 
-        $this->apiToken = (string) $config['apiToken'];
-        $this->_secretKey = (string) $config['secretKey'];
+        $this->apiToken = (string)$config['apiToken'];
+        $this->_secretKey = (string)$config['secretKey'];
 
         $this->_apiPrefix = '/v' . $this->_apiVersion . '/';
     }
@@ -177,18 +187,16 @@ class Webservice
     /**
      * List Brokerages
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/brokerages#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=25001994
      */
     public function listBrokerages(array $options)
     {
         $endPoint = 'brokerages';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -199,9 +207,10 @@ class Webservice
     /**
      * Get a single brokerage by Id
      *
-     * @param   int     $id     The brokerage ID
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/brokerages#show
+     * @param   int $id The brokerage ID
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=25002003
      */
     public function showBrokerage($id)
     {
@@ -219,11 +228,12 @@ class Webservice
     /**
      * Search for brokerage(s)
      *
-     * @param   string   $query      The query string
-     * @param   array    $options    Options to use for the search query
-     * @throws  TicketEvolution\ApiException
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/brokerages#search
+     * @param   string $query   The query string
+     * @param   array  $options Options to use for the search query
+     *
+     * @throws  ApiException
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=25002001
      */
     public function searchBrokerages($query, array $options)
     {
@@ -236,10 +246,7 @@ class Webservice
             );
         }
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -250,18 +257,16 @@ class Webservice
     /**
      * List Clients
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/clients#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470168
      */
     public function listClients(array $options)
     {
         $endPoint = 'clients';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -272,9 +277,10 @@ class Webservice
     /**
      * Get a single client by Id
      *
-     * @param   int     $id     The Client ID
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/clients#show
+     * @param   int $id The Client ID
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470174
      */
     public function showClient($id)
     {
@@ -292,15 +298,25 @@ class Webservice
     /**
      * Search for client(s)
      *
-     * @param   string  $query      The query string
-     * @param   array   $options    Options to use for the search query
-     * @throws  TicketEvolution\ApiException
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/clients#search
+     * @param   string $query   The query string
+     * @param   array  $options Options to use for the search query
+     *
+     * @throws  ApiException
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=6455318
      */
     public function searchClients($query, array $options)
     {
-        $endPoint = 'clients/search';
+        $endPoint = 'searches/suggestions';
+
+        // Because the results from this endpoint do not convert to a ResultSet
+        // force a return of decodedjson
+        if ($this->resultType == 'resultset') {
+            $this->resultType = 'decodedjson';
+        }
+
+        //Set the proper entity to search
+        $options['entities'] = 'clients';
 
         $options['q'] = trim($query);
         if (empty ($options['q'])) {
@@ -309,10 +325,7 @@ class Webservice
             );
         }
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -323,9 +336,10 @@ class Webservice
     /**
      * Create client(s)
      *
-     * @param   array   $clients    Array of client objects
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/clients#create
+     * @param   array $clients Array of client objects
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470183
      */
     public function createClients(array $clients)
     {
@@ -344,10 +358,11 @@ class Webservice
     /**
      * Update a client
      *
-     * @param   int     $id             The client ID to update
-     * @param   object  $clientDetails   Client object structured per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/clients#update
+     * @param   int    $id            The client ID to update
+     * @param   object $clientDetails Client object structured per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470186
      */
     public function updateClient($id, $clientDetails)
     {
@@ -364,18 +379,16 @@ class Webservice
     /**
      * List Client Companies
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/companies#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=30572746
      */
     public function listClientCompanies(array $options)
     {
         $endPoint = 'companies';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -386,9 +399,10 @@ class Webservice
     /**
      * Get a single client company by Id
      *
-     * @param   int     $id     The Client Company ID
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/companies#show
+     * @param   int $id The Client Company ID
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=30572749
      */
     public function showClientCompany($id)
     {
@@ -406,9 +420,10 @@ class Webservice
     /**
      * Create client companies
      *
-     * @param   array   $companies  Array of objects structured per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/companies#create
+     * @param   array $companies Array of objects structured per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=30572753
      */
     public function createClientCompanies(array $companies)
     {
@@ -427,10 +442,11 @@ class Webservice
     /**
      * Update a client company
      *
-     * @param   int     $id             The client ID to update
-     * @param   object  $companyDetails  Company object structured per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/companies#update
+     * @param   int    $id             The client ID to update
+     * @param   object $companyDetails Company object structured per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=30572755
      */
     public function updateClientCompany($id, $companyDetails)
     {
@@ -447,19 +463,17 @@ class Webservice
     /**
      * List Client Addresses
      *
-     * @param   int     $clientId   ID of the specific client
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/addresses#list
+     * @param   int   $clientId ID of the specific client
+     * @param   array $options  Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4129319
      */
     public function listClientAddresses($clientId, array $options)
     {
         $endPoint = 'clients/' . $clientId . '/addresses';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -470,10 +484,11 @@ class Webservice
     /**
      * Get a single client address by Id
      *
-     * @param   int     $clientId   ID of the specific client
-     * @param   int     $addressId  ID of the specific address
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/addresses#show
+     * @param   int $clientId  ID of the specific client
+     * @param   int $addressId ID of the specific address
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4129333
      */
     public function showClientAddress($clientId, $addressId)
     {
@@ -491,10 +506,11 @@ class Webservice
     /**
      * Create client address(es)
      *
-     * @param   int     $clientId   ID of the specific client
-     * @param   array   $addresses  Array of address objects structured per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/addresses#create
+     * @param   int   $clientId  ID of the specific client
+     * @param   array $addresses Array of address objects structured per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4129337
      */
     public function createClientAddresses($clientId, array $addresses)
     {
@@ -514,11 +530,12 @@ class Webservice
     /**
      * Update a single client address
      *
-     * @param   int     $clientId   ID of the specific client
-     * @param   int     $addressId  ID of the specific address
-     * @param   object  $address    Address object structured per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/addresses#update
+     * @param   int    $clientId  ID of the specific client
+     * @param   int    $addressId ID of the specific address
+     * @param   object $address   Address object structured per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4129342
      */
     public function updateClientAddress($clientId, $addressId, $address)
     {
@@ -535,19 +552,17 @@ class Webservice
     /**
      * List Client Phone Numbers
      *
-     * @param   int     $clientId   ID of the specific client
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/phone-numbers#list
+     * @param   int   $clientId ID of the specific client
+     * @param   array $options  Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394131
      */
     public function listClientPhoneNumbers($clientId, array $options)
     {
         $endPoint = 'clients/' . $clientId . '/phone_numbers';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -558,10 +573,11 @@ class Webservice
     /**
      * Get a single client phone number by Id
      *
-     * @param   int     $clientId       ID of the specific client
-     * @param   int     $phoneNumberId  ID of the specific phone number
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/phone-numbers#show
+     * @param   int $clientId      ID of the specific client
+     * @param   int $phoneNumberId ID of the specific phone number
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394167
      */
     public function showClientPhoneNumber($clientId, $phoneNumberId)
     {
@@ -579,10 +595,11 @@ class Webservice
     /**
      * Create client phone number(s)
      *
-     * @param   int     $clientId       ID of the specific client
-     * @param   array   $phoneNumbers   Array of phone numbers objects per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/phone-numbers#create
+     * @param   int   $clientId     ID of the specific client
+     * @param   array $phoneNumbers Array of phone numbers objects per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=983142
      */
     public function createClientPhoneNumbers($clientId, array $phoneNumbers)
     {
@@ -602,11 +619,12 @@ class Webservice
     /**
      * Update a single client phone number
      *
-     * @param   int     $clientId           ID of the specific client
-     * @param   int     $phoneNumberId      ID of the specific phone number
-     * @param   object  $phoneNumberDetails Phone number object structured per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/phone-numbers#update
+     * @param   int    $clientId           ID of the specific client
+     * @param   int    $phoneNumberId      ID of the specific phone number
+     * @param   object $phoneNumberDetails Phone number object structured per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394170
      */
     public function updateClientPhoneNumber($clientId, $phoneNumberId, $phoneNumberDetails)
     {
@@ -623,19 +641,17 @@ class Webservice
     /**
      * List Client Email Addresses
      *
-     * @param   int     $clientId   ID of the specific client
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/email-addresses#list
+     * @param   int   $clientId ID of the specific client
+     * @param   array $options  Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394119
      */
     public function listClientEmailAddresses($clientId, array $options)
     {
         $endPoint = 'clients/' . $clientId . '/email_addresses';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -646,10 +662,11 @@ class Webservice
     /**
      * Get a single client email address by Id
      *
-     * @param   int     $clientId       ID of the specific client
-     * @param   int     $emailAddressId ID of the specific email address
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/email-addresses#show
+     * @param   int $clientId       ID of the specific client
+     * @param   int $emailAddressId ID of the specific email address
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394122
      */
     public function showClientEmailAddress($clientId, $emailAddressId)
     {
@@ -667,10 +684,11 @@ class Webservice
     /**
      * Create client email address(es)
      *
-     * @param   int     $clientId       ID of the specific client
-     * @param   array   $emailAddresses Array of email address objects structured per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/email-addresses#create
+     * @param   int   $clientId       ID of the specific client
+     * @param   array $emailAddresses Array of email address objects structured per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=983146
      */
     public function createClientEmailAddresses($clientId, array $emailAddresses)
     {
@@ -690,11 +708,12 @@ class Webservice
     /**
      * Update a single client email address
      *
-     * @param   int     $clientId               ID of the specific client
-     * @param   int     $emailAddressId         ID of the specific email address
-     * @param   object  $emailAddressDetails    Client object structured per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/email-addresses#update
+     * @param   int    $clientId            ID of the specific client
+     * @param   int    $emailAddressId      ID of the specific email address
+     * @param   object $emailAddressDetails Client object structured per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394200
      */
     public function updateClientEmailAddress($clientId, $emailAddressId, $emailAddressDetails)
     {
@@ -711,19 +730,17 @@ class Webservice
     /**
      * List Client credit cards
      *
-     * @param   int     $clientId   ID of the specific client
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/credit-cards#list
+     * @param   int   $clientId ID of the specific client
+     * @param   array $options  Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4129301
      */
     public function listClientCreditCards($clientId, array $options)
     {
         $endPoint = 'clients/' . $clientId . '/credit_cards';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -739,10 +756,11 @@ class Webservice
      * NOTE: For PCI compliance, once you create a credit card you can NEVER
      * retrieve the full card number, expiration date or verification code.
      *
-     * @param   int     $clientId       ID of the specific client
-     * @param   int     $creditCardId   ID of the specific credit card
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/credit-cards#show
+     * @param   int $clientId     ID of the specific client
+     * @param   int $creditCardId ID of the specific credit card
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394229
      */
     public function showClientCreditCard($clientId, $creditCardId)
     {
@@ -765,10 +783,11 @@ class Webservice
      *        ignore everything after the first one.
      *        This will change in a future release to allow multiples.
      *
-     * @param   int     $clientId       ID of the specific client
-     * @param   array   $creditCards    Array of credit card objects structured per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/credit-cards#create
+     * @param   int   $clientId    ID of the specific client
+     * @param   array $creditCards Array of credit card objects structured per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4129312
      */
     public function createClientCreditCards($clientId, array $creditCards)
     {
@@ -796,11 +815,12 @@ class Webservice
      *
      * Update a single client credit card
      *
-     * @param   int     $clientId           ID of the specific client
-     * @param   int     $creditCardId       ID of the specific email address
-     * @param   object  $creditCardDetails  Client object structured per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/credit-cards#update
+     * @param   int    $clientId          ID of the specific client
+     * @param   int    $creditCardId      ID of the specific email address
+     * @param   object $creditCardDetails Client object structured per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394225
      */
     public function updateClientCreditCard($clientId, $creditCardId, $creditCardDetails)
     {
@@ -821,7 +841,8 @@ class Webservice
     /**
      * Remove non-numeric characters from credit card number and validate it
      *
-     * @param  string   $creditCardNumber
+     * @param  string $creditCardNumber
+     *
      * @return string
      */
     protected function _cleanCreditCardNumber($creditCardNumber)
@@ -833,18 +854,16 @@ class Webservice
     /**
      * List Offices for a Brokerage
      *
-     * @param   array   $options    Options to use
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/offices#list
+     * @param   array $options Options to use
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470028
      */
     public function listOffices(array $options)
     {
         $endPoint = 'offices';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -855,9 +874,10 @@ class Webservice
     /**
      * Get a single office by Id
      *
-     * @param   int     $id An Office ID
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/offices#show
+     * @param   int $id An Office ID
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470035
      */
     public function showOffice($id)
     {
@@ -875,11 +895,12 @@ class Webservice
     /**
      * Search for office(s)
      *
-     * @param   string  $query
-     * @param   array   $options    Options to use for the search query
-     * @throws  TicketEvolution\ApiException
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/offices#search
+     * @param   string $query
+     * @param   array  $options Options to use for the search query
+     *
+     * @throws  ApiException
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470037
      */
     public function searchOffices($query, array $options)
     {
@@ -892,10 +913,7 @@ class Webservice
             );
         }
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -906,18 +924,16 @@ class Webservice
     /**
      * List Users for a Brokerage Office
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/users#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470068
      */
     public function listUsers(array $options)
     {
         $endPoint = 'users';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -928,9 +944,10 @@ class Webservice
     /**
      * Get a single user by Id
      *
-     * @param   int     $id
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/users#show
+     * @param   int $id
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470081
      */
     public function showUser($id)
     {
@@ -948,11 +965,12 @@ class Webservice
     /**
      * Search for user(s)
      *
-     * @param   string  $query
-     * @param   array   $options    Options to use for the search query
-     * @throws  TicketEvolution\ApiException
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/users#search
+     * @param   string $query
+     * @param   array  $options Options to use for the search query
+     *
+     * @throws  ApiException
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470083
      */
     public function searchUsers($query, array $options)
     {
@@ -965,10 +983,7 @@ class Webservice
             );
         }
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -979,18 +994,16 @@ class Webservice
     /**
      * List Active Categories
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/categories#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470005
      */
     public function listCategories(array $options)
     {
         $endPoint = 'categories';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = array();
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1001,18 +1014,16 @@ class Webservice
     /**
      * List Categories that have been deleted
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/categories#deleted
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=31948905
      */
     public function listCategoriesDeleted(array $options)
     {
         $endPoint = 'categories/deleted';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1023,9 +1034,10 @@ class Webservice
     /**
      * Get a single category by Id
      *
-     * @param   int     $id
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/categories#show
+     * @param   int $id
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470098
      */
     public function showCategory($id)
     {
@@ -1043,18 +1055,16 @@ class Webservice
     /**
      * List Active Events
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/events#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470092
      */
     public function listEvents(array $options)
     {
         $endPoint = 'events';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1065,18 +1075,16 @@ class Webservice
     /**
      * List Events that have been deleted
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/events#deleted
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=31948920
      */
     public function listEventsDeleted(array $options)
     {
         $endPoint = 'events/deleted';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1087,9 +1095,10 @@ class Webservice
     /**
      * Get a single event by Id
      *
-     * @param   int     $id
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/events#show
+     * @param   int $id
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470094
      */
     public function showEvent($id)
     {
@@ -1107,10 +1116,11 @@ class Webservice
     /**
      * Search for events
      *
-     * @param   string  $query
-     * @param   array   $options    Options to use for the search query
-     * @throws  TicketEvolution\ApiException
-     * @return  TicketEvolution\Webservice\ResultSet
+     * @param   string $query
+     * @param   array  $options Options to use for the search query
+     *
+     * @throws  ApiException
+     * @return  Webservice\ResultSet
      * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470096
      */
     public function searchEvents($query, array $options)
@@ -1124,10 +1134,7 @@ class Webservice
             );
         }
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1138,18 +1145,16 @@ class Webservice
     /**
      * List Active Performers
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/performers#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470084
      */
     public function listPerformers(array $options)
     {
         $endPoint = 'performers';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1160,18 +1165,16 @@ class Webservice
     /**
      * List Performers that have been deleted
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/performers#deleted
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=31948895
      */
     public function listPerformersDeleted(array $options)
     {
         $endPoint = 'performers/deleted';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1182,9 +1185,10 @@ class Webservice
     /**
      * Get a single Performer by Id
      *
-     * @param   int     $id
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/performers#show
+     * @param   int $id
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470086
      */
     public function showPerformer($id)
     {
@@ -1202,11 +1206,12 @@ class Webservice
     /**
      * Search for performer(s)
      *
-     * @param   string  $query
-     * @param   array   $options    Options to use for the search query
-     * @throws  TicketEvolution\ApiException
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/performers#search
+     * @param   string $query
+     * @param   array  $options Options to use for the search query
+     *
+     * @throws  ApiException
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470088
      */
     public function searchPerformers($query, array $options)
     {
@@ -1219,10 +1224,7 @@ class Webservice
             );
         }
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1235,11 +1237,12 @@ class Webservice
      * Currently searches both performers and venues for a match and will return
      * any combination of such. The type will be denoted in the results.
      *
-     * @param   string  $query      Query string
-     * @param   array   $options    Options to use for the search query
-     * @throws  TicketEvolution\ApiException
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/search#list
+     * @param   string $query   Query string
+     * @param   array  $options Options to use for the search query
+     *
+     * @throws  ApiException
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/display/API/Search
      */
     public function search($query, array $options)
     {
@@ -1252,10 +1255,7 @@ class Webservice
             );
         }
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1266,18 +1266,16 @@ class Webservice
     /**
      * List Active Venues
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/venues#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470018
      */
     public function listVenues(array $options)
     {
         $endPoint = 'venues';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1288,18 +1286,16 @@ class Webservice
     /**
      * List Venues that have been deleted
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/venues#deleted
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=31948891
      */
     public function listVenuesDeleted(array $options)
     {
         $endPoint = 'venues/deleted';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1310,9 +1306,10 @@ class Webservice
     /**
      * Get a single Venue by Id
      *
-     * @param   int     $id
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/venues#show
+     * @param   int $id
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470020
      */
     public function showVenue($id)
     {
@@ -1330,11 +1327,12 @@ class Webservice
     /**
      * Search for venue(s)
      *
-     * @param   string  $query
-     * @param   array   $options    Options to use for the search query
-     * @throws  TicketEvolution\ApiException
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/venues#search
+     * @param   string $query
+     * @param   array  $options Options to use for the search query
+     *
+     * @throws  ApiException
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470023
      */
     public function searchVenues($query, array $options)
     {
@@ -1347,10 +1345,7 @@ class Webservice
             );
         }
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1361,18 +1356,16 @@ class Webservice
     /**
      * List Configurations
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/configurations#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470120
      */
     public function listConfigurations(array $options)
     {
         $endPoint = 'configurations';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1383,9 +1376,10 @@ class Webservice
     /**
      * Get a single Configuration by Id
      *
-     * @param   int     $id
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/configurations#show
+     * @param   int $id
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470125
      */
     public function showConfiguration($id)
     {
@@ -1403,10 +1397,11 @@ class Webservice
     /**
      * List Ticket Groups
      *
-     * @param   array   $options    Options to use for the search query
-     * @throws  TicketEvolution\ApiException
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/ticket-groups#list
+     * @param   array $options Options to use for the search query
+     *
+     * @throws  ApiException
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469962
      */
     public function listTicketGroups(array $options)
     {
@@ -1429,12 +1424,13 @@ class Webservice
     /**
      * Get a single Ticket by Id Group
      *
-     * @param   int     $id
-     * @param   array   $options    Options to use for the search query
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/ticket-groups#show
+     * @param   int   $id
+     * @param   array $options Options to use for the search query
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469964
      */
-    public function showTicketGroup($id, $options=array())
+    public function showTicketGroup($id, $options = array())
     {
         $endPoint = 'ticket_groups/' . $id;
 
@@ -1449,10 +1445,11 @@ class Webservice
     /**
      * Set a ticket's properties (PDF and/or barcode)
      *
-     * @param   int     $ticketId
-     * @param   stdClass   $properties
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/ticket-groups#show
+     * @param   int       $ticketId
+     * @param   \stdClass $properties
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=28016760
      */
     public function ticketsSetProperties($ticketId, \stdClass $properties)
     {
@@ -1470,18 +1467,16 @@ class Webservice
     /**
      * List Orders
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/orders#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4751395
      */
     public function listOrders(array $options)
     {
         $endPoint = 'orders';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1492,9 +1487,10 @@ class Webservice
     /**
      * Get a single order by Id
      *
-     * @param   int     $id
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/orders#show
+     * @param   int $id
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4129639
      */
     public function showOrder($id)
     {
@@ -1512,9 +1508,10 @@ class Webservice
     /**
      * Create order(s)
      *
-     * @param   array   $orders     Array of order objects as defined by API
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/orders#create_client_order
+     * @param   array $orders Array of order objects as defined by API
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994275
      */
     public function createOrders(array $orders)
     {
@@ -1534,9 +1531,10 @@ class Webservice
     /**
      * Create order(s) from raw JSON
      *
-     * @param   array   $options     JSON of the order details
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/orders#create_client_order
+     * @param   array $options JSON of the order details
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994275
      */
     public function createOrdersFromJson($options)
     {
@@ -1549,32 +1547,13 @@ class Webservice
 
 
     /**
-     * Update an order
-     *
-     * @param   int     $orderId        ID of the specific order
-     * @param   object  $orderDetails   Order object structured per API example
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/orders#update
-     */
-    public function updateOrder($orderId, $orderDetails)
-    {
-        $endPoint = 'orders/' . $orderId;
-
-        $options = json_encode($orderDetails);
-
-        return $this->_postProcess(
-            $this->_put($endPoint, $options)
-        );
-    }
-
-
-    /**
      * Accept an order
      *
-     * @param   int     $orderId    ID of the order to accept
-     * @param   int     $userId     ID of the user who reviewed and accepts this order
+     * @param   int $orderId ID of the order to accept
+     * @param   int $userId  ID of the user who reviewed and accepts this order
+     *
      * @return  bool
-     * @link    http://developer.ticketevolution.com/endpoints/orders#accept_order
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470105
      */
     public function acceptOrder($orderId, $userId)
     {
@@ -1597,15 +1576,16 @@ class Webservice
     /**
      * Reject an order
      *
-     * @param   int     $orderId    ID of the order to accept
-     * @param   int     $userId     ID of the user who reviewed and rejects this order
-     * @param   string  $reason     One of the allowed reasons
-     * @param   string  $rejection_notes     Additional notes if necessary
+     * @param   int    $orderId ID of the order to accept
+     * @param   int    $userId  ID of the user who reviewed and rejects this order
+     * @param   string $reason  One of the allowed reasons
+     * @param   string $notes   Additional notes if necessary
+     *
      * @throws  OutOfBoundsException
      * @return  bool
      * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470108
      */
-    public function rejectOrder($orderId, $userId, $reason, $notes=null)
+    public function rejectOrder($orderId, $userId, $reason, $notes = null)
     {
         $endPoint = 'orders/' . $orderId . '/reject';
 
@@ -1626,9 +1606,9 @@ class Webservice
         unset($allowedreasons);
 
         $body = array(
-            'reviewer_id'       => $userId,
-            'reason'            => $reason,
-            'rejection_notes'   => $notes,
+            'reviewer_id'     => $userId,
+            'reason'          => $reason,
+            'rejection_notes' => $notes,
         );
         $options = json_encode($body);
         unset($body);
@@ -1644,10 +1624,10 @@ class Webservice
     /**
      * Complete an order
      *
-     * @param   int     $orderId    ID of the order to accept
-     * @param   int     $userId     ID of the user who reviewed and rejects this order
+     * @param   int $orderId ID of the order to accept
+     *
      * @return  bool
-     * @link    http://developer.ticketevolution.com/endpoints/orders#complete_order
+     * @link
      */
     public function completeOrder($orderId)
     {
@@ -1666,18 +1646,16 @@ class Webservice
     /**
      * List Shipments
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/shipments#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994290
      */
     public function listShipments(array $options)
     {
         $endPoint = 'shipments';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1688,9 +1666,10 @@ class Webservice
     /**
      * Get a single shipment by Id
      *
-     * @param   int     $id
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/shipments#show
+     * @param   int $id
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994292
      */
     public function showShipment($id)
     {
@@ -1708,9 +1687,10 @@ class Webservice
     /**
      * Create shipment(s)
      *
-     * @param   array   $shipments  Array of shipment objects
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/shipments#create
+     * @param   array $shipments Array of shipment objects
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994308
      */
     public function createShipments(array $shipments)
     {
@@ -1728,20 +1708,114 @@ class Webservice
 
 
     /**
-     * Update a single shipment
+     * Cancel a shipment
      *
-     * @param   object  $shipment
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/shipments#update
+     * @param   int $shipmentId
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994324
      */
-    public function updateShipment($shipment)
+    public function cancelShipment($shipmentId)
     {
-        $endPoint = 'shipments';
+        $endPoint = 'shipments/' . $shipmentId . '/cancel';
 
-        $options = json_encode($shipment);
+        $options = array();
 
         return $this->_postProcess(
-            $this->_put($endPoint, $options)
+            $this->_get($endPoint, $options)
+        );
+    }
+
+
+    /**
+     * Generate the airbill for a given shipment
+     *
+     * @param   int $shipmentId
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994306
+     */
+    public function generateAirbill($shipmentId)
+    {
+        $endPoint = 'shipments/' . $shipmentId . '/airbill';
+
+        $options = array();
+
+        return $this->_postProcess(
+            $this->_post($endPoint, $options)
+        );
+    }
+
+
+    /**
+     * Retrieve an already-generated airbill for a given shipment
+     *
+     * @param   int $shipmentId
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994303
+     */
+    public function getAirbill($shipmentId)
+    {
+        $endPoint = 'shipments/' . $shipmentId . '/get_airbill';
+
+        $options = array();
+
+        return $this->_postProcess(
+            $this->_get($endPoint, $options)
+        );
+    }
+
+
+    /**
+     * Retrieve an already-generated airbill for a given shipment
+     *
+     * @param   int   $shipmentId
+     * @param   array $recipients An array of valid email addresses
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994303
+     */
+    public function emailAirbill($shipmentId, $recipients)
+    {
+        $endPoint = 'shipments/' . $shipmentId . '/email_airbill';
+
+        $body = new \stdClass();
+        $body->recipients = $recipients;
+        $options = json_encode($body);
+        unset($body);
+
+        return $this->_postProcess(
+            $this->_post($endPoint, $options)
+        );
+    }
+
+
+    /**
+     * Get shipment suggestions
+     *
+     * @param   int $ticketGroupId
+     *
+     * @return  \stdClass
+     * @link https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=24674319
+     */
+    public function getShipmentSugestion($ticketGroupId, $address)
+    {
+        $endPoint = 'shipments/suggestion';
+
+        $body = array(
+            'ticket_group_id' => (int)$ticketGroupId,
+        );
+        if (is_numeric($address)) {
+            $body['address_id'] = (int)$address;
+        } else {
+            $body['address_attributes'] = $address;
+        }
+        $options = json_encode($body);
+        unset($body);
+
+        return $this->_postProcess(
+            $this->_post($endPoint, $options)
         );
     }
 
@@ -1749,12 +1823,14 @@ class Webservice
     /**
      * Orders / Print Etickets & Items / Print Etickets
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
+     * @param   int      $orderId
+     * @param   int|null $itemId
+     *
+     * @return  Webservice\ResultSet
      * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470115
      * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=12550151
      */
-    public function printEtickets($orderId, $itemId=null)
+    public function printEtickets($orderId, $itemId = null)
     {
         $endPoint = 'orders/' . $orderId . '/print_etickets';
         if ($itemId) {
@@ -1773,18 +1849,16 @@ class Webservice
     /**
      * List Quotes
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/quotes#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=5341218
      */
     public function listQuotes(array $options)
     {
         $endPoint = 'quotes';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1795,9 +1869,10 @@ class Webservice
     /**
      * Get a single quote by Id
      *
-     * @param   int     $id
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/quotes#show
+     * @param   int $id
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=5341220
      */
     public function showQuote($id)
     {
@@ -1815,11 +1890,12 @@ class Webservice
     /**
      * Search for quote(s)
      *
-     * @param   string  $query
-     * @param   array   $options    Options to use for the search query
-     * @throws  TicketEvolution\ApiException
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/quotes#search
+     * @param   string $query
+     * @param   array  $options Options to use for the search query
+     *
+     * @throws  ApiException
+     * @return  Webservice\ResultSet
+     * @link
      */
     public function searchQuotes($query, array $options)
     {
@@ -1832,10 +1908,7 @@ class Webservice
             );
         }
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1844,20 +1917,40 @@ class Webservice
 
 
     /**
+     * Create one or more EvoQuote(s)
+     *
+     * @param   array $quotes Array of objects structured per API example
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=5341222
+     */
+    public function createQuotes(array $quotes)
+    {
+        $endPoint = 'companies';
+
+        $body = new \stdClass();
+        $body->companies = $quotes;
+        $options = json_encode($body);
+
+        return $this->_postProcess(
+            $this->_post($endPoint, $options)
+        );
+    }
+
+
+    /**
      * List EvoPay Accounts
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/accounts#list
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4751480
      */
     public function listEvoPayAccounts(array $options)
     {
         $endPoint = 'accounts';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1868,9 +1961,10 @@ class Webservice
     /**
      * Get a single EvoPay by Account ID
      *
-     * @param   int     $id
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/accounts#show
+     * @param   int $id
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4751482
      */
     public function showEvoPayAccount($id)
     {
@@ -1888,19 +1982,17 @@ class Webservice
     /**
      * List EvoPay Transactions
      *
-     * @param   int     $accountId  EvoPay Account ID
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/transactions#list
+     * @param   int   $accountId EvoPay Account ID
+     * @param   array $options   Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4751489
      */
     public function listEvoPayTransactions($accountId, array $options)
     {
         $endPoint = 'accounts/' . $accountId . '/transactions';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1911,10 +2003,11 @@ class Webservice
     /**
      * Get a single EvoPay by Id Transaction
      *
-     * @param   int     $accountId      EvoPay Account ID
-     * @param   int     $transactionId  An EvoPay TransactionID
-     * @return  stdClass
-     * @link    http://developer.ticketevolution.com/endpoints/transactions#show
+     * @param   int $accountId     EvoPay Account ID
+     * @param   int $transactionId An EvoPay TransactionID
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4751495
      */
     public function showEvoPayTransaction($accountId, $transactionId)
     {
@@ -1930,20 +2023,42 @@ class Webservice
 
 
     /**
+     * Create one or more EvoPay transaction
+     *
+     * @param   int   $accountId    EvoPay Account ID
+     * @param   array $transactions Transactions
+     *
+     * @return  \stdClass
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4751497
+     */
+    public function createEvoPayTransactions($accountId, array $transactions)
+    {
+        $endPoint = 'accounts/' . $accountId . '/transactions';
+
+        $body = new \stdClass();
+        $body->transactions = $transactions;
+        $options = json_encode($body);
+        unset($body);
+
+        return $this->_postProcess(
+            $this->_post($endPoint, $options)
+        );
+    }
+
+
+    /**
      * List Shipping Settings
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/settings#shipping
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470044
      */
     public function listSettingsShipping(array $options)
     {
         $endPoint = 'settings/shipping';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1954,18 +2069,16 @@ class Webservice
     /**
      * List Service Fees Settings
      *
-     * @param   array   $options    Options to use for the search query
-     * @return  TicketEvolution\Webservice\ResultSet
-     * @link    http://developer.ticketevolution.com/endpoints/settings#service_fees
+     * @param   array $options Options to use for the search query
+     *
+     * @return  Webservice\ResultSet
+     * @link    https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=22347806
      */
     public function listSettingsServiceFees(array $options)
     {
         $endPoint = 'settings/service_fees';
 
-        $defaultOptions = array(
-            'page'      => '1',
-            'per_page'  => '100'
-        );
+        $defaultOptions = $this->_defaultPagination;
 
         return $this->_postProcess(
             $this->_get($endPoint, $options, $defaultOptions)
@@ -1985,7 +2098,7 @@ class Webservice
 
             $httpClient = new HttpClient(
                 $this->_baseUri,
-                array (
+                array(
                     'keepalive' => $this->_usePersistentConnections
                 )
             );
@@ -2013,8 +2126,8 @@ class Webservice
             // Create an adapter object and attach it to the HTTP client
             $adapter = new \Zend_Http_Client_Adapter_Socket();
 
-            $adapterConfig = array (
-                'persistent'    => $this->_usePersistentConnections,
+            $adapterConfig = array(
+                'persistent' => $this->_usePersistentConnections,
             );
             $adapter->setConfig($adapterConfig);
 
@@ -2034,11 +2147,13 @@ class Webservice
      * Set REST client
      *
      * @param   Zend_Rest_Client
+     *
      * @return  TicketEvolution\Webservice
      */
     public function setRestClient(\Zend_Rest_Client $client)
     {
         $this->_rest = $client;
+
         return $this;
     }
 
@@ -2046,17 +2161,18 @@ class Webservice
     /**
      * Set special headers for request
      *
-     * @param  string  $apiToken
-     * @param  string  $apiVersion
-     * @param  string  $requestSignature
+     * @param  string $apiToken
+     * @param  string $apiVersion
+     * @param  string $requestSignature
+     *
      * @return void
      */
-    protected function _setHeaders($apiToken, $apiVersion, $requestSignature=null)
+    protected function _setHeaders($apiToken, $apiVersion, $requestSignature = null)
     {
         $headers = array(
-            'User-Agent'    => __CLASS__ . ' ' . self::VERSION . ' / Zend Framework ' . \Zend_Version::VERSION . ' / PHP ' . phpversion(),
-            'Accept'        => 'application/json',
-            'X-Token'       => $apiToken,
+            'User-Agent' => __CLASS__ . ' ' . self::VERSION . ' / Zend Framework ' . \Zend_Version::VERSION . ' / PHP ' . phpversion(),
+            'Accept'     => 'application/json',
+            'X-Token'    => $apiToken,
         );
         unset($ua);
 
@@ -2075,6 +2191,7 @@ class Webservice
      * @param   array  $endPoint       The endPoint
      * @param   array  $options        User supplied options
      * @param   array  $defaultOptions Default options
+     *
      * @return  array
      */
     protected function _prepareOptions($action, $endPoint, array $options, array $defaultOptions)
@@ -2091,17 +2208,20 @@ class Webservice
                 $options
             );
         }
+
         return $options;
     }
+
 
     /**
      * Compute Signature for X-Signature header
      *
-     * @param   string  $baseUri
-     * @param   string  $secretKey
-     * @param   string  $action
-     * @param   string  $endPoint
-     * @param   array   $options
+     * @param   string $baseUri
+     * @param   string $secretKey
+     * @param   string $action
+     * @param   string $endPoint
+     * @param   array  $options
+     *
      * @return string
      */
     static public function computeSignature($baseUri, $secretKey, $action, $endPoint, $options)
@@ -2113,13 +2233,15 @@ class Webservice
         );
     }
 
+
     /**
      * Build the Raw Signature Text
      *
      * @param  string $baseUri
-     * @param  string $action       One of [GET|POST|PUT|DELETE]
+     * @param  string $action One of [GET|POST|PUT|DELETE]
      * @param  string $endPoint
-     * @param  array $options
+     * @param  array  $options
+     *
      * @return string
      */
     static public function buildRawSignature($baseUri, $action, $endPoint, $options)
@@ -2137,24 +2259,25 @@ class Webservice
                 }
                 $signature .= implode('&', $params);
             } else {
-                $signature .= (string) $options;
+                $signature .= (string)$options;
             }
         }
+
         return $signature;
     }
-
 
 
     /**
      * Perform a GET request
      *
-     * @param   string  $endPoint       The API endpoint
-     * @param   array   $options        The specified options
-     * @param   array   $defaultOptions Default options that can be overwritten by $options
+     * @param   string $endPoint       The API endpoint
+     * @param   array  $options        The specified options
+     * @param   array  $defaultOptions Default options that can be overwritten by $options
+     *
      * @throws  TicketEvolution\Webservice\ApiConnectionException
      * @return  Zend_Http_Response
      */
-    protected function _get($endPoint, $options, $defaultOptions=array())
+    protected function _get($endPoint, $options = array(), $defaultOptions = array())
     {
         $options = $this->_prepareOptions(
             'GET',
@@ -2178,6 +2301,7 @@ class Webservice
             $this->_startTimer();
             $response = $client->restGet($this->_apiPrefix . $endPoint, $options);
             $this->_endTimer();
+
             return $response;
         } catch (\Exception $e) {
             throw new ApiConnectionException(
@@ -2193,13 +2317,14 @@ class Webservice
     /**
      * Perform a POST request
      *
-     * @param   string  $endPoint       The API endpoint
-     * @param   array   $options        The specified options
-     * @param   array   $defaultOptions Default options that can be overwritten by $options
+     * @param   string $endPoint       The API endpoint
+     * @param   array  $options        The specified options
+     * @param   array  $defaultOptions Default options that can be overwritten by $options
+     *
      * @throws  TicketEvolution\Webservice\ApiConnectionException
      * @return  Zend_Http_Response
      */
-    protected function _post($endPoint, $options)
+    protected function _post($endPoint, $options = array())
     {
         $this->_requestSignature = self::computeSignature(
             $this->_baseUri,
@@ -2224,6 +2349,7 @@ class Webservice
             $this->_startTimer();
             $response = $client->restPost($this->_apiPrefix . $endPoint, $options);
             $this->_endTimer();
+
             return $response;
         } catch (\Exception $e) {
             throw new ApiConnectionException(
@@ -2239,13 +2365,14 @@ class Webservice
     /**
      * Perform a PUT request
      *
-     * @param   string  $endPoint       The API endpoint
-     * @param   array   $options        The specified options
-     * @param   array   $defaultOptions Default options that can be overwritten by $options
+     * @param   string $endPoint       The API endpoint
+     * @param   array  $options        The specified options
+     * @param   array  $defaultOptions Default options that can be overwritten by $options
+     *
      * @throws  TicketEvolution\Webservice\ApiConnectionException
      * @return  Zend_Http_Response
      */
-    protected function _put($endPoint, $options)
+    protected function _put($endPoint, $options = array())
     {
         $this->_requestSignature = self::computeSignature(
             $this->_baseUri,
@@ -2270,6 +2397,7 @@ class Webservice
             $this->_startTimer();
             $response = $client->restPut($this->_apiPrefix . $endPoint, $options);
             $this->_endTimer();
+
             return $response;
         } catch (\Exception $e) {
             throw new ApiConnectionException(
@@ -2286,9 +2414,10 @@ class Webservice
      * Allows post-processing logic to be applied.
      * Subclasses may override this method.
      *
-     * @param   string  $response   The response to process
-     * @throws  TicketEvolution\ApiException
-     * @return  string|TicketEvolution\Webservice\ResultSet|stdClass
+     * @param   string $response The response to process
+     *
+     * @throws  ApiException
+     * @return  string|Webservice\ResultSet|stdClass
      */
     protected function _postProcess($response)
     {
@@ -2300,12 +2429,12 @@ class Webservice
          * $tevo->getRestClient()->getHttpClient()->getLastResponse()
          */
         /**
-        echo PHP_EOL;
-        var_dump($this->getRestClient()->getHttpClient()->getLastRequest());
-        echo PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL;
-        echo PHP_EOL;
-        var_dump($this->getRestClient()->getHttpClient()->getLastResponse());
-        echo PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL;
+         * echo PHP_EOL;
+         * var_dump($this->getRestClient()->getHttpClient()->getLastRequest());
+         * echo PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL;
+         * echo PHP_EOL;
+         * var_dump($this->getRestClient()->getHttpClient()->getLastResponse());
+         * echo PHP_EOL . PHP_EOL . PHP_EOL . PHP_EOL;
          */
 
 
@@ -2343,6 +2472,7 @@ class Webservice
             if (isset($decodedBody->per_page) || isset($decodedBody->total_entries)) {
                 return new Webservice\ResultSet($decodedBody);
             }
+
             // There is a single item, so no need to return a ResultSet
             return $decodedBody;
 
@@ -2357,9 +2487,10 @@ class Webservice
      * Handle errors in the response.
      * Subclasses may override this method.
      *
-     * @param   string  $responseBody   The response body
-     * @param   int     $responseCode   The HTTP status code of the response
-     * @param   string  $decodedBody    json_decode()d response body
+     * @param   string $responseBody The response body
+     * @param   int    $responseCode The HTTP status code of the response
+     * @param   string $decodedBody  json_decode()d response body
+     *
      * @throws  TicketEvolution\ApiInvalidRequestException|TicketEvolution\ApiAuthenticationException|TicketEvolution\ApiException
      * @return  void
      */
@@ -2401,6 +2532,7 @@ class Webservice
      * Utility method used to catch problems decoding the JSON.
      *
      * @param   string $string
+     *
      * @throws  TicketEvolution\ApiException
      * @return  string
      * @link    http://php.net/manual/en/function.json-decode.php
