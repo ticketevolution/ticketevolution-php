@@ -1,3 +1,8 @@
+## 2.2.2 (January 21, 2015)
+- Moved Wiki information to [Documentation.md](https://github.com/thephpleague/skeleton/blob/master/Documentation.md)
+- Updated README.md to include info about upcoming 3.0 release
+- Moved LICENSE.txt to LICENSE.md
+
 ## 2.2.1 (November 2, 2014)
 - Improved code formatting
 - Updated docblock `@link`s to related API documentation for all methods
