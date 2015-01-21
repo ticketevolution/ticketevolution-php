@@ -12,9 +12,9 @@
   "license": "BSD-3-Clause",
   "authors": [
     {
-      "name": ":J Cobb",
-      "email": ":j at ticketevolution dot com",
-      "homepage": ":https://github.com/jwcobb",
+      "name": "J Cobb",
+      "email": "j at ticketevolution dot com",
+      "homepage": "https://github.com/jwcobb",
       "role": "Developer"
     }
   ],
