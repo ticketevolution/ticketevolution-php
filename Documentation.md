@@ -207,3 +207,42 @@ foreach ($requests as $request) {
 echo 'Requests took ' . $requestTimer->getElapsedTime() . ' seconds';
 
 ```
+
+## Installation for Laravel 5 ##
+
+[Laravel 5](http://laravel.com/) is not required, but if you are using Laravel 5 this package includes both a [ServiceProvider](http://laravel.com/docs/5.0/providers) and a [Facade](http://laravel.com/docs/5.0/facades) for easy integration.
+
+Install the package via Composer
+
+``` bash
+$ composer require ticketevolution/ticketevolution-php
+```
+
+After updating composer add the `TEvoServiceProvider` to the `providers` array in `config/app.php`:
+
+``` php
+'TicketEvolution\Laravel\TEvoServiceProvider',
+```
+
+If you want to use the `TEvo` facade add this to the `aliases` array in `config/app.php`:
+
+``` php
+'TEvo' => 'TicketEvolution\Laravel\TEvoFacade',
+```
+
+To copy the default configuration file to `config/ticketevolution.php` run
+
+``` bash
+$ php artisan vendor:publish
+```
+
+In Laravel 5 it is recommended that you [keep your API credentials in your `.env` file](http://laravel.com/docs/5.0/configuration#environment-configuration) and that you do not publish that to your repo. In your `.env` you should include
+
+``` php
+TICKETEVOLUTION_API_BASEURL=https://api.sandbox.ticketevolution.com/v9
+TICKETEVOLUTION_API_VERSION=v9
+TICKETEVOLUTION_API_TOKEN=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TICKETEVOLUTION_API_SECRET=yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+
+```
+

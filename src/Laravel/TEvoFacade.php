@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Facade as LaravelFacade;
 /**
  * @see \TicketEvolution\Client
  */
-class Facade extends LaravelFacade
+class TEvoFacade extends LaravelFacade
 {
 
     /**
@@ -15,6 +15,6 @@ class Facade extends LaravelFacade
      */
     protected static function getFacadeAccessor()
     {
-        return 'ticketevolution';
+        return 'tevo';
     }
 }
