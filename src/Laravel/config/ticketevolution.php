@@ -8,7 +8,7 @@
 | This file is for storing the credentials for the Ticket Evolution API.
 |
 | You should publish this configuration to your config directory using
-|   artisan ticketevolution:publish
+|   php artisan vendor:publish
 |
 | It is recommended that you store your credentials in your .env file
 | that is not committed to your repo and load them here using env().
