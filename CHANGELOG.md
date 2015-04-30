@@ -1,3 +1,8 @@
+# Changelog
+
+## 3.0.0-rc.1 (January 21, 2015)
+- Complete rewrite breaking all backwards compatibility
+
 ## 2.2.2 (January 21, 2015)
 - Moved Wiki information to [Documentation.md](https://github.com/thephpleague/skeleton/blob/master/Documentation.md)
 - Updated README.md to include info about upcoming 3.0 release
