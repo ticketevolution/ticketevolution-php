@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.2 (September 8, 2015)
+- Make sure to not send `Expect: 100` header.
+
 ## 3.0.1 (September 8, 2015)
 - Fixed an issue in the `TEvoAuth` subscriber that caused uploads > 1MB to fail.
 - Fixed an issue with the `httpMethod` specified for some shipments-related resources.
