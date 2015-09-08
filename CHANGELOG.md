@@ -1,5 +1,13 @@
 # Changelog
 
+## 3.0.1 (September 8, 2015)
+- Fixed an issue in the `TEvoAuth` subscriber that caused uploads > 1MB to fail.
+- Fixed an issue with the `httpMethod` specified for some shipments-related resources.
+- Updated Documentation.
+
+## 3.0.0 (April 30, 2015)
+- No changes from 3.0.0-rc.1
+
 ## 3.0.0-rc.1 (January 21, 2015)
 - Complete rewrite breaking all backwards compatibility
 
