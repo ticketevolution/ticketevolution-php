@@ -1,5 +1,5 @@
 {
-  "name": "teamjc/ticketevolution-php3",
+  "name": "ticketevolution/ticketevolution-php",
   "description": "A PHP 5.4+ library for the Ticket Evolution API.",
   "type": "library",
   "keywords": [

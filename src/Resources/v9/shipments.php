@@ -274,7 +274,7 @@ return [
          */
         'generateAirbillForShipment' => [
             'extends'          => null,
-            'httpMethod'       => 'GET',
+            'httpMethod'       => 'POST',
             'uri'              => '/v9/shipments/{shipment_id}/airbill',
             'summary'          => 'Generate an airbill for FedEx shipments.',
             'notes'            => '',
@@ -297,7 +297,7 @@ return [
          */
         'emailAirbillForShipment'    => [
             'extends'          => null,
-            'httpMethod'       => 'GET',
+            'httpMethod'       => 'POST',
             'uri'              => '/v9/shipments/{shipment_id}/email_airbill',
             'summary'          => 'Email an airbill that has been generated for a shipment.',
             'notes'            => '',
@@ -349,7 +349,7 @@ return [
          */
         'showShipmentSugestion'      => [
             'extends'          => null,
-            'httpMethod'       => 'GET',
+            'httpMethod'       => 'POST',
             'uri'              => '/v9/shipments/suggestion',
             'summary'          => 'Get the suggested shipping method for a ticket group.',
             'notes'            => '',
