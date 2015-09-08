@@ -11,7 +11,7 @@ class Client
      *
      * @const string
      */
-    const VERSION = '3.0.1';
+    const VERSION = '3.0.2';
 
     /**
      * Guzzle service description
@@ -173,6 +173,10 @@ class Client
             'headers/User-Agent',
             'ticketevolution-php/' . self::VERSION . ' ' . $this->_baseClient->getDefaultUserAgent()
         );
+
+        // TEvo API servers don't like the Expect: 100 header
+        $this->_baseClient->setDefaultOption('expect', false);
+
 
         return $this->_baseClient;
     }
