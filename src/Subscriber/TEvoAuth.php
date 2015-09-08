@@ -4,7 +4,6 @@ use GuzzleHttp\Event\BeforeEvent;
 use GuzzleHttp\Event\RequestEvents;
 use GuzzleHttp\Event\SubscriberInterface;
 use GuzzleHttp\Message\RequestInterface;
-use GuzzleHttp\Post\PostBodyInterface;
 use GuzzleHttp\Query;
 
 /**
@@ -83,14 +82,21 @@ class TEvoAuth implements SubscriberInterface
      * @param RequestInterface $request Request to generate a signature for
      *
      * @return string
-     *
-     * @throws \RuntimeException
      */
     public function getSignature(RequestInterface $request)
     {
         // For POST|PUT set the JSON body string as the params
         if ($request->getMethod() == 'POST' || $request->getMethod() == 'PUT') {
             $params = $request->getBody()->__toString();
+
+            /**
+             * If you don't seek() back to the beginning then attempting to
+             * send a JSON body > 1MB will probably fail.
+             *
+             * @link http://stackoverflow.com/q/32359664/99071
+             * @link https://groups.google.com/forum/#!topic/guzzle/vkF5druf6AY
+             */
+            $request->getBody()->seek(0);
 
             // Make sure to remove any other query params
             $request->setQuery([]);
