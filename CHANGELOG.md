@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.3 (October 14, 2015)
+- Correct HTTP method for `cancelShipment`.
+- Correct `composer require` statements in some [Documentation](https://github.com/thephpleague/skeleton/blob/master/Documentation.md) examples.
+
 ## 3.0.2 (September 8, 2015)
 - Make sure to not send `Expect: 100` header.
 
