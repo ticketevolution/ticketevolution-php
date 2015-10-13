@@ -43,7 +43,7 @@ Here is a much more “real world” setup that also includes a logger ([Monolog
 
 In your Terminal:
 ```bash
-$ php composer require ticketevolution/ticketevolution-php monolog/monolog guzzlehttp/retry-subscriber
+$ php composer require ticketevolution/ticketevolution-php monolog/monolog guzzlehttp/log-subscriber guzzlehttp/retry-subscriber
 ```
 
 ```php
@@ -126,7 +126,7 @@ If you have a need to use some of Guzzle’s more advanced features such as [Poo
 
 In your Terminal:
 ```bash
-$ php composer require ticketevolution/ticketevolution-php monolog/monolog guzzlehttp/retry-subscriber
+$ php composer require ticketevolution/ticketevolution-php monolog/monolog guzzlehttp/log-subscriber guzzlehttp/retry-subscriber
 ```
 
 ```php

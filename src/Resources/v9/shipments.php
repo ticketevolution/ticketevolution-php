@@ -143,7 +143,7 @@ return [
          */
         'cancelShipment'             => [
             'extends'          => null,
-            'httpMethod'       => 'GET',
+            'httpMethod'       => 'PUT',
             'uri'              => '/v9/shipments/{shipment_id}/cancel',
             'summary'          => 'Transition a shipment to the canceled state.',
             'notes'            => '',
