@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.4 (March 26, 2016)
+- Update `bindShared()` to `singleton()` in `TEvoServiceProvider` because `bindShared()` was deprecated in Laravel 5.1 and removed in Laravel 5.2.
+- Update installation instructions for Laravel.
+
 ## 3.0.3 (October 14, 2015)
 - Correct HTTP method for `cancelShipment`.
 - Correct `composer require` statements in some [Documentation](https://github.com/thephpleague/skeleton/blob/master/Documentation.md) examples.

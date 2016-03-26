@@ -48,7 +48,7 @@ class TEvoServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bindShared('tevo', function () {
+        $this->app->singleton('tevo', function () {
             return new Client(config('ticketevolution'));
         });
 
