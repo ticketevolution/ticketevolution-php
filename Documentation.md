@@ -246,19 +246,19 @@ $ composer require ticketevolution/ticketevolution-php
 After updating composer add the `TEvoServiceProvider` to the `providers` array in `config/app.php`:
 
 ``` php
-'TicketEvolution\Laravel\TEvoServiceProvider',
+TicketEvolution\Laravel\TEvoServiceProvider::class,
 ```
 
 If you want to use the `TEvo` facade add this to the `aliases` array in `config/app.php`:
 
 ``` php
-'TEvo' => 'TicketEvolution\Laravel\TEvoFacade',
+'TEvo' => TicketEvolution\Laravel\TEvoFacade::class,
 ```
 
 To copy the default configuration file to `config/ticketevolution.php` run
 
 ``` bash
-$ php artisan vendor:publish
+$ php artisan vendor:publish --provider="TicketEvolution\Laravel\TEvoServiceProvider"
 ```
 
 In Laravel 5 it is recommended that you [keep your API credentials in your `.env` file](http://laravel.com/docs/5.0/configuration#environment-configuration) and that you do not publish that to your repo. In your `.env` you should include
