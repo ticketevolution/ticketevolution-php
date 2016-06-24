@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.5 (June 24, 2016)
+- Update `listSearchSuggestions()` to use a comma-separated string for the `entities` value instead of an array now that the corresponding endpoint allows that. This fixes #130.
+
 ## 3.0.4 (March 26, 2016)
 - Update `bindShared()` to `singleton()` in `TEvoServiceProvider` because `bindShared()` was deprecated in Laravel 5.1 and removed in Laravel 5.2.
 - Update installation instructions for Laravel.

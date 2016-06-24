@@ -72,16 +72,9 @@ return [
             'parameters'           => [
                 'entities'  => [
                     'location'    => 'query',
-                    'type'        => 'array',
-                    'description' => 'An array of entities for which you would like to get suggestions.',
-                    'required'    => false,
-                    'sentAs'      => 'entities',
-                ],
-                'entities2' => [
-                    'location'    => 'query',
                     'type'        => 'string',
-                    'description' => 'An array of entities for which you would like to get suggestions.',
-                    'required'    => false,
+                    'description' => 'A comma-separated list of entities for which you would like to get suggestions.',
+                    'required'    => true,
                     'sentAs'      => 'entities',
                 ],
                 'q'         => [
