@@ -27,10 +27,10 @@ return [
             'deprecated'           => false,
             'responseModel'        => 'defaultJsonResponse',
             'parameters'           => [
-                'entities' => [
+                'types' => [
                     'location'    => 'query',
-                    'type'        => 'array',
-                    'description' => 'An array of entities for which you would like to get suggestions.',
+                    'type'        => 'string',
+                    'description' => 'A comma-separated list of types for which you would like to get suggestions.',
                     'required'    => true,
                 ],
                 'q'        => [
@@ -39,16 +39,17 @@ return [
                     'description' => 'The search query for suggestions.',
                     'required'    => true,
                 ],
-                'limit'    => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
-                    'description' => 'The limit of results you would like returned for each entity.',
-                    'required'    => false,
-                ],
                 'fuzzy'    => [
                     'location'    => 'query',
                     'type'        => 'boolean',
                     'description' => 'If search results are to match any instead of all words passed.',
+                    'required'    => false,
+                    'format'      => 'boolean-string',
+                ],
+                'order_by_popularity'    => [
+                    'location'    => 'query',
+                    'type'        => 'boolean',
+                    'description' => 'Indicate if you wish to sort the results with most popular first.',
                     'required'    => false,
                     'format'      => 'boolean-string',
                 ],
