@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.6 (Aigust 17, 2016)
+- Update `search()` to use a comma-separated string for the `types` value instead of an array now that the corresponding endpoint allows that.
+
 ## 3.0.5 (June 24, 2016)
 - Update `listSearchSuggestions()` to use a comma-separated string for the `entities` value instead of an array now that the corresponding endpoint allows that. This fixes #130.
 
