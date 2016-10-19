@@ -61,8 +61,8 @@ return [
             'parameters'           => [
                 'performer_id' => [
                     'location'    => 'uri',
-                    'type'        => 'integer',
-                    'description' => 'ID of the Performer to return.',
+                    'type'        => ['integer', 'string'],
+                    'description' => 'ID or slug of the Performer to return.',
                     'required'    => true,
                 ],
             ],

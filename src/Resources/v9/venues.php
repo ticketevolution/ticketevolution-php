@@ -61,8 +61,8 @@ return [
             'parameters'           => [
                 'venue_id' => [
                     'location'    => 'uri',
-                    'type'        => 'integer',
-                    'description' => 'ID of the Venue to return.',
+                    'type'        => ['integer', 'string'],
+                    'description' => 'ID or slug of the Venue to return.',
                     'required'    => true,
                 ],
             ],
