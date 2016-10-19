@@ -39,8 +39,8 @@ return [
                     'description' => 'Filter by Ticket Group Type.',
                     'required'    => false,
                     'enum'        => [
-                        'Event',
-                        'Parking',
+                        'event',
+                        'parking',
                     ]
                 ],
                 'quantity'          => [
