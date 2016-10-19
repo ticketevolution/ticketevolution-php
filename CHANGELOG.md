@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.7 (Aigust 17, 2016)
+- Allow strings to be used in addition to integers for `showPerformer()` and `showVenue()` so that the slugs may be used.
+
 ## 3.0.6 (Aigust 17, 2016)
 - Update `search()` to use a comma-separated string for the `types` value instead of an array now that the corresponding endpoint allows that.
 
