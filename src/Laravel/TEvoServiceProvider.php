@@ -1,4 +1,6 @@
-<?php namespace TicketEvolution\Laravel;
+<?php
+
+namespace TicketEvolution\Laravel;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
@@ -33,11 +35,17 @@ class TEvoServiceProvider extends ServiceProvider
      */
     protected function setupConfig()
     {
-        $source = realpath(__DIR__ . '/config/ticketevolution.php');
+        $configPath = realpath(__DIR__ . '/config/ticketevolution.php');
 
-        $this->publishes([$source => config_path('ticketevolution.php')]);
+        if (function_exists('config_path')) {
+            $publishPath = config_path('ticketevolution.php');
+        } else {
+            $publishPath = base_path('config/ticketevolution.php');
+        }
 
-        $this->mergeConfigFrom($source, 'ticketevolution');
+        $this->publishes([$configPath => $publishPath], 'config');
+
+        $this->mergeConfigFrom($configPath, 'ticketevolution');
     }
 
 
@@ -52,7 +60,7 @@ class TEvoServiceProvider extends ServiceProvider
             return new Client(config('ticketevolution'));
         });
 
-        $this->app->alias('tevo', 'TicketEvolution\Client');
+        $this->app->alias('tevo', Client::class);
     }
 
 

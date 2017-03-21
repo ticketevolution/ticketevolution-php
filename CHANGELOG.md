@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.0.0RC1 (March 20, 2017)
+- Upgrade to [Guzzle 6.2](https://github.com/guzzle/guzzle).
+- Create new `TEvoAuthMiddleware` to handle API authentication since the old Subscriber method no longer works.
+
 ## 3.0.8 (October 19, 2016)
 - Correct the allowed `type`s for `listTicketGroups()`.
 

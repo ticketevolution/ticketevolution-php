@@ -104,5 +104,5 @@ return [
     |
     */
 
-    'models'     => [],
+    'models' => [],
 ];

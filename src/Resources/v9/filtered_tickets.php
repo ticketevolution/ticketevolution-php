@@ -74,31 +74,6 @@ return [
                 ],
             ],
         ],
-
-
-        /**
-         *    Brokerages / Search
-         */
-        'searchBrokerages'         => [
-            'extends'              => 'listBrokerages',
-            'httpMethod'           => 'GET',
-            'uri'                  => '/v9/brokerages/search',
-            'summary'              => 'Search across brokerages.',
-            'notes'                => '',
-            'documentationUrl'     => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=25002003',
-            'deprecated'           => false,
-            'responseModel'        => 'defaultJsonResponse',
-            'parameters'           => [
-                'q' => [
-                    'location'    => 'query',
-                    'type'        => 'string',
-                    'description' => 'Search query',
-                    'required'    => true
-                ],
-            ],
-            'additionalParameters' => ['location' => 'query'],
-        ],
-
     ],
 
     /*

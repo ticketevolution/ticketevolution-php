@@ -1,6 +1,6 @@
 # The BSD 3-Clause License
 
-Copyright (c) 2015, Ticket Evolution, Inc.
+Copyright (c) 2017, Ticket Evolution, Inc.
 
 All rights reserved.
 

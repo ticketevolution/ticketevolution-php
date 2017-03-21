@@ -1,8 +1,14 @@
-<?php namespace TicketEvolution;
+<?php
 
+namespace TicketEvolution;
+
+use Guzzle\Service\Loader\PhpLoader;
 use GuzzleHttp\Client as BaseClient;
+use GuzzleHttp\Command\Guzzle\Description;
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
-use TicketEvolution\Subscriber\TEvoAuth;
+use GuzzleHttp\HandlerStack;
+use Symfony\Component\Config\FileLocator;
+use function GuzzleHttp\default_user_agent;
 
 class Client
 {
@@ -11,12 +17,12 @@ class Client
      *
      * @const string
      */
-    const VERSION = '3.0.6';
+    const VERSION = '4.0.0dev';
 
     /**
      * Guzzle service description
      *
-     * @var \TicketEvolution\Description
+     * @var \GuzzleHttp\Command\Guzzle\Description
      */
     private static $_description;
 
@@ -26,71 +32,68 @@ class Client
      *
      * @var \GuzzleHttp\Client
      */
-    private $_baseClient;
+    private $baseClient;
 
 
     /**
-     * Adapter for Guzzle base client
-     *
-     * @var \GuzzleHttp\Adapter\AdapterInterface
-     */
-    private $_baseClientAdapter;
-
-
-    /**
-     * Api client services
+     * Guzzle Services client
      *
      * @var \GuzzleHttp\Command\Guzzle\GuzzleClient
      */
-    private $_client;
+    private $serviceClient;
 
 
     /**
-     * TicketEvolution client config settings
+     * Configuration settings
      *
      * @var array
      */
-    private $_settings;
+    private $settings;
 
 
     /**
-     * Request header items
+     * Create a new API client using the supplied settings.
+     * Add a TEvoAuthMiddleware to handle the signing of requests.
      *
-     * @var array
+     * @param array $settings
+     * @param array $middleware
      */
-    private $_globalParams = [
-//        'apiVersion'   => [
-//            'type'     => 'string',
-//            'location' => 'uri',
-//            'required' => true,
-//        ],
-    ];
-
-
-    /**
-     * Create a new GuzzleClient Service, ability to use the client
-     * without setting properties on instantiation.
-     *
-     * @param  array $settings
-     */
-    public function __construct(array $settings = array())
+    public function __construct(array $settings = [], array $middleware = [])
     {
-        $this->_settings = $settings;
+        $this->settings = $settings;
+        $this->middleware = $middleware;
+
+        // Use the TEvoAuth middleware to handle the request signing
+        $this->middleware[] = new TEvoAuthMiddleware($this->settings['apiToken'], $this->settings['apiSecret']);
+
+        // Don’t need these any more
+        unset($this->settings['apiToken'], $this->settings['apiSecret']);
+
+        // TEvo API servers don't like the “Expect: 100” header so override it
+        // http://docs.guzzlephp.org/en/latest/request-options.html#expect
+        $this->settings['expect'] = false;
+
+        // Set a custom User Agent indicating which version of this library we are using
+        // if one isn't already provided
+        if (!isset($options['headers']['User-Agent'])) {
+            $this->settings['headers']['User-Agent'] = 'ticketevolution-php/' . self::VERSION . ' ' . default_user_agent();
+        }
+
     }
 
 
     /**
-     * Merge additional settings with existing and save. Overrides
-     * existing settings as well.
+     * Merge (via override) settings with newly provided ones.
      *
      * @param  array $settings
      *
-     * @return static
+     * @return \TicketEvolution\Client
      */
-    public function settings(array $settings)
+    public function settings(array $settings): Client
     {
-        $this->_settings = array_merge($this->_settings, $settings);
-        if ($this->_client) {
+        $this->settings = array_merge($this->settings, $settings);
+
+        if ($this->serviceClient) {
             $this->buildClient();
         }
 
@@ -99,22 +102,8 @@ class Client
 
 
     /**
-     * Load resource configuration file and return array.
+     * Build a new service client, reloading the description of necessary.
      *
-     * @param  string $name
-     *
-     * @return array
-     */
-    private function loadResource($name)
-    {
-        return require __DIR__ . '/Resources/' . $this->_settings['apiVersion'] . '/' . $name . '.php';
-    }
-
-
-    /**
-     * Build new service client from descriptions.
-     *
-     * @return void
      */
     private function buildClient()
     {
@@ -124,161 +113,104 @@ class Client
             $this->reloadDescription();
         }
 
-        $this->_client = new GuzzleClient(
-            $client,
-            static::$_description,
-            [
-                'emitter' => $this->_baseClient->getEmitter(),
-            ]
-        );
+        $this->serviceClient = new GuzzleClient($client, static::$_description);
     }
 
 
     /**
      * Retrieve Guzzle base client.
      *
-     * @return \GuzzleHttp\Client
+     * @return BaseClient
      */
-    private function getBaseClient()
+    private function getBaseClient(): BaseClient
     {
-        return $this->_baseClient ?: $this->_baseClient = $this->loadBaseClient();
+        return $this->baseClient ?: $this->baseClient = $this->loadBaseClient($this->settings);
     }
 
 
     /**
      * Set adapter and create Guzzle base client.
      *
-     * @return \GuzzleHttp\Client
+     * @param array $settings
+     *
+     * @return BaseClient
      */
-    private function loadBaseClient(array $settings = [])
+    private function loadBaseClient(array $settings = []): BaseClient
     {
-        // Force the authorization scheme to 'tevoauth'
-        $settings['defaults']['auth'] = 'tevoauth';
+        // Create a handler stack and add any supplied middleware
+        $stack = HandlerStack::create();
+        array_walk($this->middleware, function ($middleware) use ($stack) {
+            $stack->push($middleware);
+        });
 
-        if ($this->_baseClientAdapter) {
-            $settings['adapter'] = $this->_baseClientAdapter;
-        }
+        $settings['handler'] = $stack;
 
-        $this->_baseClient = new BaseClient($settings);
+        // Create the BaseClient
+        $this->baseClient = new BaseClient($settings);
 
-        // Attach the TEvoAuth subscriber to handle the required authorization
-        $this->_baseClient->getEmitter()->attach(new TEvoAuth($this->_settings['apiToken'], $this->_settings['apiSecret']));
-
-        // Don't need these any more
-        unset($this->_settings['apiToken'], $this->_settings['apiSecret']);
-
-        // Set a custom User Agent indicating which version of this library we are using.
-        // Can’t set this in $settings['defaults'] above because we want to prepend the default.
-        $this->_baseClient->setDefaultOption(
-            'headers/User-Agent',
-            'ticketevolution-php/' . self::VERSION . ' ' . $this->_baseClient->getDefaultUserAgent()
-        );
-
-        // TEvo API servers don't like the Expect: 100 header
-        $this->_baseClient->setDefaultOption('expect', false);
-
-
-        return $this->_baseClient;
+        return $this->baseClient;
     }
 
 
     /**
-     * Description works tricky as a static
-     * property, reload as a needed.
+     * Description works tricky as a static property, reload as needed.
      *
-     * @return void
      */
     private function reloadDescription()
     {
-        static::$_description = new Description($this->loadConfig());
+        static::$_description = $this->loadDescription();
     }
 
 
     /**
-     * Load configuration file and parse resources.
+     * Load configuration file(s) and parse resources.
      *
-     * @return array
+     * @return Description
      */
-    private function loadConfig()
+    private function loadDescription(): Description
     {
-        $description = $this->loadResource('service-config');
+        $locator = new FileLocator(realpath(__DIR__ . '/Resources/' . $this->settings['apiVersion']));
 
-        // initial description building, use api info and build base url
-        $description = $description + [
-                'baseUrl'    => $this->_settings['baseUrl'],
-                'operations' => [],
-                'models'     => []
-            ];
+        $phpLoader = new PhpLoader($locator);
 
-        // Don't need this any more
-        unset($this->_settings['baseUrl']);
+        $description = $phpLoader->load($locator->locate('service-description.php'));
 
-        // process each of the service description resources defined
-        foreach ($description['services'] as $serviceName) {
-            $service = $this->loadResource($serviceName);
-            $description = $this->loadServiceDescription($service, $description);
-        }
+        // Add the baseUrl specified in the settings.
+        // Allowing one to easily change the baseUrl makes working in different environments easy.
+        $description['baseUrl'] = $this->settings['baseUrl'];
 
-        // dead weight now, clean it up
-        unset($description['services']);
+        $this->description = new Description($description);
 
-        return $description;
+        return $this->description;
     }
 
 
     /**
-     * Load service description from resource, add global
-     * parameters to operations. Operations and models
-     * added to full description.
+     * Execute the command provided. This is used in calls that look like
      *
-     * @param  array $service
-     * @param  array $description
+     * ```
+     * $response = $client->listBrokerages(['page' => 2, 'per_page' => 2]);
+     * ```
      *
-     * @return array
+     * as well as calls that look like
+     *
+     * ```
+     * $command = $client->getCommand('listBrokerages', ['page' => 2, 'per_page' => 2]);
+     * $response = $client->execute($command);
+     * ```
+     *
+     * @param $method
+     * @param $parameters
+     *
+     * @return \GuzzleHttp\Command\Result|\GuzzleHttp\Command\Command
      */
-    private function loadServiceDescription(array $service, array $description)
-    {
-        foreach ($service as $section => $set) {
-            if ($section == 'operations') {
-                // add global parameters to the operation parameters
-                foreach ($set as &$op) {
-                    $op['parameters'] = isset($op['parameters'])
-                        ? $op['parameters'] + $this->_globalParams
-                        : $this->_globalParams;
-                }
-            }
-            $description[$section] = $description[$section] + $set;
-        }
-
-        return $description;
-    }
-
-
     public function __call($method, $parameters)
     {
-        if (!$this->_client) {
+        if (!$this->serviceClient) {
             $this->buildClient();
         }
 
-        // gather parameters to pass to service definitions
-        $settings = $this->_settings;
-
-        // merge client settings/parameters and method parameters
-        if (!isset($parameters[0])) {
-            // This happens when called via something like
-            // $response = $client->getUsers();
-            $parameters[0] = $settings;
-        } elseif (is_string($parameters[0])) {
-            // This happens when called via something like
-            // $command = $client->getCommand('myCommand', ['option' => 'value']);
-            $parameters[1] = $parameters[1] + $settings;
-        } elseif (is_array($parameters[0])) {
-            // This happens when called via something like
-            // $response = $client->getUsers(['option' => 'value']);
-            $parameters[0] = $parameters[0];// + $settings;
-        }
-
-        $response = call_user_func_array([$this->_client, $method], $parameters);
+        $response = call_user_func_array([$this->serviceClient, $method], $parameters);
 
         return $response;
     }
