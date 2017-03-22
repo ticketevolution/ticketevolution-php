@@ -22,7 +22,8 @@
   ],
   "require": {
     "php": ">=7.1",
-    "guzzlehttp/guzzle-services": ">=1.1"
+    "guzzlehttp/guzzle-services": ">=1.1",
+    "gimler/guzzle-description-loader": "^0.0.4"
   },
   "suggest": {
     "rtheunissen/guzzle-log-middleware": "Guzzle 6 middleware used to log requests and responses",
