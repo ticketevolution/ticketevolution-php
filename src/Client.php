@@ -17,7 +17,7 @@ class Client
      *
      * @const string
      */
-    const VERSION = '4.0.0dev';
+    const VERSION = '4.0.0';
 
     /**
      * Guzzle service description

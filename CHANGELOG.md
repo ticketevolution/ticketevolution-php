@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.0 (May 24, 2017)
+- Fix issue with parameters for `listCategories`.
+
 ## 4.0.0RC1 (March 20, 2017)
 - Upgrade to [Guzzle 6.2](https://github.com/guzzle/guzzle).
 - Create new `TEvoAuthMiddleware` to handle API authentication since the old Subscriber method no longer works.
