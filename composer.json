@@ -1,11 +1,14 @@
 {
   "name": "ticketevolution/ticketevolution-php",
-  "description": "A PHP 5.4+ library for the Ticket Evolution API.",
+  "description": "A PHP 7.1+ library for the Ticket Evolution API.",
   "type": "library",
   "keywords": [
     "library",
     "Ticket Evolution",
     "ticket",
+    "guzzle",
+    "guzzlehttp",
+    "guzzle-services",
     "laravel"
   ],
   "homepage": "https://github.com/ticketevolution/ticketevolution-php",
@@ -18,8 +21,13 @@
     }
   ],
   "require": {
-    "php": ">=5.4",
-    "guzzlehttp/guzzle-services": "~0.5"
+    "php": ">=7.1",
+    "guzzlehttp/guzzle-services": ">=1.1",
+    "gimler/guzzle-description-loader": "^0.0.4"
+  },
+  "suggest": {
+    "rtheunissen/guzzle-log-middleware": "Guzzle 6 middleware used to log requests and responses",
+    "monolog/monolog": "Sends your logs to files, sockets, inboxes, databases and various web services"
   },
   "autoload": {
     "psr-4": {

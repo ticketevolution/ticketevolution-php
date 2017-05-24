@@ -8,7 +8,7 @@
 | This file is for storing the credentials for the Ticket Evolution API.
 |
 | You should publish this configuration to your config directory using
-|   php artisan vendor:publish
+|   php artisan vendor:publish --provider="TicketEvolution\Laravel\TEvoServiceProvider" --tag=config
 |
 | It is recommended that you store your credentials in your .env file
 | that is not committed to your repo and load them here using env().
@@ -20,4 +20,5 @@ return [
     'apiVersion' => env('TICKETEVOLUTION_API_VERSION') ?: 'v9',
     'apiToken'   => env('TICKETEVOLUTION_API_TOKEN'),
     'apiSecret'  => env('TICKETEVOLUTION_API_SECRET'),
+    'debug'      => false,
 ];

@@ -1,4 +1,6 @@
-<?php namespace TicketEvolution\Laravel;
+<?php
+
+namespace TicketEvolution\Laravel;
 
 use Illuminate\Support\Facades\Facade as LaravelFacade;
 

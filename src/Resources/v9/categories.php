@@ -26,7 +26,7 @@ return [
             'documentationUrl'     => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470005',
             'deprecated'           => false,
             'responseModel'        => 'defaultJsonResponse',
-            'parameters'           => null,
+            'parameters'           => [],
             'additionalParameters' => ['location' => 'query'],
         ],
 
