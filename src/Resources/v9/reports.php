@@ -29,14 +29,14 @@ return [
             'parameters'           => [
                 'by_order_credential' => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Order results by credential.',
                     'required'    => false,
                     'format'      => 'boolean-string',
                 ],
                 'by_order_placer'     => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Order results by person who placed the order.',
                     'required'    => false,
                     'format'      => 'boolean-string',
@@ -67,7 +67,7 @@ return [
                 ],
                 'aggregates'          => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Provide count and sums of quantity, cost, price, and fee.',
                     'required'    => false,
                     'format'      => 'boolean-string',

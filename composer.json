@@ -33,5 +33,15 @@
     "psr-4": {
       "TicketEvolution\\": "src/"
     }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "TicketEvolution\\Laravel\\TEvoServiceProvider"
+      ],
+      "aliases": {
+        "TEvo": "TicketEvolution\\Laravel\\TEvoFacade"
+      }
+    }
   }
 }

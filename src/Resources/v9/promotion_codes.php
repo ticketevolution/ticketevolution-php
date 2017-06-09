@@ -49,7 +49,7 @@ return [
                 ],
                 'inactive' => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Display inactive results (default is active-only).',
                     'required'    => false,
                     'format'      => 'boolean-string',
