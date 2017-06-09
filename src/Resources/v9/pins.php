@@ -43,7 +43,7 @@ return [
                 ],
                 'embedded' => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'If true the response will only contain the id and url of the Pin.',
                     'required'    => false,
                     'default'     => false,

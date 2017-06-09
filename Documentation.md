@@ -116,24 +116,30 @@ Install the package via Composer
 $ composer require ticketevolution/ticketevolution-php
 ```
 
+### Laravel 5.5+
+[Package Auto-Discovery](https://medium.com/@taylorotwell/package-auto-discovery-in-laravel-5-5-ea9e3ab20518) will automatically add the ServiceProvider and `TEvo` facade.
+
+### Laravel < 5.5
 After updating composer add the `TEvoServiceProvider` to the `providers` array in `config/app.php`:
 
 ``` php
 TicketEvolution\Laravel\TEvoServiceProvider::class,
 ```
 
-If you want to use the `tevo` facade add this to the `aliases` array in `config/app.php`:
+If you want to use the `TEvo` facade add this to the `aliases` array in `config/app.php`:
 
 ``` php
-'tevo' => TicketEvolution\Laravel\TEvoFacade::class,
+'TEvo' => TicketEvolution\Laravel\TEvoFacade::class,
 ```
 
+### Install configuration file
 To copy the default configuration file to `config/ticketevolution.php` run
 
 ``` bash
 $ php artisan vendor:publish --provider="TicketEvolution\Laravel\TEvoServiceProvider" --tag=config
 ```
 
+### Use the `.env` file
 In Laravel 5 it is recommended that you [keep your API credentials in your `.env` file](http://laravel.com/docs/5.0/configuration#environment-configuration) and that you do not publish that to your repo. In your `.env` you should include
 
 ``` php

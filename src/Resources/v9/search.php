@@ -41,14 +41,14 @@ return [
                 ],
                 'fuzzy'    => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'If search results are to match any instead of all words passed.',
                     'required'    => false,
                     'format'      => 'boolean-string',
                 ],
                 'order_by_popularity'    => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Indicate if you wish to sort the results with most popular first.',
                     'required'    => false,
                     'format'      => 'boolean-string',
@@ -92,7 +92,7 @@ return [
                 ],
                 'fuzzy'     => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'If search results are to match any instead of all words passed.',
                     'required'    => false,
                     'format'      => 'boolean-string',

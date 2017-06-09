@@ -63,7 +63,7 @@ return [
                 ],
                 'wheelchair'        => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Filter by wheelchair-accesssible tickets.',
                     'required'    => false,
                     'format'      => 'boolean-string',
@@ -83,21 +83,21 @@ return [
 //                ],
                 'eticket'           => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Display only Etickets.',
                     'required'    => false,
                     'format'      => 'boolean-string',
                 ],
                 'instant_delivery'  => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Display only tickets available for “Instant Delivery”. Only etickets are available for Instant Delivery.',
                     'required'    => false,
                     'format'      => 'boolean-string',
                 ],
                 'lightweight'       => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Return a significantly smaller response with less details for greater speed.',
                     'required'    => false,
                     'default'     => true,
@@ -105,7 +105,7 @@ return [
                 ],
                 'ticket_list'       => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Omits the seat-level detail from the response for greater speed.',
                     'required'    => false,
                     'default'     => false,
@@ -149,7 +149,7 @@ return [
                 ],
                 'ticket_list'     => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Whether or not to include a ticket_list array with details of the individual tickets in the group.',
                     'required'    => false,
                     'default'     => false,
@@ -222,7 +222,7 @@ return [
                 ],
                 'ticket_group_in_hand'        => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Filter by Ticket Group In-Hand Status.',
                     'required'    => false,
                     'format'      => 'boolean-string',
@@ -239,7 +239,7 @@ return [
                 ],
                 'ticket_group_consignment'    => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Filter by consignment tickets.',
                     'required'    => false,
                     'format'      => 'boolean-string',
@@ -288,7 +288,7 @@ return [
                 ],
                 'lightweight'                 => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Return a significantly smaller response with less details for greater speed.',
                     'required'    => false,
                     'default'     => true,
@@ -296,14 +296,14 @@ return [
                 ],
                 'available_only'              => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Return only information about available tickets.',
                     'required'    => false,
                     'format'      => 'boolean-string',
                 ],
                 'show_unavailable'            => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'If true will include ticket groups that have no available tickets.',
                     'required'    => false,
                     'default'     => false,
@@ -337,7 +337,7 @@ return [
                 ],
                 'include_spec'         => [
                     'location'    => 'query',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Indicates whether or not to include ticket groups marked as “spec”.',
                     'required'    => false,
                     'default'     => true,
@@ -463,7 +463,7 @@ return [
                 ],
                 'ticket_list'     => [
                     'location'    => 'json',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Display individual tickets in the return.',
                     'required'    => false,
                     'default'     => false,
@@ -692,21 +692,21 @@ return [
                 ],
                 'in_hand'               => [
                     'location'    => 'json',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'In hand or not.',
                     'required'    => false,
                     'format'      => 'boolean-string',
                 ],
                 'in_hand_on'            => [
                     'location'    => 'json',
-                    'type'        => 'string',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'A date for when the Ticket Group will be available to ship/deliver.',
                     'required'    => false,
                     'format'      => 'boolean-string',
                 ],
                 'wheelchair'            => [
                     'location'    => 'json',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'Wheelchair or not.',
                     'required'    => false,
                     'format'      => 'boolean-string',
@@ -798,7 +798,7 @@ return [
                 ],
                 'broadcast'       => [
                     'location'    => 'json',
-                    'type'        => 'boolean',
+                    'type'        => ['boolean', 'string'],
                     'description' => 'New state for the broadcast parameter.',
                     'required'    => true,
                     'format'      => 'boolean-string',
