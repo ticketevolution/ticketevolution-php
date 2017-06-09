@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.3 (June 9, 2017)
+- Use `PUT` for `setTicketProperties()`.
+
 ## 4.0.2 (June 9, 2017)
 - Allow `string` or `int` `barcode` for `setTicketProperties()`.
 

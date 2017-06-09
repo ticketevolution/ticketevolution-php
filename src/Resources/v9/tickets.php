@@ -65,7 +65,7 @@ return [
          */
         'setTicketProperties' => [
             'extends'          => null,
-            'httpMethod'       => 'GET',
+            'httpMethod'       => 'PUT',
             'uri'              => '/v9/tickets/{ticket_id}',
             'summary'          => 'Add a PDF eticket and/or barcode to an individual ticket/seat.',
             'notes'            => '',
