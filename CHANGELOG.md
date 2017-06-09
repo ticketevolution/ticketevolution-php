@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.2 (June 9, 2017)
+- Allow `string` or `int` `barcode` for `setTicketProperties()`.
+
 ## 4.0.1 (June 9, 2017)
 - Fix validation of value `type` where the value is formatted as `boolean-string` because of [change made in `guzzle/guzzle-services` in 1.1.0](https://github.com/guzzle/guzzle-services/pull/130/commits/13f2abc948901a8f108c5bf4daafeb2a137b853b).
 - Support Laravel 5.5 [Package Auto-Discovery](https://medium.com/@taylorotwell/package-auto-discovery-in-laravel-5-5-ea9e3ab20518).

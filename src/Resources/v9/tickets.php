@@ -87,7 +87,7 @@ return [
                 ],
                 'barcode'   => [
                     'location'    => 'json',
-                    'type'        => 'integer',
+                    'type'        => ['integer', 'string'],
                     'description' => 'The ticket’s barcode.',
                     'required'    => false,
                 ],
