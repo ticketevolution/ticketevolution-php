@@ -86,7 +86,7 @@ $apiClient = new TEvoClient([
     'apiVersion' => 'v9',
     'apiToken'   => 'xxxxxxxxxxxxxxxxxxxxxxxx',
     'apiSecret'  => 'yyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy',
-]);
+], $middlewares);
 
 // Get a list of the 25 most popular events sorted by descending popularity
 try {

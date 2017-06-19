@@ -322,7 +322,7 @@ return [
 
 
         /**
-         *    Shipments / Download
+         *    Shipments / Download Airbill
          */
         'downloadAirbillForShipment' => [
             'extends'          => null,
@@ -339,6 +339,54 @@ return [
                     'type'        => 'integer',
                     'description' => 'The shipment number.',
                     'required'    => true,
+                ],
+            ],
+        ],
+
+
+        /**
+         *    Shipments / Upload Airbill
+         */
+        'uploadAirbillForShipment' => [
+            'extends'          => null,
+            'httpMethod'       => 'POST',
+            'uri'              => '/v9/shipments/{shipment_id}/upload_airbill',
+            'summary'          => 'Upload an airbill for the specified shipment.',
+            'notes'            => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=63602690',
+            'deprecated'       => false,
+            'responseModel'    => 'defaultJsonResponse',
+            'parameters'       => [
+                'shipment_id' => [
+                    'location'    => 'uri',
+                    'type'        => 'integer',
+                    'description' => 'The shipment number.',
+                    'required'    => true,
+                ],
+                'file' => [
+                    'location'    => 'json',
+                    'type'        => 'string',
+                    'description' => 'The base-64 encoded PDF.',
+                    'required'    => true,
+                ],
+                'tracking_number' => [
+                    'location'    => 'json',
+                    'type'        => 'string',
+                    'description' => 'The tracking number for the airbill being uploaded.',
+                    'required'    => true,
+                ],
+                'carrier' => [
+                    'location'    => 'json',
+                    'type'        => 'string',
+                    'description' => 'The carrier for which the airbill is provided.',
+                    'required'    => true,
+                    'enum'        => [
+                        'fedex',
+                        'ups',
+                        'usps',
+                        'dhl',
+                        'other',
+                    ],
                 ],
             ],
         ],
