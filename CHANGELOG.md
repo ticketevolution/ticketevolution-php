@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.5 (February 20, 2018)
+- Expanded acceptable `states` for `listOrders()`.
+
 ## 4.0.4 (June 19, 2017)
 - Added `uploadAirbillForShipment()` for uploading a base-64 encoded PDF airbill for a `ProvidedAirbill` shipment.
 - Correct documentation for adding a logger middleware under Advanced Usage.
