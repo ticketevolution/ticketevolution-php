@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.1.0 (February 20, 2018)
+- Added `/v10/orders` endpoint for `createOrders()`.
+
 ## 4.0.5 (February 20, 2018)
 - Expanded acceptable `states` for `listOrders()`.
 
