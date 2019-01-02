@@ -24,7 +24,7 @@ class TEvoAuthMiddleware
      * @param string $apiToken
      * @param string $apiSecret
      */
-    public function __construct(string $apiToken, string $apiSecret)
+    public function __construct($apiToken, $apiSecret)
     {
         $this->apiToken = $apiToken;
         $this->apiSecret = $apiSecret;

@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.1.1 (January 2, 2019)
+- Fix an issue with deploying [/jwcobb/tevo-harvester](https://github.com/jwcobb/tevo-harvester) by removing typehints in `__constructor()` of `TEvoAuthMiddleware`.
+
 ## 4.1.0 (February 20, 2018)
 - Added `/v10/orders` endpoint for `createOrders()`.
 
