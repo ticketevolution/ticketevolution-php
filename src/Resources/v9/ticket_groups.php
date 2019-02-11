@@ -126,7 +126,7 @@ return [
                 'include_tevo_section_mappings' => [
                     'location'    => 'query',
                     'type'        => ['boolean', 'string'],
-                    'description' => 'Include Tevo Section Mappings',
+                    'description' => 'Include TEvo Section Mappings for use with ticketevolution/seatmaps-client',
                     'required'    => false,
                     'default'     => false,
                     'format'      => 'boolean-string',
