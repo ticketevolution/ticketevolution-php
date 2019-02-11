@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.1.2 (February 11, 2019)
+- Ensure `include_tevo_section_mappings` is sent as a string when used with `listTicketGroups()`. (Thanks to @zimm0r)
+
 ## 4.1.1 (January 2, 2019)
 - Fix an issue with deploying [/jwcobb/tevo-harvester](https://github.com/jwcobb/tevo-harvester) by removing typehints in `__constructor()` of `TEvoAuthMiddleware`.
 
