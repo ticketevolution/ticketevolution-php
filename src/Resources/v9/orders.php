@@ -46,7 +46,7 @@ return [
                     'type'        => 'string',
                     'description' => 'The state of the order.',
                     'required'    => false,
-                    'enum' => [
+                    'enum'        => [
                         'accepted',
                         'cancel_proposed',
                         'canceled',
@@ -189,37 +189,37 @@ return [
             'deprecated'       => false,
             'responseModel'    => 'defaultJsonResponse',
             'parameters'       => [
-                'order_id'    => [
+                'order_id'        => [
                     'location'    => 'uri',
                     'type'        => 'integer',
                     'description' => 'The ID of the Order.',
                     'required'    => true,
                 ],
-                'reviewer_id' => [
+                'reviewer_id'     => [
                     'location'    => 'json',
                     'type'        => 'integer',
                     'description' => 'ID of the User who is accepting this Order.',
                     'required'    => true,
                 ],
-                'reason'      => [
-                    'location'        => 'json',
-                    'type'            => 'string',
-                    'description'     => 'The reason for which you are rejecting the order.',
-                    'required'        => true,
-                    'enum'            => [
+                'reason'          => [
+                    'location'    => 'json',
+                    'type'        => 'string',
+                    'description' => 'The reason for which you are rejecting the order.',
+                    'required'    => true,
+                    'enum'        => [
                         'Tickets No Longer Available',
                         'Tickets Priced Incorrectly',
                         'Duplicate Order',
                         'Fraudulent Order',
                         'Test Order',
                         'Other'
-                    ],
-                    'rejection_notes' => [
-                        'location'    => 'json',
-                        'type'        => 'string',
-                        'description' => 'Additional Notes about this rejection.',
-                        'required'    => false,
-                    ],
+                    ]
+                ],
+                'rejection_notes' => [
+                    'location'    => 'json',
+                    'type'        => 'string',
+                    'description' => 'Additional Notes about this rejection.',
+                    'required'    => false,
                 ],
             ],
         ],
@@ -782,5 +782,5 @@ return [
     |
     */
 
-    'models'     => [],
+    'models' => [],
 ];
