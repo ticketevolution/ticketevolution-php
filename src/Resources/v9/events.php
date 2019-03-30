@@ -119,7 +119,7 @@ return [
                     'location'    => 'query',
                     'type'        => 'string',
                     'description' => 'Full-text search events.',
-                    'required'    => true,
+                    'required'    => false,
                 ],
             ],
             'additionalParameters' => ['location' => 'query'],

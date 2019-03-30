@@ -312,7 +312,7 @@ return [
                     'required'    => true,
                 ],
                 'recipients'  => [
-                    'location'    => 'uri',
+                    'location'    => 'json',
                     'type'        => 'array',
                     'description' => 'List of recipients that should receive the airbill.',
                     'required'    => true,

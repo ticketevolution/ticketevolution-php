@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.1.3 (March 29, 2019)
+- Correct location of `recipients` parameter for `emailAirbillForShipment()`.
+- Fix `rejection_notes` parameter for `rejectOrder()`.
+- Make `q` parameter optional for `searchEvents()`.
+
 ## 4.1.2 (February 11, 2019)
 - Ensure `include_tevo_section_mappings` is sent as a string when used with `listTicketGroups()`. (Thanks to @zimm0r)
 
