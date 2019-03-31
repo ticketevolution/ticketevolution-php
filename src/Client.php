@@ -2,7 +2,6 @@
 
 namespace TicketEvolution;
 
-use Guzzle\Service\Loader\PhpLoader;
 use GuzzleHttp\Client as BaseClient;
 use GuzzleHttp\Command\Guzzle\Description;
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
@@ -17,7 +16,7 @@ class Client
      *
      * @const string
      */
-    const VERSION = '4.1.3';
+    const VERSION = '4.2.0';
 
     /**
      * Guzzle service description
