@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.0 (March 31, 2019)
+- Replace `gimler/guzzle-description-loader` with local version. This resolves the conflict with Symfony files that was preventing this project from being used with Laravel 5.8.
+
 ## 4.1.3 (March 29, 2019)
 - Correct location of `recipients` parameter for `emailAirbillForShipment()`.
 - Fix `rejection_notes` parameter for `rejectOrder()`.
