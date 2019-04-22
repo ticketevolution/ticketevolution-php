@@ -205,6 +205,36 @@ return [
 //        ],
 
 
+        /**
+         *    Offices / Credit Cards / Delete
+         */
+        'deleteOfficeCreditCard'   => [
+            'extends'          => null,
+            'httpMethod'       => 'DELETE',
+            'uri'              => '/v9/offices/{office_id}/credit_cards/{credit_card_id}',
+            'summary'          => 'Delete a office Credit Card.',
+            'notes'            => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/spaces/API/pages/30572559/Offices+Credit+Cards+Delete',
+            'deprecated'       => false,
+            'responseModel'    => 'defaultJsonResponse',
+            'parameters'       => [
+                'office_id' => [
+                    'location'    => 'uri',
+                    'type'        => 'integer',
+                    'description' => 'ID of the Office.',
+                    'required'    => true,
+                ],
+                'credit_card_id' => [
+                    'location'    => 'uri',
+                    'type'        => 'integer',
+                    'description' => 'ID of the Credit Card.',
+                    'required'    => true,
+                ],
+            ],
+//            'additionalParameters' => ['location' => 'json'],
+        ],
+
+
     ],
 
     /*

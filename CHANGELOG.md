@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.1 (April 22, 2019)
+- Added `deleteOfficeCreditCard()`.
+
 ## 4.2.0 (March 31, 2019)
 - Replace `gimler/guzzle-description-loader` with local version. This resolves the conflict with Symfony files that was preventing this project from being used with Laravel 5.8.
 
