@@ -27,6 +27,14 @@ return [
             'deprecated'           => false,
             'responseModel'        => 'defaultJsonResponse',
             'parameters'           => [
+                'min_and_max_price' => [
+                    'location'    => 'query',
+                    'type'        => ['boolean', 'string'],
+                    'description' => 'If true the response will include avg_price, sum_price, median_price, min_price & max_price, calculated based on that Credential’s settings',
+                    'required'    => false,
+                    'default'     => false,
+                    'format'      => 'boolean-string',
+                ],
                 'page'     => [
                     'location'    => 'query',
                     'type'        => 'integer',
