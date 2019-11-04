@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.2 (November 4, 2019)
+- Ensure that when `min_and_max_price` is used with `listEvents()` it is sent as a boolean-string because the comparison in the API requires `true` and not just a truthy value.
+
 ## 4.2.1 (April 22, 2019)
 - Added `deleteOfficeCreditCard()`.
 
