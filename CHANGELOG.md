@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.3 (April 22, 2020)
+- Allow usage of `symfony/config` ^5.0 in addition to ^4.2. Fixes the inability to install alongside newer versions of Laravel.
+
 ## 4.2.2 (November 4, 2019)
 - Ensure that when `min_and_max_price` is used with `listEvents()` it is sent as a boolean-string because the comparison in the API requires `true` and not just a truthy value.
 
