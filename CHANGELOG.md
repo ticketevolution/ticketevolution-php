@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.5 (September 7, 2021)
+- Allow PHP 8.0
+
 ## 4.2.4 (September 7, 2021)
 - Support `GuzzleHttp\Psr7` 2.0 in addition to 1.x.
 
