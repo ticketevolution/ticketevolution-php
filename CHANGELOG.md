@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.4 (September 7, 2021)
+- Support `GuzzleHttp\Psr7` 2.0 in addition to 1.x.
+
 ## 4.2.3 (April 22, 2020)
 - Allow usage of `symfony/config` ^5.0 in addition to ^4.2. Fixes the inability to install alongside newer versions of Laravel.
 

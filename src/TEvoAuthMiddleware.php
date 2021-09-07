@@ -4,8 +4,6 @@ namespace TicketEvolution;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use function GuzzleHttp\Psr7\build_query;
-use function GuzzleHttp\Psr7\parse_query;
 
 class TEvoAuthMiddleware
 {
@@ -82,8 +80,14 @@ class TEvoAuthMiddleware
         $sortedParams = $this->prepareParameters($this->getParametersFromRequest($request));
 
         // Re-Set the query to the properly ordered query string
-
-        $uri = $request->getUri()->withQuery(build_query($sortedParams, PHP_QUERY_RFC1738));
+        if (method_exists('\GuzzleHttp\Psr7\Query','build')) {
+            // GuzzleHttp\Psr7 version 2+
+            $query = \GuzzleHttp\Psr7\Query::build($sortedParams, PHP_QUERY_RFC1738);
+        } else {
+            // GuzzleHttp\Psr7 version 1
+            $query = \GuzzleHttp\Psr7\build_query($sortedParams, PHP_QUERY_RFC1738);
+        }
+        $uri = $request->getUri()->withQuery($query);
         $request = $request->withUri($uri);
 
         return $request;
@@ -234,7 +238,13 @@ class TEvoAuthMiddleware
     protected function getParametersFromRequest(RequestInterface $request): array
     {
         $uri = $request->getUri();
-        $params = parse_query($uri->getQuery(), PHP_QUERY_RFC1738);
+        if (method_exists('\GuzzleHttp\Psr7\Query','parse')) {
+            // GuzzleHttp\Psr7 version 2+
+            $params = \GuzzleHttp\Psr7\Query::parse($uri->getQuery(), PHP_QUERY_RFC1738);
+        } else {
+            // GuzzleHttp\Psr7 version 1
+            $params = \GuzzleHttp\Psr7\parse_query($uri->getQuery(), PHP_QUERY_RFC1738);
+        }
 
         return $params;
     }
