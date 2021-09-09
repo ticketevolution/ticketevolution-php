@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.6 (September 9, 2021)
+- Do not include `min_and_max_price` in `listEventsDeleted()`.
+
 ## 4.2.5 (September 7, 2021)
 - Allow PHP 8.0
 
