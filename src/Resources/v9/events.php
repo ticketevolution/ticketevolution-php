@@ -82,7 +82,7 @@ return [
          *    Events / Deleted
          */
         'listEventsDeleted' => [
-            'extends'              => 'listEvents',
+            'extends'              => null,
             'httpMethod'           => 'GET',
             'uri'                  => '/v9/events/deleted',
             'summary'              => 'Obtain a list of Events that have been deleted.',
@@ -91,6 +91,20 @@ return [
             'deprecated'           => false,
             'responseModel'        => 'defaultJsonResponse',
             'parameters'           => [
+                'page'     => [
+                    'location'    => 'query',
+                    'type'        => 'integer',
+                    'description' => 'Which page of results to return.',
+                    'required'    => false,
+                    'default'     => 1,
+                ],
+                'per_page' => [
+                    'location'    => 'query',
+                    'type'        => 'integer',
+                    'description' => 'The integer of items for each page of results.',
+                    'required'    => false,
+                    'default'     => 100,
+                ],
                 'deleted_at.gte' => [
                     'location'    => 'query',
                     'type'        => 'string',
