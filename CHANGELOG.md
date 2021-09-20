@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.7 (September 20, 2021)
+- Add new `updateOrder()` method.
+
 ## 4.2.6 (September 9, 2021)
 - Do not include `min_and_max_price` in `listEventsDeleted()`.
 

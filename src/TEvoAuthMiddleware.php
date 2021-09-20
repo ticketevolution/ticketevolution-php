@@ -150,7 +150,7 @@ class TEvoAuthMiddleware
     public function getStringToSign(RequestInterface $request): string
     {
         // For POST|PUT set the JSON body string as the params
-        if ($request->getMethod() == 'POST' || $request->getMethod() == 'PUT') {
+        if ($request->getMethod() == 'POST' || $request->getMethod() == 'PUT' || $request->getMethod() == 'PATCH') {
             $data = $request->getBody()->__toString();
         } else {
             $data = $this->getParametersFromRequest($request);
