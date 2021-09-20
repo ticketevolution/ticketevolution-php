@@ -142,6 +142,30 @@ return [
 
 
         /**
+         *    Orders / Update
+         */
+        'updateOrder'                 => [
+            'extends'          => null,
+            'httpMethod'       => 'PATCH',
+            'uri'              => '/v9/orders/{order_id}',
+            'summary'          => 'Update an Order.',
+            'notes'            => '',
+            'documentationUrl' => '',
+            'deprecated'       => false,
+            'responseModel'    => 'defaultJsonResponse',
+            'parameters'       => [
+                'order_id' => [
+                    'location'    => 'uri',
+                    'type'        => 'integer',
+                    'description' => 'ID of the Order.',
+                    'required'    => true,
+                ],
+            ],
+            'additionalParameters' => ['location' => 'json'],
+        ],
+
+
+        /**
          *    Orders / Accept
          */
         'acceptOrder'                  => [
