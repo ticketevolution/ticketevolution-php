@@ -248,6 +248,35 @@ return [
 
 
         /**
+         *    Clients / Email Addresses / Delete
+         */
+        'deleteClientEmailAddress'   => [
+            'extends'          => null,
+            'httpMethod'       => 'DELETE',
+            'uri'              => '/v9/clients/{client_id}/email_addresses/{email_address_id}',
+            'summary'          => 'Delete a client Email Address.',
+            'notes'            => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/spaces/API/pages/27394202/Clients+Email+Addresses+Delete',
+            'deprecated'       => false,
+            'responseModel'    => 'defaultJsonResponse',
+            'parameters'       => [
+                'client_id'        => [
+                    'location'    => 'uri',
+                    'type'        => 'integer',
+                    'description' => 'ID of the Client.',
+                    'required'    => true,
+                ],
+                'email_address_id' => [
+                    'location'    => 'uri',
+                    'type'        => 'integer',
+                    'description' => 'ID of the Email Address.',
+                    'required'    => true,
+                ],
+            ],
+        ],
+
+
+        /**
          *    Clients / Addresses / Index
          */
         'listClientAddresses'        => [

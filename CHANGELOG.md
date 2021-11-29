@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.8 (November 29, 2021)
+- Add new `deleteClientEmailAddress()` method.
+
 ## 4.2.7 (September 20, 2021)
 - Add new `updateOrder()` method.
 
