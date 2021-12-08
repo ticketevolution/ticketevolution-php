@@ -54,6 +54,7 @@ return [
         'credit_memos.php',
         'events.php',
         'filtered_tickets.php',
+        'listings.php',
         'offices.php',
         'orders.php',
         'payments.php',

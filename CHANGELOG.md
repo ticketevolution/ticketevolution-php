@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.2.9 (December 8, 2021)
+- Add new `listings()` method to use the new faster and more efficient [Listings / Index](https://ticketevolution.atlassian.net/wiki/spaces/API/pages/2853797930/Listings+Index) endpoint.
+- Add new `showListing()` method to use the new faster and more efficient [Listings / Show](https://ticketevolution.atlassian.net/wiki/spaces/API/pages/2895052808/Listings+Show) endpoint.
+
 ## 4.2.8 (November 29, 2021)
 - Add new `deleteClientEmailAddress()` method.
 
