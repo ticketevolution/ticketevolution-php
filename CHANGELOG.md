@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.10 (December 16, 2021)
+- Add new `createTaxQuote()` method in preparation of the coming-soon [Tax Quotes / Create](https://ticketevolution.atlassian.net/wiki/spaces/API/pages/2900459521/Tax+Quotes) endpoint.
+
 ## 4.2.9 (December 8, 2021)
 - Add new `listings()` method to use the new faster and more efficient [Listings / Index](https://ticketevolution.atlassian.net/wiki/spaces/API/pages/2853797930/Listings+Index) endpoint.
 - Add new `showListing()` method to use the new faster and more efficient [Listings / Show](https://ticketevolution.atlassian.net/wiki/spaces/API/pages/2895052808/Listings+Show) endpoint.
