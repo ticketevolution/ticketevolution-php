@@ -68,6 +68,7 @@ return [
         'search.php',
         'settings.php',
         'shipments.php',
+        'tax.php',
         'ticket_groups.php',
         'tickets.php',
         'users.php',
