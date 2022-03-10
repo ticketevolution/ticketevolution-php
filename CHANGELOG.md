@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.3.0 (March 9, 2022)
+- Add new `completeShipment()` and `updateShipment()` methods that are most often used when fulfilling mobile transfer sales.
+
 ## 4.2.10 (December 16, 2021)
 - Add new `createTaxQuote()` method in preparation of the coming-soon [Tax Quotes / Create](https://ticketevolution.atlassian.net/wiki/spaces/API/pages/2900459521/Tax+Quotes) endpoint.
 
