@@ -162,6 +162,96 @@ return [
 
 
         /**
+         *    Shipments / Complete
+         */
+        'completeShipment'             => [
+            'extends'          => null,
+            'httpMethod'       => 'PUT',
+            'uri'              => '/v9/shipments/{shipment_id}/complete',
+            'summary'          => 'Transition a shipment to the completed state.',
+            'notes'            => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/spaces/API/pages/255328279/Shipments+Complete',
+            'deprecated'       => false,
+            'responseModel'    => 'defaultJsonResponse',
+            'parameters'       => [
+                'shipment_id' => [
+                    'location'    => 'uri',
+                    'type'        => 'integer',
+                    'description' => 'The shipment number.',
+                    'required'    => true,
+                ],
+                'tm_mobile_link' => [
+                    'location'    => 'json',
+                    'type'        => 'string',
+                    'description' => 'The URL at which the recipient can claim the transferred tickets.',
+                    'required'    => false,
+                ],
+                'transfer_source' => [
+                    'location'    => 'json',
+                    'type'        => 'string',
+                    'description' => 'The primary market source / system from which tickets were transferred for the consumer and CS teams knowledge.',
+                    'enum'        => [
+                        'AXS',
+                        'AM',
+                        'BA',
+                        'FS',
+                        'PAC',
+                        'SG',
+                        'SH',
+                        'TM',
+                    ],
+                    'required'    => false,
+                ],
+            ],
+        ],
+
+
+        /**
+         *    Shipments / Update
+         */
+        'updateShipment'             => [
+            'extends'          => null,
+            'httpMethod'       => 'PUT',
+            'uri'              => '/v9/shipments/{shipment_id}',
+            'summary'          => 'Update a shipment.',
+            'notes'            => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/spaces/API/pages/185466902/Shipments+Update',
+            'deprecated'       => false,
+            'responseModel'    => 'defaultJsonResponse',
+            'parameters'       => [
+                'shipment_id' => [
+                    'location'    => 'uri',
+                    'type'        => 'integer',
+                    'description' => 'The shipment number.',
+                    'required'    => true,
+                ],
+                'mobile_transfer_type' => [
+                    'location'    => 'json',
+                    'type'        => 'string',
+                    'description' => 'One of: FlashSeats, TMMobile, TMMobileLink.',
+                    'enum'        => [
+                        'FlashSeats',
+                        'TMMobile',
+                        'TMMobileLink',
+                    ],
+
+                    'required'    => false,
+                ],
+                'tm_mobile_shipment_type' => [
+                    'location'    => 'json',
+                    'type'        => 'string',
+                    'description' => 'One of: TMMobile, TMMobileLink.',
+                    'enum'        => [
+                        'TMMobile',
+                        'TMMobileLink',
+                    ],
+                    'required'    => false,
+                ],
+            ],
+        ],
+
+
+        /**
          *    Shipments / Status
          */
         'listShipmentsStatus'        => [
