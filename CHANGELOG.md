@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.0 (April 4, 2022)
+- Ensure the `TEvoAuthMiddleware` is before any additional middleware so the computed X-Signature can be available to a logger middlware.
+
 ## 4.3.0 (March 9, 2022)
 - Add new `completeShipment()` and `updateShipment()` methods that are most often used when fulfilling mobile transfer sales.
 

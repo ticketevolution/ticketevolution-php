@@ -16,7 +16,7 @@ class Client
      *
      * @const string
      */
-    const VERSION = '4.3.0';
+    const VERSION = '4.4.0';
 
     /**
      * Guzzle service description
@@ -60,12 +60,11 @@ class Client
     public function __construct(array $settings = [], array $middleware = [])
     {
         $this->settings = $settings;
-        $this->middleware = $middleware;
 
         // Use the TEvoAuth middleware to handle the request signing
-        $this->middleware[] = new TEvoAuthMiddleware($this->settings['apiToken'], $this->settings['apiSecret']);
+        $this->middleware = array_merge([new TEvoAuthMiddleware($this->settings['apiToken'], $this->settings['apiSecret'])], $middleware);
 
-        // Don’t need these any more
+        // Don’t need these anymore
         unset($this->settings['apiToken'], $this->settings['apiSecret']);
 
         // TEvo API servers don't like the “Expect: 100” header so override it
