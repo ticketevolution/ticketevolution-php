@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.1 (June 4, 2022)
+- Do not require `price` when using `createTaxQuote()`.
+
 ## 4.4.0 (April 4, 2022)
 - Ensure the `TEvoAuthMiddleware` is before any additional middleware so the computed X-Signature can be available to a logger middlware.
 
