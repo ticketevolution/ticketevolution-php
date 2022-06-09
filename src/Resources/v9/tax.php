@@ -27,12 +27,6 @@ return [
             'deprecated'           => false,
             'responseModel'        => 'defaultJsonResponse',
             'parameters'           => [
-                'price'           => [
-                    'location'    => 'json',
-                    'type'        => 'numeric',
-                    'description' => 'The price the customer will be charged for each individual ticket.',
-                    'required'    => true,
-                ],
                 'quantity'        => [
                     'location'    => 'json',
                     'type'        => 'integer',
