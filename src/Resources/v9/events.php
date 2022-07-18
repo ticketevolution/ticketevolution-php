@@ -164,6 +164,30 @@ return [
         ],
 
 
+        /**
+         *    Events / Stats
+         */
+        'showEventStats'         => [
+            'extends'              => null,
+            'httpMethod'           => 'GET',
+            'uri'                  => '/v9/events/{event_id}/stats',
+            'summary'              => 'Get statistics for a single event.',
+            'notes'                => '',
+            'documentationUrl'     => 'https://ticketevolution.atlassian.net/wiki/spaces/API/pages/3057319937/Events+Stats',
+            'deprecated'           => false,
+            'responseModel'        => 'defaultJsonResponse',
+            'parameters'           => [
+                'event_id' => [
+                    'location'    => 'uri',
+                    'type'        => 'integer',
+                    'description' => 'ID of the Event for which to return statistics.',
+                    'required'    => true,
+                ],
+            ],
+            'additionalParameters' => null,
+        ],
+
+
     ],
 
     /*
