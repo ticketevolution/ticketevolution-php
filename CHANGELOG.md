@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.2 (July 18, 2022)
+- Add new `showEventStats()` method to return statistics regarding the tickets available for an event.
+
 ## 4.4.1 (June 4, 2022)
 - Do not require `price` when using `createTaxQuote()`.
 
