@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.3 (July 22, 2022)
+- Remove unused `include_tevo_section_mappings` parameter from `listings()` method.
+
 ## 4.4.2 (July 18, 2022)
 - Add new `showEventStats()` method to return statistics regarding the tickets available for an event.
 
