@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.4 (August 19, 2022)
+- When using `settings()` to update the client settings, check if the description needs to be reloaded due to a version change.
+
 ## 4.4.3 (July 22, 2022)
 - Remove unused `include_tevo_section_mappings` parameter from `listings()` method.
 
