@@ -16,7 +16,7 @@ class Client
      *
      * @const string
      */
-    const VERSION = '4.4.3';
+    const VERSION = '4.4.4';
 
     /**
      * Guzzle service description
@@ -62,7 +62,9 @@ class Client
         $this->settings = $settings;
 
         // Use the TEvoAuth middleware to handle the request signing
-        $this->middleware = array_merge([new TEvoAuthMiddleware($this->settings['apiToken'], $this->settings['apiSecret'])], $middleware);
+        $this->middleware = array_merge([
+            new TEvoAuthMiddleware($this->settings['apiToken'], $this->settings['apiSecret']),
+        ], $middleware);
 
         // Don’t need these anymore
         unset($this->settings['apiToken'], $this->settings['apiSecret']);
@@ -89,7 +91,15 @@ class Client
      */
     public function settings(array $settings): Client
     {
+        if (isset($settings['apiVersion']) && $settings['apiVersion'] !== $this->settings['apiVersion']) {
+            $reloadDescription = true;
+        }
+
         $this->settings = array_merge($this->settings, $settings);
+
+        if ($reloadDescription) {
+            $this->reloadDescription();
+        }
 
         if ($this->serviceClient) {
             $this->buildClient();
