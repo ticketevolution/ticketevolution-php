@@ -17,86 +17,85 @@ return [
         /**
          *    Listings / Index
          */
-        'listings'       => [
-            'extends'              => null,
-            'httpMethod'           => 'GET',
-            'uri'                  => '/v9/listings',
-            'summary'              => 'The new, faster way to list all ticket groups for an event.',
-            'notes'                => '',
-            'documentationUrl'     => 'https://ticketevolution.atlassian.net/wiki/spaces/API/pages/2853797930/Listings+Index',
-            'deprecated'           => false,
-            'responseModel'        => 'defaultJsonResponse',
-            'parameters'           => [
-                'event_id'          => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+        'listings' => [
+            'extends' => null,
+            'httpMethod' => 'GET',
+            'uri' => '/v9/listings',
+            'summary' => 'The new, faster way to list all ticket groups for an event.',
+            'notes' => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/spaces/API/pages/2853797930/Listings+Index',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'event_id' => [
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'ID of the Event for which you would like to list tickets.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'type'              => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'type' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter by Ticket Group Type.',
-                    'required'    => false,
-                    'enum'        => [
+                    'required' => false,
+                    'enum' => [
                         'event',
                         'parking',
-                    ]
+                    ],
                 ],
-                'quantity'          => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+                'quantity' => [
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'Filter by number of tickets greater than passed value.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'section'         => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'section' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter by exact match section.',
-                    'required'    => false,
+                    'required' => false,
                 ],
                 'row' => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter by exact match row.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'owned'        => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'owned' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Show only your own listings.',
-                    'required'    => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'format' => 'boolean-string',
                 ],
-                'order_by'          => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'order_by' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Sort results by any return parameter.',
-                    'required'    => false,
+                    'required' => false,
                 ],
             ],
             'additionalParameters' => ['location' => 'query'],
         ],
 
-
         /**
          *    Ticket Groups / Show
          */
-        'showListing'        => [
-            'extends'          => null,
-            'httpMethod'       => 'GET',
-            'uri'              => '/v9/listings/{id}',
-            'summary'          => 'Get a single Listing (Ticket Group).',
-            'notes'            => '',
+        'showListing' => [
+            'extends' => null,
+            'httpMethod' => 'GET',
+            'uri' => '/v9/listings/{id}',
+            'summary' => 'Get a single Listing (Ticket Group).',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469964',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the Listing to return.',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
         ],
@@ -113,5 +112,5 @@ return [
     |
     */
 
-    'models'     => [],
+    'models' => [],
 ];

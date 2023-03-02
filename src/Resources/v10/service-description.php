@@ -1,4 +1,5 @@
 <?php
+
 return [
 
     /*
@@ -10,7 +11,7 @@ return [
     |
     */
 
-    'name'        => 'Ticket Evolution',
+    'name' => 'Ticket Evolution',
 
     /*
     |--------------------------------------------------------------------------
@@ -32,7 +33,7 @@ return [
     |
     */
 
-    'apiVersion'  => 'v10',
+    'apiVersion' => 'v10',
 
     /*
     |--------------------------------------------------------------------------
@@ -47,7 +48,6 @@ return [
         'orders.php',
     ],
 
-
     /*
     |--------------------------------------------------------------------------
     | Default models
@@ -57,9 +57,9 @@ return [
     |
     */
 
-    'models'      => [
+    'models' => [
         'defaultJsonResponse' => [
-            'type'                 => 'object',
+            'type' => 'object',
             'additionalProperties' => [
                 'location' => 'json',
             ],

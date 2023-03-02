@@ -18,70 +18,68 @@ return [
          *    Promotion Codes / Index
          */
         'listPromotionCodes' => [
-            'extends'              => null,
-            'httpMethod'           => 'GET',
-            'uri'                  => '/v9/promotion_codes',
-            'summary'              => 'Get a list of all Promotion Codes.',
-            'notes'                => '',
-            'documentationUrl'     => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994378',
-            'deprecated'           => false,
-            'responseModel'        => 'defaultJsonResponse',
-            'parameters'           => [
-                'page'     => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+            'extends' => null,
+            'httpMethod' => 'GET',
+            'uri' => '/v9/promotion_codes',
+            'summary' => 'Get a list of all Promotion Codes.',
+            'notes' => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994378',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'page' => [
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'Which page of results to return.',
-                    'required'    => false,
-                    'default'     => 1,
+                    'required' => false,
+                    'default' => 1,
                 ],
                 'per_page' => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'The integer of items for each page of results.',
-                    'required'    => false,
-                    'default'     => 100,
+                    'required' => false,
+                    'default' => 100,
                 ],
-                'code'     => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'code' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter results by case-insensitive code.',
-                    'required'    => false,
+                    'required' => false,
                 ],
                 'inactive' => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Display inactive results (default is active-only).',
-                    'required'    => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'format' => 'boolean-string',
                 ],
             ],
             'additionalParameters' => ['location' => 'query'],
         ],
 
-
         /**
          *    Promotion Codes / Show
          */
-        'showPromotionCode'  => [
-            'extends'              => null,
-            'httpMethod'           => 'GET',
-            'uri'                  => '/v9/promotion_codes/{promotion_code_id}',
-            'summary'              => 'Get a single Promotion Code.',
-            'notes'                => '',
-            'documentationUrl'     => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994380',
-            'deprecated'           => false,
-            'responseModel'        => 'defaultJsonResponse',
-            'parameters'           => [
+        'showPromotionCode' => [
+            'extends' => null,
+            'httpMethod' => 'GET',
+            'uri' => '/v9/promotion_codes/{promotion_code_id}',
+            'summary' => 'Get a single Promotion Code.',
+            'notes' => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994380',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'promotion_code_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the Promotion Code.',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
             'additionalParameters' => null,
         ],
-
 
     ],
 
@@ -95,5 +93,5 @@ return [
     |
     */
 
-    'models'     => [],
+    'models' => [],
 ];

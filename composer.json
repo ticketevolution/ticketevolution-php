@@ -1,6 +1,6 @@
 {
   "name": "ticketevolution/ticketevolution-php",
-  "description": "A PHP 7.1+ library for the Ticket Evolution API.",
+  "description": "A PHP 8.2+ library for the Ticket Evolution API.",
   "type": "library",
   "keywords": [
     "library",
@@ -21,12 +21,13 @@
     }
   ],
   "require": {
-    "php": "^7.1.3 || ^8.0",
-    "symfony/config": "^4.2 || ^5.0",
-    "guzzlehttp/guzzle-services": "^1.1"
+    "php": "^8.2",
+    "guzzlehttp/guzzle-services": "^1.3.1",
+    "symfony/config": "^6.2",
+    "guzzlehttp/psr7": "^2.4"
   },
   "suggest": {
-    "rtheunissen/guzzle-log-middleware": "Guzzle 6 middleware used to log requests and responses",
+    "rtheunissen/guzzle-log-middleware": "Guzzle 6/7 middleware to log requests and responses",
     "monolog/monolog": "Sends your logs to files, sockets, inboxes, databases and various web services"
   },
   "autoload": {
@@ -43,5 +44,13 @@
         "TEvo": "TicketEvolution\\Laravel\\TEvoFacade"
       }
     }
+  },
+  "scripts": {
+    "post-update-cmd": [
+      "@php ./vendor/bin/pint"
+    ]
+  },
+  "require-dev": {
+    "laravel/pint": "^1.6"
   }
 }

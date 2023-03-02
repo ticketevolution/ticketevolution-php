@@ -17,615 +17,604 @@ return [
         /**
          *    Ticket Groups / Index
          */
-        'listTicketGroups'       => [
-            'extends'              => null,
-            'httpMethod'           => 'GET',
-            'uri'                  => '/v9/ticket_groups',
-            'summary'              => 'Lists all ticket groups for an event.',
-            'notes'                => '',
-            'documentationUrl'     => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469962',
-            'deprecated'           => false,
-            'responseModel'        => 'defaultJsonResponse',
-            'parameters'           => [
-                'event_id'          => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+        'listTicketGroups' => [
+            'extends' => null,
+            'httpMethod' => 'GET',
+            'uri' => '/v9/ticket_groups',
+            'summary' => 'Lists all ticket groups for an event.',
+            'notes' => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469962',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'event_id' => [
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'ID of the Event for which you would like to list tickets.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'type'              => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'type' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter by Ticket Group Type.',
-                    'required'    => false,
-                    'enum'        => [
+                    'required' => false,
+                    'enum' => [
                         'event',
                         'parking',
-                    ]
+                    ],
                 ],
-                'quantity'          => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+                'quantity' => [
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'Filter by number of tickets greater than passed value.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'office_id'         => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+                'office_id' => [
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'Show only tickets owned by a specific office.',
-                    'required'    => false,
+                    'required' => false,
                 ],
                 'exclude_office_id' => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'Exclude tickets owned by a specific office.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'wheelchair'        => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'wheelchair' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Filter by wheelchair-accesssible tickets.',
-                    'required'    => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'format' => 'boolean-string',
                 ],
-//                'format' => [
-//                    'location'    => 'query',
-//                    'type'        => 'string',
-//                    'description' => 'Display only the specified formats.',
-//                    'required'    => false,
-//                    'enum'        => [
-//                        'Eticket',
-//                        'Flash_seats',
-//                        'Guest_list',
-//                        'Paperless',
-//                        'Physical',
-//                    ]
-//                ],
-                'eticket'           => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                //                'format' => [
+                //                    'location'    => 'query',
+                //                    'type'        => 'string',
+                //                    'description' => 'Display only the specified formats.',
+                //                    'required'    => false,
+                //                    'enum'        => [
+                //                        'Eticket',
+                //                        'Flash_seats',
+                //                        'Guest_list',
+                //                        'Paperless',
+                //                        'Physical',
+                //                    ]
+                //                ],
+                'eticket' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Display only Etickets.',
-                    'required'    => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'format' => 'boolean-string',
                 ],
-                'instant_delivery'  => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'instant_delivery' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Display only tickets available for “Instant Delivery”. Only etickets are available for Instant Delivery.',
-                    'required'    => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'format' => 'boolean-string',
                 ],
-                'lightweight'       => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'lightweight' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Return a significantly smaller response with less details for greater speed.',
-                    'required'    => false,
-                    'default'     => true,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'default' => true,
+                    'format' => 'boolean-string',
                 ],
-                'ticket_list'       => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'ticket_list' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Omits the seat-level detail from the response for greater speed.',
-                    'required'    => false,
-                    'default'     => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'default' => false,
+                    'format' => 'boolean-string',
                 ],
-                'state'             => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'state' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter by ticket state.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'order_by'          => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'order_by' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Sort results by any return parameter.',
-                    'required'    => false,
+                    'required' => false,
                 ],
                 'include_tevo_section_mappings' => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Include TEvo Section Mappings for use with ticketevolution/seatmaps-client',
-                    'required'    => false,
-                    'default'     => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'default' => false,
+                    'format' => 'boolean-string',
                 ],
             ],
             'additionalParameters' => ['location' => 'query'],
         ],
-
 
         /**
          *    Ticket Groups / Show
          */
-        'showTicketGroup'        => [
-            'extends'          => null,
-            'httpMethod'       => 'GET',
-            'uri'              => '/v9/ticket_groups/{ticket_group_id}',
-            'summary'          => 'Get a single Ticket Group.',
-            'notes'            => '',
+        'showTicketGroup' => [
+            'extends' => null,
+            'httpMethod' => 'GET',
+            'uri' => '/v9/ticket_groups/{ticket_group_id}',
+            'summary' => 'Get a single Ticket Group.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469964',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'ticket_group_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the TicketGroup to return.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'ticket_list'     => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'ticket_list' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Whether or not to include a ticket_list array with details of the individual tickets in the group.',
-                    'required'    => false,
-                    'default'     => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'default' => false,
+                    'format' => 'boolean-string',
                 ],
             ],
         ],
 
-
         /**
          *    Ticket Groups / Mass Index
          */
-        'massIndexTicketGroups'  => [
-            'extends'              => null,
-            'httpMethod'           => 'GET',
-            'uri'                  => '/v9/ticket_groups/mass_index',
-            'summary'              => 'List ticket groups for inventory view.',
-            'notes'                => 'Alternate index endpoint for listing Ticket Groups. The normal ticket group index will display tickets for one event only, whereas this one will list all inventory for your office across all events.',
-            'documentationUrl'     => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994263',
-            'deprecated'           => false,
-            'responseModel'        => 'defaultJsonResponse',
-            'parameters'           => [
-                'performers_search'           => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+        'massIndexTicketGroups' => [
+            'extends' => null,
+            'httpMethod' => 'GET',
+            'uri' => '/v9/ticket_groups/mass_index',
+            'summary' => 'List ticket groups for inventory view.',
+            'notes' => 'Alternate index endpoint for listing Ticket Groups. The normal ticket group index will display tickets for one event only, whereas this one will list all inventory for your office across all events.',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994263',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'performers_search' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Full-text search.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'event_id'                    => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+                'event_id' => [
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'ID of the Event for which you would like to list tickets.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'venue_id'                    => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+                'venue_id' => [
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'ID of the Venue for which you would like to list tickets.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'venue_name'                  => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'venue_name' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter by venue names containing.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'venue_address_locality'      => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'venue_address_locality' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter by Venue Locality (city) name contains.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'venue_address_region'        => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'venue_address_region' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter by Venue Region (state) name contains.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'ticket_group_section'        => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'ticket_group_section' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter by Ticket Group Section.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'ticket_group_row'            => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'ticket_group_row' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter by Ticket Group Row.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'ticket_group_in_hand'        => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'ticket_group_in_hand' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Filter by Ticket Group In-Hand Status.',
-                    'required'    => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'format' => 'boolean-string',
                 ],
-                'ticket_group_type'           => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'ticket_group_type' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Filter by Ticket Group Type.',
-                    'required'    => false,
-                    'enum'        => [
+                    'required' => false,
+                    'enum' => [
                         'Event',
                         'Parking',
-                    ]
+                    ],
                 ],
-                'ticket_group_consignment'    => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'ticket_group_consignment' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Filter by consignment tickets.',
-                    'required'    => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'format' => 'boolean-string',
                 ],
-                'event_occurs_at.gte'         => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'event_occurs_at.gte' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Range of date values at which event occurs.',
-                    'required'    => false,
-                    'format'      => 'date-time',
+                    'required' => false,
+                    'format' => 'date-time',
                 ],
-                'event_occurs_at.lte'         => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'event_occurs_at.lte' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Range of date values at which event occurs.',
-                    'required'    => false,
-                    'format'      => 'date-time',
+                    'required' => false,
+                    'format' => 'date-time',
                 ],
-                'event_occurs_local.gte'      => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'event_occurs_local.gte' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Range of date values at which event occurs.',
-                    'required'    => false,
-                    'format'      => 'date-time',
+                    'required' => false,
+                    'format' => 'date-time',
                 ],
-                'event_occurs_local.lte'      => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                'event_occurs_local.lte' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Range of date values at which event occurs.',
-                    'required'    => false,
-                    'format'      => 'date-time',
+                    'required' => false,
+                    'format' => 'date-time',
                 ],
                 'ticket_group_in_hand_on.gte' => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Range of date values at which event occurs.',
-                    'required'    => false,
-                    'format'      => 'date-time',
+                    'required' => false,
+                    'format' => 'date-time',
                 ],
                 'ticket_group_in_hand_on.lte' => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Range of date values at which event occurs.',
-                    'required'    => false,
-                    'format'      => 'date-time',
+                    'required' => false,
+                    'format' => 'date-time',
                 ],
-                'lightweight'                 => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'lightweight' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Return a significantly smaller response with less details for greater speed.',
-                    'required'    => false,
-                    'default'     => true,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'default' => true,
+                    'format' => 'boolean-string',
                 ],
-                'available_only'              => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'available_only' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Return only information about available tickets.',
-                    'required'    => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'format' => 'boolean-string',
                 ],
-                'show_unavailable'            => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'show_unavailable' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'If true will include ticket groups that have no available tickets.',
-                    'required'    => false,
-                    'default'     => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'default' => false,
+                    'format' => 'boolean-string',
                 ],
             ],
             'additionalParameters' => ['location' => 'query'],
         ],
 
-
         /**
          *    Ticket Groups / Export
          */
-        'exportTicketGroups'     => [
-            'extends'          => null,
-            'httpMethod'       => 'POST',
-            'uri'              => '/v9/ticket_groups/export',
-            'summary'          => 'Export an Office’s Ticket Groups to a CSV or text file.',
-            'notes'            => '',
+        'exportTicketGroups' => [
+            'extends' => null,
+            'httpMethod' => 'POST',
+            'uri' => '/v9/ticket_groups/export',
+            'summary' => 'Export an Office’s Ticket Groups to a CSV or text file.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=10911748',
-            'deprecated'       => false,
-            'responseModel'    => null,
-            'parameters'       => [
-                'format'               => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+            'deprecated' => false,
+            'responseModel' => null,
+            'parameters' => [
+                'format' => [
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'The format you would like the file to be in. Either txt or csv.',
-                    'required'    => true,
-                    'default'     => 'csv',
-                    'enum'        => ['csv', 'txt'],
+                    'required' => true,
+                    'default' => 'csv',
+                    'enum' => ['csv', 'txt'],
                 ],
-                'include_spec'         => [
-                    'location'    => 'query',
-                    'type'        => ['boolean', 'string'],
+                'include_spec' => [
+                    'location' => 'query',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Indicates whether or not to include ticket groups marked as “spec”.',
-                    'required'    => false,
-                    'default'     => true,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'default' => true,
+                    'format' => 'boolean-string',
                 ],
                 'marking_rule[method]' => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Rule to be applied to the price of all ticket groups in the file. If included you must define both a method and an amount.',
-                    'required'    => false,
+                    'required' => false,
                 ],
                 'marking_rule[amount]' => [
-                    'location'    => 'query',
-                    'type'        => 'number',
+                    'location' => 'query',
+                    'type' => 'number',
                     'description' => 'Rule to be applied to the price of all ticket groups in the file. If included you must define both a method and an amount.',
-                    'required'    => false,
+                    'required' => false,
                 ],
             ],
         ],
-
 
         /**
          *    Ticket Groups / Create
          */
-        'createTicketGroups'     => [
-            'extends'          => null,
-            'httpMethod'       => 'POST',
-            'uri'              => '/v9/ticket_groups',
-            'summary'          => 'Create one or more TicketGroups.',
-            'notes'            => 'Note that this takes an array of TicketGroups even if only creating one.',
+        'createTicketGroups' => [
+            'extends' => null,
+            'httpMethod' => 'POST',
+            'uri' => '/v9/ticket_groups',
+            'summary' => 'Create one or more TicketGroups.',
+            'notes' => 'Note that this takes an array of TicketGroups even if only creating one.',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469980',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'ticket_groups' => [
-                    'location'    => 'json',
-                    'type'        => 'array',
+                    'location' => 'json',
+                    'type' => 'array',
                     'description' => 'A collection of TicketGroups to create.',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
         ],
-
 
         /**
          *    Ticket Groups / Delete
          */
-        'deleteTicketGroup'      => [
-            'extends'          => null,
-            'httpMethod'       => 'DELETE',
-            'uri'              => '/v9/ticket_groups/{ticket_group_id}',
-            'summary'          => 'Delete a specified Ticket Group.',
-            'notes'            => '',
+        'deleteTicketGroup' => [
+            'extends' => null,
+            'httpMethod' => 'DELETE',
+            'uri' => '/v9/ticket_groups/{ticket_group_id}',
+            'summary' => 'Delete a specified Ticket Group.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=28475429',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'ticket_group_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the specific Ticket Group to delete.',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
         ],
-
 
         /**
          *    Ticket Groups / Take
          */
-        'takeTicketGroup'        => [
-            'extends'          => null,
-            'httpMethod'       => 'POST',
-            'uri'              => '/v9/ticket_groups/{ticket_group_id}/take',
-            'summary'          => 'Hold tickets for a prospective buyer indefinitely.',
-            'notes'            => '',
+        'takeTicketGroup' => [
+            'extends' => null,
+            'httpMethod' => 'POST',
+            'uri' => '/v9/ticket_groups/{ticket_group_id}/take',
+            'summary' => 'Hold tickets for a prospective buyer indefinitely.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469976',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'ticket_group_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the specific Ticket Group.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'quantity'        => [
-                    'location'    => 'json',
-                    'type'        => 'integer',
+                'quantity' => [
+                    'location' => 'json',
+                    'type' => 'integer',
                     'description' => 'Number of seats to hold.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'price'           => [
-                    'location'    => 'json',
-                    'type'        => 'number',
+                'price' => [
+                    'location' => 'json',
+                    'type' => 'number',
                     'description' => 'Price for which tickets will be held.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'low_seat'        => [
-                    'location'    => 'json',
-                    'type'        => 'integer',
+                'low_seat' => [
+                    'location' => 'json',
+                    'type' => 'integer',
                     'description' => 'Lowest seat in the group you wish to hold.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'held_for_type'   => [
-                    'location'    => 'json',
-                    'type'        => 'string',
+                'held_for_type' => [
+                    'location' => 'json',
+                    'type' => 'string',
                     'description' => 'Type of entity for which to take the tickets.',
-                    'required'    => true,
-                    'enum'        => ['Office', 'Client'],
+                    'required' => true,
+                    'enum' => ['Office', 'Client'],
                 ],
-                'held_for_id'     => [
-                    'location'    => 'json',
-                    'type'        => 'integer',
+                'held_for_id' => [
+                    'location' => 'json',
+                    'type' => 'integer',
                     'description' => 'ID of Office or Client for which to take the tickets.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'notes'           => [
-                    'location'    => 'json',
-                    'type'        => 'string',
+                'notes' => [
+                    'location' => 'json',
+                    'type' => 'string',
                     'description' => 'Notes regarding the take.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'ticket_list'     => [
-                    'location'    => 'json',
-                    'type'        => ['boolean', 'string'],
+                'ticket_list' => [
+                    'location' => 'json',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Display individual tickets in the return.',
-                    'required'    => false,
-                    'default'     => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'default' => false,
+                    'format' => 'boolean-string',
                 ],
             ],
         ],
-
 
         /**
          *    Ticket Groups / Take
          */
         'releaseTicketGroupTake' => [
-            'extends'          => null,
-            'httpMethod'       => 'POST',
-            'uri'              => '/v9/ticket_groups/{ticket_group_id}/release_take/{ticket_group_take_id}',
-            'summary'          => 'Releases a ticket in the taken state back to the available state.',
-            'notes'            => '',
+            'extends' => null,
+            'httpMethod' => 'POST',
+            'uri' => '/v9/ticket_groups/{ticket_group_id}/release_take/{ticket_group_take_id}',
+            'summary' => 'Releases a ticket in the taken state back to the available state.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469973',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
-                'ticket_group_id'      => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'ticket_group_id' => [
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the specific Ticket Group.',
-                    'required'    => true,
+                    'required' => true,
                 ],
                 'ticket_group_take_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'The ID of the take you wish to release.',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
         ],
-
 
         /**
          *    Ticket Groups / Hold
          */
-        'holdTicketGroup'        => [
-            'extends'          => 'takeTicketGroup',
-            'httpMethod'       => 'POST',
-            'uri'              => '/v9/ticket_groups/{ticket_group_id}/hold',
-            'summary'          => 'Hold tickets for a prospective buyer temporarily.',
-            'notes'            => '',
+        'holdTicketGroup' => [
+            'extends' => 'takeTicketGroup',
+            'httpMethod' => 'POST',
+            'uri' => '/v9/ticket_groups/{ticket_group_id}/hold',
+            'summary' => 'Hold tickets for a prospective buyer temporarily.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469967',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'hold_until' => [
-                    'location'    => 'json',
-                    'type'        => 'strong',
+                    'location' => 'json',
+                    'type' => 'strong',
                     'description' => 'Date/Time at which tickets will revert to available status.',
-                    'required'    => true,
-                    'format'      => 'date-time',
+                    'required' => true,
+                    'format' => 'date-time',
                 ],
 
             ],
         ],
-
 
         /**
          *    Ticket Groups / Update Hold
          */
-        'updateTicketGroupHold'  => [
-            'extends'          => null,
-            'httpMethod'       => 'POST',
-            'uri'              => '/v9/ticket_groups/{ticket_group_id}/hold/{ticket_group_hold_id}',
-            'summary'          => 'Hold tickets for a prospective buyer temporarily.',
-            'notes'            => '',
+        'updateTicketGroupHold' => [
+            'extends' => null,
+            'httpMethod' => 'POST',
+            'uri' => '/v9/ticket_groups/{ticket_group_id}/hold/{ticket_group_hold_id}',
+            'summary' => 'Hold tickets for a prospective buyer temporarily.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469967',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
-                'ticket_group_id'      => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'ticket_group_id' => [
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the specific Ticket Group.',
-                    'required'    => true,
+                    'required' => true,
                 ],
                 'ticket_group_hold_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the specific Hold.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'hold_until'           => [
-                    'location'    => 'json',
-                    'type'        => 'strong',
+                'hold_until' => [
+                    'location' => 'json',
+                    'type' => 'strong',
                     'description' => 'Date/Time at which tickets will revert to available status.',
-                    'required'    => true,
-                    'format'      => 'date-time',
+                    'required' => true,
+                    'format' => 'date-time',
                 ],
 
             ],
         ],
-
 
         /**
          *    Ticket Groups / Release Hold
          */
         'releaseTicketGroupHold' => [
-            'extends'          => null,
-            'httpMethod'       => 'POST',
-            'uri'              => '/v9/ticket_groups/{ticket_group_id}/hold/{ticket_group_hold_id}',
-            'summary'          => 'Releases a ticket in the held state back to the available state.',
-            'notes'            => '',
+            'extends' => null,
+            'httpMethod' => 'POST',
+            'uri' => '/v9/ticket_groups/{ticket_group_id}/hold/{ticket_group_hold_id}',
+            'summary' => 'Releases a ticket in the held state back to the available state.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469959',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
-                'ticket_group_id'      => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'ticket_group_id' => [
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the specific Ticket Group.',
-                    'required'    => true,
+                    'required' => true,
                 ],
                 'ticket_group_hold_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the specific Hold.',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
         ],
 
-
         /**
          *    Ticket Groups / Waste
          */
-        'wasteTicketGroup'       => [
-            'extends'          => null,
-            'httpMethod'       => 'POST',
-            'uri'              => '/v9/ticket_groups/{ticket_group_id}/waste',
-            'summary'          => 'Permanently changes the state of tickets to wasted.',
-            'notes'            => '',
+        'wasteTicketGroup' => [
+            'extends' => null,
+            'httpMethod' => 'POST',
+            'uri' => '/v9/ticket_groups/{ticket_group_id}/waste',
+            'summary' => 'Permanently changes the state of tickets to wasted.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469978',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'ticket_group_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the specific Ticket Group.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'wasted_reason'   => [
-                    'location'    => 'json',
-                    'type'        => 'string',
+                'wasted_reason' => [
+                    'location' => 'json',
+                    'type' => 'string',
                     'description' => 'Reason why the tickets were wasted.',
-                    'required'    => true,
-                    'enum'        => [
+                    'required' => true,
+                    'enum' => [
                         'Did not sell',
                         'Lost by shipper',
                         'Lost before shipment',
@@ -634,135 +623,133 @@ return [
             ],
         ],
 
-
         /**
          *    Ticket Groups / Update
          */
-        'updateTicketGroup'      => [
-            'extends'          => null,
-            'httpMethod'       => 'PUT',
-            'uri'              => '/v9/ticket_groups/{ticket_group_id}',
-            'summary'          => 'Used to update ticket groups in the system.',
-            'notes'            => '',
+        'updateTicketGroup' => [
+            'extends' => null,
+            'httpMethod' => 'PUT',
+            'uri' => '/v9/ticket_groups/{ticket_group_id}',
+            'summary' => 'Used to update ticket groups in the system.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=3014931',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
-                'ticket_group_id'       => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'ticket_group_id' => [
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the specific Ticket Group.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'price'                 => [
-                    'location'    => 'json',
-                    'type'        => 'number',
+                'price' => [
+                    'location' => 'json',
+                    'type' => 'number',
                     'description' => 'The new price for the ticket.',
-                    'required'    => false,
+                    'required' => false,
                 ],
                 'retail_price_override' => [
-                    'location'    => 'json',
-                    'type'        => 'number',
+                    'location' => 'json',
+                    'type' => 'number',
                     'description' => 'The new retail price for the ticket.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'type'                  => [
-                    'location'    => 'json',
-                    'type'        => 'string',
+                'type' => [
+                    'location' => 'json',
+                    'type' => 'string',
                     'description' => 'The type of ticket.',
-                    'required'    => false,
-                    'enum'        => ['event', 'parking'],
+                    'required' => false,
+                    'enum' => ['event', 'parking'],
                 ],
-                'section'               => [
-                    'location'    => 'json',
-                    'type'        => 'string',
+                'section' => [
+                    'location' => 'json',
+                    'type' => 'string',
                     'description' => 'The section of ticket.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'row'                   => [
-                    'location'    => 'json',
-                    'type'        => 'string',
+                'row' => [
+                    'location' => 'json',
+                    'type' => 'string',
                     'description' => 'The row of ticket.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'view_type'             => [
-                    'location'    => 'json',
-                    'type'        => 'string',
+                'view_type' => [
+                    'location' => 'json',
+                    'type' => 'string',
                     'description' => 'The view type of ticket.',
-                    'required'    => false,
-                    'enum'        => ['Full', 'Obstructed', 'Partially Obstructed'],
+                    'required' => false,
+                    'enum' => ['Full', 'Obstructed', 'Partially Obstructed'],
                 ],
-                'tag_list'              => [
-                    'location'    => 'json',
-                    'type'        => 'string',
+                'tag_list' => [
+                    'location' => 'json',
+                    'type' => 'string',
                     'description' => 'Space-delimited tags for the ticket group.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'in_hand'               => [
-                    'location'    => 'json',
-                    'type'        => ['boolean', 'string'],
+                'in_hand' => [
+                    'location' => 'json',
+                    'type' => ['boolean', 'string'],
                     'description' => 'In hand or not.',
-                    'required'    => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'format' => 'boolean-string',
                 ],
-                'in_hand_on'            => [
-                    'location'    => 'json',
-                    'type'        => ['boolean', 'string'],
+                'in_hand_on' => [
+                    'location' => 'json',
+                    'type' => ['boolean', 'string'],
                     'description' => 'A date for when the Ticket Group will be available to ship/deliver.',
-                    'required'    => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'format' => 'boolean-string',
                 ],
-                'wheelchair'            => [
-                    'location'    => 'json',
-                    'type'        => ['boolean', 'string'],
+                'wheelchair' => [
+                    'location' => 'json',
+                    'type' => ['boolean', 'string'],
                     'description' => 'Wheelchair or not.',
-                    'required'    => false,
-                    'format'      => 'boolean-string',
+                    'required' => false,
+                    'format' => 'boolean-string',
                 ],
-                'internal_notes'        => [
-                    'location'    => 'json',
-                    'type'        => 'string',
+                'internal_notes' => [
+                    'location' => 'json',
+                    'type' => 'string',
                     'description' => 'Notes that are only visibile to Users of the owning brokerage.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'broker_notes'          => [
-                    'location'    => 'json',
-                    'type'        => 'string',
+                'broker_notes' => [
+                    'location' => 'json',
+                    'type' => 'string',
                     'description' => 'Notes that are visible to all brokers but not customers.',
-                    'required'    => false,
+                    'required' => false,
                 ],
-                'external_notes'        => [
-                    'location'    => 'json',
-                    'type'        => 'string',
+                'external_notes' => [
+                    'location' => 'json',
+                    'type' => 'string',
                     'description' => 'Notes that are visible to all brokers and customers.',
-                    'required'    => false,
+                    'required' => false,
                 ],
             ],
         ],
-
 
         /**
          *    Ticket Groups / Mass Update
          */
         'massUpdateTicketGroups' => [
-            'extends'          => null,
-            'httpMethod'       => 'POST',
-            'uri'              => '/v9/ticket_groups/mass_update',
-            'summary'          => 'Change attributes on a large number of ticket groups simultaneously.',
-            'notes'            => '',
+            'extends' => null,
+            'httpMethod' => 'POST',
+            'uri' => '/v9/ticket_groups/mass_update',
+            'summary' => 'Change attributes on a large number of ticket groups simultaneously.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994266',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
-                'ids'   => [
-                    'location'    => 'json',
-                    'type'        => 'array',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'ids' => [
+                    'location' => 'json',
+                    'type' => 'array',
                     'description' => 'Array of Ticket Group IDs that you would like to update.',
-                    'required'    => true,
+                    'required' => true,
                 ],
                 'attrs' => [
-                    'location'    => 'json',
-                    'type'        => 'number',
+                    'location' => 'json',
+                    'type' => 'number',
                     'description' => 'Object with the attributes you would like to update. Support values are:
                                         type:String
                                         format:String
@@ -779,41 +766,39 @@ return [
                                         internal_notes:Text
                                         broker_notes:Text
                                         eticket:Boolean',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
         ],
-
 
         /**
          *    Ticket Groups / Broadcast
          */
-        'broadcastTicketGroup'   => [
-            'extends'          => null,
-            'httpMethod'       => 'POST',
-            'uri'              => '/v9/ticket_groups/{ticket_group_id}/broadcast',
-            'summary'          => 'Change the broadcast status of a ticket group.',
-            'notes'            => '',
+        'broadcastTicketGroup' => [
+            'extends' => null,
+            'httpMethod' => 'POST',
+            'uri' => '/v9/ticket_groups/{ticket_group_id}/broadcast',
+            'summary' => 'Change the broadcast status of a ticket group.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9469971',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'ticket_group_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the specific Ticket Group.',
-                    'required'    => true,
+                    'required' => true,
                 ],
-                'broadcast'       => [
-                    'location'    => 'json',
-                    'type'        => ['boolean', 'string'],
+                'broadcast' => [
+                    'location' => 'json',
+                    'type' => ['boolean', 'string'],
                     'description' => 'New state for the broadcast parameter.',
-                    'required'    => true,
-                    'format'      => 'boolean-string',
+                    'required' => true,
+                    'format' => 'boolean-string',
                 ],
             ],
         ],
-
 
     ],
 
@@ -827,5 +812,5 @@ return [
     |
     */
 
-    'models'     => [],
+    'models' => [],
 ];

@@ -1,93 +1,56 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TicketEvolution;
 
 use GuzzleHttp\Client as BaseClient;
+use GuzzleHttp\Command\Command;
 use GuzzleHttp\Command\Guzzle\Description;
 use GuzzleHttp\Command\Guzzle\GuzzleClient;
+use GuzzleHttp\Command\Result;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Utils;
 use Symfony\Component\Config\FileLocator;
-use function GuzzleHttp\default_user_agent;
 
+#[\AllowDynamicProperties]
 class Client
 {
-    /**
-     * Version for this library
-     *
-     * @const string
-     */
-    const VERSION = '4.4.4';
+    public const VERSION = '5.0.0';
 
-    /**
-     * Guzzle service description
-     *
-     * @var \GuzzleHttp\Command\Guzzle\Description
-     */
-    private static $_description;
+    private static Description $description;
 
+    private BaseClient $baseClient;
 
-    /**
-     * Guzzle base client
-     *
-     * @var \GuzzleHttp\Client
-     */
-    private $baseClient;
-
-
-    /**
-     * Guzzle Services client
-     *
-     * @var \GuzzleHttp\Command\Guzzle\GuzzleClient
-     */
-    private $serviceClient;
-
-
-    /**
-     * Configuration settings
-     *
-     * @var array
-     */
-    private $settings;
-
+    private GuzzleClient $serviceClient;
 
     /**
      * Create a new API client using the supplied settings.
      * Add a TEvoAuthMiddleware to handle the signing of requests.
-     *
-     * @param array $settings
-     * @param array $middleware
      */
-    public function __construct(array $settings = [], array $middleware = [])
+    public function __construct(private array $settings = [], private array $middleware = [])
     {
-        $this->settings = $settings;
-
         // Use the TEvoAuth middleware to handle the request signing
         $this->middleware = array_merge([
             new TEvoAuthMiddleware($this->settings['apiToken'], $this->settings['apiSecret']),
         ], $middleware);
 
-        // Don’t need these anymore
+        // Do not need these anymore
         unset($this->settings['apiToken'], $this->settings['apiSecret']);
 
-        // TEvo API servers don't like the “Expect: 100” header so override it
+        // TEvo API servers do not like the “Expect: 100” header so override it
         // http://docs.guzzlephp.org/en/latest/request-options.html#expect
         $this->settings['expect'] = false;
 
         // Set a custom User Agent indicating which version of this library we are using
-        // if one isn't already provided
-        if (!isset($options['headers']['User-Agent'])) {
-            $this->settings['headers']['User-Agent'] = 'ticketevolution-php/' . self::VERSION . ' ' . default_user_agent();
+        // if one is not already provided
+        if (! isset($options['headers']['User-Agent'])) {
+            $this->settings['headers']['User-Agent'] = 'ticketevolution-php/'.self::VERSION.' '.Utils::defaultUserAgent();
         }
-
     }
-
 
     /**
      * Merge (via override) settings with newly provided ones.
-     *
-     * @param  array $settings
-     *
-     * @return \TicketEvolution\Client
      */
     public function settings(array $settings): Client
     {
@@ -97,57 +60,47 @@ class Client
 
         $this->settings = array_merge($this->settings, $settings);
 
-        if ($reloadDescription) {
+        if ($reloadDescription ?? false) {
             $this->reloadDescription();
         }
 
-        if ($this->serviceClient) {
+        if (isset($this->serviceClient)) {
             $this->buildClient();
         }
 
         return $this;
     }
 
-
     /**
      * Build a new service client, reloading the description of necessary.
-     *
      */
-    private function buildClient()
+    private function buildClient(): void
     {
         $client = $this->getBaseClient();
 
-        if (!static::$_description) {
+        if (! isset(static::$description)) {
             $this->reloadDescription();
         }
 
-        $this->serviceClient = new GuzzleClient($client, static::$_description);
+        $this->serviceClient = new GuzzleClient($client, static::$description);
     }
-
 
     /**
      * Retrieve Guzzle base client.
-     *
-     * @return BaseClient
      */
     private function getBaseClient(): BaseClient
     {
-        return $this->baseClient ?: $this->baseClient = $this->loadBaseClient($this->settings);
+        return isset($this->baseClient) ?: $this->baseClient = $this->loadBaseClient($this->settings);
     }
-
 
     /**
      * Set adapter and create Guzzle base client.
-     *
-     * @param array $settings
-     *
-     * @return BaseClient
      */
     private function loadBaseClient(array $settings = []): BaseClient
     {
         // Create a handler stack and add any supplied middleware
         $stack = HandlerStack::create();
-        array_walk($this->middleware, function ($middleware) use ($stack) {
+        array_walk($this->middleware, static function ($middleware) use ($stack) {
             $stack->push($middleware);
         });
 
@@ -159,25 +112,20 @@ class Client
         return $this->baseClient;
     }
 
-
     /**
      * Description works tricky as a static property, reload as needed.
-     *
      */
-    private function reloadDescription()
+    private function reloadDescription(): void
     {
-        static::$_description = $this->loadDescription();
+        static::$description = $this->loadDescription();
     }
-
 
     /**
      * Load configuration file(s) and parse resources.
-     *
-     * @return Description
      */
     private function loadDescription(): Description
     {
-        $locator = new FileLocator(realpath(__DIR__ . '/Resources/' . $this->settings['apiVersion']));
+        $locator = new FileLocator(realpath(__DIR__.'/Resources/'.$this->settings['apiVersion']));
 
         $phpLoader = new PhpLoader($locator);
 
@@ -187,39 +135,27 @@ class Client
         // Allowing one to easily change the baseUrl makes working in different environments easy.
         $description['baseUrl'] = $this->settings['baseUrl'];
 
-        $this->description = new Description($description);
+        static::$description = new Description($description);
 
-        return $this->description;
+        return static::$description;
     }
-
 
     /**
      * Execute the command provided. This is used in calls that look like
      *
-     * ```
-     * $response = $client->listBrokerages(['page' => 2, 'per_page' => 2]);
-     * ```
+     * $response = $client->listEvents(['page' => 2, 'per_page' => 2]);
      *
      * as well as calls that look like
      *
-     * ```
-     * $command = $client->getCommand('listBrokerages', ['page' => 2, 'per_page' => 2]);
+     * $command = $client->getCommand('listEvents', ['page' => 2, 'per_page' => 2]);
      * $response = $client->execute($command);
-     * ```
-     *
-     * @param $method
-     * @param $parameters
-     *
-     * @return \GuzzleHttp\Command\Result|\GuzzleHttp\Command\Command
      */
-    public function __call($method, $parameters)
+    public function __call($method, $parameters): Result|Command
     {
-        if (!$this->serviceClient) {
+        if (! isset($this->serviceClient)) {
             $this->buildClient();
         }
 
-        $response = call_user_func_array([$this->serviceClient, $method], $parameters);
-
-        return $response;
+        return call_user_func_array([$this->serviceClient, $method], $parameters);
     }
 }

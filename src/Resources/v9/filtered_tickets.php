@@ -17,60 +17,59 @@ return [
         /**
          *    Filtered Tickets / Held
          */
-        'listFilteredTicketsHeld'  => [
-            'extends'          => null,
-            'httpMethod'       => 'GET',
-            'uri'              => '/v9/filtered_tickets/held',
-            'summary'          => 'Display tickets that have been reserved with a "hold" action.',
-            'notes'            => '',
+        'listFilteredTicketsHeld' => [
+            'extends' => null,
+            'httpMethod' => 'GET',
+            'uri' => '/v9/filtered_tickets/held',
+            'summary' => 'Display tickets that have been reserved with a "hold" action.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994314',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
-                'page'     => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'page' => [
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'Which page of results to return.',
-                    'required'    => false,
-                    'default'     => 1,
+                    'required' => false,
+                    'default' => 1,
                 ],
                 'per_page' => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'The number of items for each page of results.',
-                    'required'    => false,
-                    'default'     => 100,
+                    'required' => false,
+                    'default' => 100,
                 ],
             ],
         ],
-
 
         /**
          *    Filtered Tickets / Taken
          */
         'listFilteredTicketsTaken' => [
-            'extends'          => null,
-            'httpMethod'       => 'GET',
-            'uri'              => '/v9/filtered_tickets/taken',
-            'summary'          => 'Tickets that have been reserved for a buyer with a "take" action.',
-            'notes'            => '',
+            'extends' => null,
+            'httpMethod' => 'GET',
+            'uri' => '/v9/filtered_tickets/taken',
+            'summary' => 'Tickets that have been reserved for a buyer with a "take" action.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9994317',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
-                'page'     => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'page' => [
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'Which page of results to return.',
-                    'required'    => false,
-                    'default'     => 1,
+                    'required' => false,
+                    'default' => 1,
                 ],
                 'per_page' => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'The number of items for each page of results.',
-                    'required'    => false,
-                    'default'     => 100,
+                    'required' => false,
+                    'default' => 100,
                 ],
             ],
         ],
@@ -86,5 +85,5 @@ return [
     |
     */
 
-    'models'     => [],
+    'models' => [],
 ];

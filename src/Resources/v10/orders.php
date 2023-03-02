@@ -17,21 +17,21 @@ return [
         /**
          *    Orders / Create
          */
-        'createOrders'                 => [
-            'extends'          => null,
-            'httpMethod'       => 'POST',
-            'uri'              => '/v10/orders',
-            'summary'          => 'Create an Order.',
-            'notes'            => 'Creates a single order.',
+        'createOrders' => [
+            'extends' => null,
+            'httpMethod' => 'POST',
+            'uri' => '/v10/orders',
+            'summary' => 'Create an Order.',
+            'notes' => 'Creates a single order.',
             'documentationUrl' => null,
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'order' => [
-                    'location'    => 'json',
-                    'type'        => 'object',
+                    'location' => 'json',
+                    'type' => 'object',
                     'description' => 'An Order to create.',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
         ],
@@ -47,5 +47,5 @@ return [
     |
     */
 
-    'models'     => [],
+    'models' => [],
 ];

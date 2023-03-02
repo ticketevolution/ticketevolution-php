@@ -17,223 +17,215 @@ return [
         /**
          *    Offices / Index
          */
-        'listOffices'             => [
-            'extends'              => null,
-            'httpMethod'           => 'GET',
-            'uri'                  => '/v9/offices',
-            'summary'              => 'Get a list of all offices.',
-            'notes'                => '',
-            'documentationUrl'     => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470028',
-            'deprecated'           => false,
-            'responseModel'        => 'defaultJsonResponse',
-            'parameters'           => [
-                'page'     => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+        'listOffices' => [
+            'extends' => null,
+            'httpMethod' => 'GET',
+            'uri' => '/v9/offices',
+            'summary' => 'Get a list of all offices.',
+            'notes' => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470028',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'page' => [
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'Which page of results to return.',
-                    'required'    => false,
-                    'default'     => 1,
+                    'required' => false,
+                    'default' => 1,
                 ],
                 'per_page' => [
-                    'location'    => 'query',
-                    'type'        => 'integer',
+                    'location' => 'query',
+                    'type' => 'integer',
                     'description' => 'The number of items for each page of results.',
-                    'required'    => false,
-                    'default'     => 100,
+                    'required' => false,
+                    'default' => 100,
                 ],
             ],
             'additionalParameters' => ['location' => 'query'],
         ],
-
 
         /**
          *    Offices / Show
          */
-        'showOffice'              => [
-            'extends'          => null,
-            'httpMethod'       => 'GET',
-            'uri'              => '/v9/offices/{office_id}',
-            'summary'          => 'Get a single office.',
-            'notes'            => '',
+        'showOffice' => [
+            'extends' => null,
+            'httpMethod' => 'GET',
+            'uri' => '/v9/offices/{office_id}',
+            'summary' => 'Get a single office.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470035',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'office_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the Office to return.',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
         ],
-
 
         /**
          *    Offices / Search
          */
-        'searchOffices'           => [
-            'extends'              => 'listOffices',
-            'httpMethod'           => 'GET',
-            'uri'                  => '/v9/offices/search',
-            'summary'              => 'Search across offices.',
-            'notes'                => '',
-            'documentationUrl'     => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470037',
-            'deprecated'           => false,
-            'responseModel'        => 'defaultJsonResponse',
-            'parameters'           => [
+        'searchOffices' => [
+            'extends' => 'listOffices',
+            'httpMethod' => 'GET',
+            'uri' => '/v9/offices/search',
+            'summary' => 'Search across offices.',
+            'notes' => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=9470037',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'q' => [
-                    'location'    => 'query',
-                    'type'        => 'string',
+                    'location' => 'query',
+                    'type' => 'string',
                     'description' => 'Search query',
-                    'required'    => true
+                    'required' => true,
                 ],
             ],
             'additionalParameters' => ['location' => 'query'],
         ],
-
 
         /**
          *    Offices / Credit Cards / Index
          */
-        'listOfficeCreditCards'   => [
-            'extends'              => 'listOffices',
-            'httpMethod'           => 'GET',
-            'uri'                  => '/v9/offices/{office_id}/credit_cards',
-            'summary'              => 'List Credit Card for a specified Office.',
-            'notes'                => '',
-            'documentationUrl'     => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4129301',
-            'deprecated'           => false,
-            'responseModel'        => 'defaultJsonResponse',
-            'parameters'           => [
+        'listOfficeCreditCards' => [
+            'extends' => 'listOffices',
+            'httpMethod' => 'GET',
+            'uri' => '/v9/offices/{office_id}/credit_cards',
+            'summary' => 'List Credit Card for a specified Office.',
+            'notes' => '',
+            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4129301',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'office_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the Office.',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
             'additionalParameters' => ['location' => 'query'],
         ],
 
-
         /**
          *    Offices / Credit Cards / Show
          */
-//        'showOfficeCreditCard'        => [
-//            'extends'          => null,
-//            'httpMethod'       => 'GET',
-//            'uri'              => '/v9/offices/{office_id}/credit_cards/{credit_card_id}',
-//            'summary'          => 'Get a single office Credit Card.',
-//            'notes'            => '',
-//            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394167',
-//            'deprecated'       => false,
-//            'responseModel'    => 'defaultJsonResponse',
-//            'parameters'       => [
-//                'office_id' => [
-//                    'location'    => 'uri',
-//                    'type'        => 'integer',
-//                    'description' => 'ID of the Office.',
-//                    'required'    => true,
-//                ],
-//                'credit_card_id' => [
-//                    'location'    => 'uri',
-//                    'type'        => 'integer',
-//                    'description' => 'ID of the Credit Card.',
-//                    'required'    => true,
-//                ],
-//            ],
-//        ],
-
+        //        'showOfficeCreditCard'        => [
+        //            'extends'          => null,
+        //            'httpMethod'       => 'GET',
+        //            'uri'              => '/v9/offices/{office_id}/credit_cards/{credit_card_id}',
+        //            'summary'          => 'Get a single office Credit Card.',
+        //            'notes'            => '',
+        //            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394167',
+        //            'deprecated'       => false,
+        //            'responseModel'    => 'defaultJsonResponse',
+        //            'parameters'       => [
+        //                'office_id' => [
+        //                    'location'    => 'uri',
+        //                    'type'        => 'integer',
+        //                    'description' => 'ID of the Office.',
+        //                    'required'    => true,
+        //                ],
+        //                'credit_card_id' => [
+        //                    'location'    => 'uri',
+        //                    'type'        => 'integer',
+        //                    'description' => 'ID of the Credit Card.',
+        //                    'required'    => true,
+        //                ],
+        //            ],
+        //        ],
 
         /**
          *    Offices / Credit Cards / Create
          */
         'createOfficeCreditCards' => [
-            'extends'          => null,
-            'httpMethod'       => 'POST',
-            'uri'              => '/v9/offices/{office_id}/credit_cards',
-            'summary'          => 'Create one or more Credit Cards for an existing office.',
-            'notes'            => 'Note that this takes an array of Credit Cards even if only creating one.',
+            'extends' => null,
+            'httpMethod' => 'POST',
+            'uri' => '/v9/offices/{office_id}/credit_cards',
+            'summary' => 'Create one or more Credit Cards for an existing office.',
+            'notes' => 'Note that this takes an array of Credit Cards even if only creating one.',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=4129312',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
-                'office_id'    => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
+                'office_id' => [
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the Office to return.',
-                    'required'    => true,
+                    'required' => true,
                 ],
                 'credit_cards' => [
-                    'location'    => 'json',
-                    'type'        => 'array',
+                    'location' => 'json',
+                    'type' => 'array',
                     'description' => 'A collection of Credit Cards to create.',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
         ],
-
 
         /**
          *    Offices / Credit Cards / Update
          */
-//        'updateOfficeCreditCard'   => [
-//            'extends'          => null,
-//            'httpMethod'       => 'PUT',
-//            'uri'              => '/v9/offices/{office_id}/credit_cards/{credit_card_id}',
-//            'summary'          => 'Update a office Credit Card.',
-//            'notes'            => '',
-//            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394225',
-//            'deprecated'       => false,
-//            'responseModel'    => 'defaultJsonResponse',
-//            'parameters'       => [
-//                'office_id' => [
-//                    'location'    => 'uri',
-//                    'type'        => 'integer',
-//                    'description' => 'ID of the Office.',
-//                    'required'    => true,
-//                ],
-//                'credit_card_id' => [
-//                    'location'    => 'uri',
-//                    'type'        => 'integer',
-//                    'description' => 'ID of the Credit Card.',
-//                    'required'    => true,
-//                ],
-//            ],
-//            'additionalParameters' => ['location' => 'json'],
-//        ],
-
+        //        'updateOfficeCreditCard'   => [
+        //            'extends'          => null,
+        //            'httpMethod'       => 'PUT',
+        //            'uri'              => '/v9/offices/{office_id}/credit_cards/{credit_card_id}',
+        //            'summary'          => 'Update a office Credit Card.',
+        //            'notes'            => '',
+        //            'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/pages/viewpage.action?pageId=27394225',
+        //            'deprecated'       => false,
+        //            'responseModel'    => 'defaultJsonResponse',
+        //            'parameters'       => [
+        //                'office_id' => [
+        //                    'location'    => 'uri',
+        //                    'type'        => 'integer',
+        //                    'description' => 'ID of the Office.',
+        //                    'required'    => true,
+        //                ],
+        //                'credit_card_id' => [
+        //                    'location'    => 'uri',
+        //                    'type'        => 'integer',
+        //                    'description' => 'ID of the Credit Card.',
+        //                    'required'    => true,
+        //                ],
+        //            ],
+        //            'additionalParameters' => ['location' => 'json'],
+        //        ],
 
         /**
          *    Offices / Credit Cards / Delete
          */
-        'deleteOfficeCreditCard'   => [
-            'extends'          => null,
-            'httpMethod'       => 'DELETE',
-            'uri'              => '/v9/offices/{office_id}/credit_cards/{credit_card_id}',
-            'summary'          => 'Delete a office Credit Card.',
-            'notes'            => '',
+        'deleteOfficeCreditCard' => [
+            'extends' => null,
+            'httpMethod' => 'DELETE',
+            'uri' => '/v9/offices/{office_id}/credit_cards/{credit_card_id}',
+            'summary' => 'Delete a office Credit Card.',
+            'notes' => '',
             'documentationUrl' => 'https://ticketevolution.atlassian.net/wiki/spaces/API/pages/30572559/Offices+Credit+Cards+Delete',
-            'deprecated'       => false,
-            'responseModel'    => 'defaultJsonResponse',
-            'parameters'       => [
+            'deprecated' => false,
+            'responseModel' => 'defaultJsonResponse',
+            'parameters' => [
                 'office_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the Office.',
-                    'required'    => true,
+                    'required' => true,
                 ],
                 'credit_card_id' => [
-                    'location'    => 'uri',
-                    'type'        => 'integer',
+                    'location' => 'uri',
+                    'type' => 'integer',
                     'description' => 'ID of the Credit Card.',
-                    'required'    => true,
+                    'required' => true,
                 ],
             ],
-//            'additionalParameters' => ['location' => 'json'],
+            //            'additionalParameters' => ['location' => 'json'],
         ],
-
 
     ],
 
@@ -247,5 +239,5 @@ return [
     |
     */
 
-    'models'     => [],
+    'models' => [],
 ];

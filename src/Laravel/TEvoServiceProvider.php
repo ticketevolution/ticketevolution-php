@@ -1,41 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TicketEvolution\Laravel;
 
-use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use TicketEvolution\Client;
 
 class TEvoServiceProvider extends ServiceProvider
 {
+    protected bool $defer = true;
 
-    /**
-     * Indicates if loading of the provider is deferred.
-     *
-     * @var bool
      */
-    protected $defer = true;
-
-
-    /**
-     * Boot the service provider.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $this->setupConfig();
     }
 
-
-    /**
-     * Setup the config.
-     *
-     * @return void
-     */
-    protected function setupConfig()
+    protected function setupConfig(): void
     {
-        $configPath = realpath(__DIR__ . '/config/ticketevolution.php');
+        $configPath = realpath(__DIR__.'/config/ticketevolution.php');
 
         if (function_exists('config_path')) {
             $publishPath = config_path('ticketevolution.php');
@@ -48,13 +32,7 @@ class TEvoServiceProvider extends ServiceProvider
         $this->mergeConfigFrom($configPath, 'ticketevolution');
     }
 
-
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton('tevo', function () {
             return new Client(config('ticketevolution'));
@@ -63,15 +41,8 @@ class TEvoServiceProvider extends ServiceProvider
         $this->app->alias('tevo', Client::class);
     }
 
-
-    /**
-     * Get the services provided by the provider.
-     *
-     * @return array
-     */
-    public function provides()
+    public function provides(): array
     {
         return ['tevo'];
     }
-
 }

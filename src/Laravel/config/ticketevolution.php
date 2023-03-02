@@ -16,9 +16,9 @@
 */
 
 return [
-    'baseUrl'    => env('TICKETEVOLUTION_API_BASEURL') ?: 'https://api.ticketevolution.com/v9',
+    'baseUrl' => env('TICKETEVOLUTION_API_BASEURL') ?: 'https://api.ticketevolution.com/v9',
     'apiVersion' => env('TICKETEVOLUTION_API_VERSION') ?: 'v9',
-    'apiToken'   => env('TICKETEVOLUTION_API_TOKEN'),
-    'apiSecret'  => env('TICKETEVOLUTION_API_SECRET'),
-    'debug'      => false,
+    'apiToken' => env('TICKETEVOLUTION_API_TOKEN'),
+    'apiSecret' => env('TICKETEVOLUTION_API_SECRET'),
+    'debug' => false,
 ];

@@ -1,21 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TicketEvolution\Laravel;
 
 use Illuminate\Support\Facades\Facade as LaravelFacade;
 
-/**
- * @see \TicketEvolution\Client
- */
 class TEvoFacade extends LaravelFacade
 {
-
-    /**
-     * Get the registered name of the component.
-     *
-     * @return string
-     */
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return 'tevo';
     }

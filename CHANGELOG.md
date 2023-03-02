@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.0 (March 2, 2023)
+- Bump minimum PHP version to 8.2.
+
 ## 4.4.4 (August 19, 2022)
 - When using `settings()` to update the client settings, check if the description needs to be reloaded due to a version change.
 
